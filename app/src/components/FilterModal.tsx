@@ -79,11 +79,16 @@ export default function FilterModal({ open, onClose, onApply, initialFilters }: 
         className="relative w-full max-w-[430px] bg-white rounded-t-[24px] shadow-2xl transition-transform duration-300 ease-out"
         style={{ transform: animating ? 'translateY(0)' : 'translateY(100%)' }}
       >
+        <div className="flex justify-center pt-3">
+          <div className="w-10 h-1 rounded-full bg-gray-300" />
+        </div>
+
         {/* Header */}
         <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-100">
           <button
             onClick={onClose}
-            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+            className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+            aria-label="关闭"
           >
             <span className="material-symbols-outlined text-dark text-xl">close</span>
           </button>
@@ -101,7 +106,8 @@ export default function FilterModal({ open, onClose, onApply, initialFilters }: 
                 <button
                   key={range.value}
                   onClick={() => setPriceRange(priceRange === range.value ? null : range.value)}
-                  className={`px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  aria-pressed={priceRange === range.value}
+                  className={`px-3 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                     priceRange === range.value
                       ? 'bg-accent/20 border-2 border-accent text-dark'
                       : 'bg-white border border-gray-200 text-gray-600 hover:border-gray-300'
@@ -121,6 +127,7 @@ export default function FilterModal({ open, onClose, onApply, initialFilters }: 
                 <button
                   key={level.value}
                   onClick={() => setStarLevel(starLevel === level.value ? null : level.value)}
+                  aria-pressed={starLevel === level.value}
                   className={`px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 ${
                     starLevel === level.value
                       ? 'bg-accent/20 border-2 border-accent text-dark'
@@ -128,7 +135,7 @@ export default function FilterModal({ open, onClose, onApply, initialFilters }: 
                   }`}
                 >
                   <span>{level.label}</span>
-                  <span className="text-xs text-gray-400">({level.sub})</span>
+                  <span className="text-xs text-gray-500">({level.sub})</span>
                 </button>
               ))}
             </div>
@@ -136,7 +143,7 @@ export default function FilterModal({ open, onClose, onApply, initialFilters }: 
         </div>
 
         {/* Footer */}
-        <div className="flex items-center gap-4 px-6 pt-4 pb-8 border-t border-gray-100">
+        <div className="flex items-center gap-4 px-6 pt-4 pb-safe-bottom border-t border-gray-100">
           <button
             onClick={handleClear}
             className="flex-1 py-3.5 rounded-2xl text-sm font-bold border border-gray-200 text-dark hover:bg-gray-50 transition-colors"

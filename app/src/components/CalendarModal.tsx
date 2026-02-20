@@ -124,11 +124,16 @@ export default function CalendarModal({
           visible ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
+        <div className="flex justify-center pt-3">
+          <div className="w-10 h-1 rounded-full bg-gray-300" />
+        </div>
+
         {/* Header */}
         <div className="flex items-center justify-between px-6 pt-6 pb-4">
           <button
             onClick={handleBackdropClick}
-            className="p-2 -ml-2 rounded-full hover:bg-black/5 transition-colors text-dark"
+            className="p-3 rounded-full hover:bg-black/5 transition-colors text-dark"
+            aria-label="关闭"
           >
             <span className="material-symbols-outlined text-2xl">close</span>
           </button>
@@ -181,7 +186,7 @@ export default function CalendarModal({
 
                     let bgClass = '';
                     let textClass = isPast
-                      ? 'text-gray-300'
+                      ? 'text-gray-400'
                       : isWeekend
                         ? 'text-red-400'
                         : 'text-dark';
@@ -205,10 +210,13 @@ export default function CalendarModal({
                     }
 
                     return (
-                      <div
+                      <button
+                        type="button"
                         key={day}
-                        className={`h-12 flex flex-col items-center justify-center relative cursor-pointer ${bgClass} ${roundedClass}`}
+                        className={`h-12 flex flex-col items-center justify-center relative ${bgClass} ${roundedClass}`}
                         onClick={() => !isPast && handleDateClick(date)}
+                        aria-label={`${month + 1}月${day}日`}
+                        aria-disabled={isPast ? "true" : undefined}
                       >
                         <span
                           className={`text-sm font-medium ${textClass} ${
@@ -224,7 +232,7 @@ export default function CalendarModal({
                             {label}
                           </span>
                         )}
-                      </div>
+                      </button>
                     );
                   })}
                 </div>
@@ -234,14 +242,14 @@ export default function CalendarModal({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 pb-8 border-t border-gray-100 bg-white">
+        <div className="px-6 py-4 pb-safe-bottom border-t border-gray-100 bg-white">
           <button
             onClick={handleConfirm}
             disabled={!checkIn || !checkOut}
             className={`w-full py-4 rounded-2xl text-lg font-bold transition-all active:scale-[0.98] ${
               checkIn && checkOut
                 ? 'bg-dark text-white shadow-lg'
-                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'bg-gray-200 text-gray-500 cursor-not-allowed'
             }`}
           >
             {checkIn && checkOut ? `完成 (${nights}晚)` : '请选择日期'}

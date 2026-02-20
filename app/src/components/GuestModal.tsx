@@ -24,16 +24,17 @@ function CounterRow({ label, sublabel, value, min, max, onChange }: CounterRowPr
       <div>
         <p className="text-base font-semibold text-dark">{label}</p>
         {sublabel && (
-          <p className="text-xs text-gray-400 mt-0.5">{sublabel}</p>
+          <p className="text-xs text-gray-500 mt-0.5">{sublabel}</p>
         )}
       </div>
       <div className="flex items-center gap-4">
         <button
           onClick={() => onChange(value - 1)}
           disabled={value <= min}
-          className={`w-9 h-9 rounded-full border-2 flex items-center justify-center transition-colors ${
+          aria-label={`减少${label}`}
+          className={`w-11 h-11 rounded-full border-2 flex items-center justify-center transition-colors ${
             value <= min
-              ? 'border-gray-200 text-gray-300 cursor-not-allowed'
+              ? 'border-gray-200 text-gray-400 cursor-not-allowed'
               : 'border-gray-300 text-dark hover:border-accent hover:text-accent active:scale-95'
           }`}
         >
@@ -45,9 +46,10 @@ function CounterRow({ label, sublabel, value, min, max, onChange }: CounterRowPr
         <button
           onClick={() => onChange(value + 1)}
           disabled={value >= max}
-          className={`w-9 h-9 rounded-full border-2 flex items-center justify-center transition-colors ${
+          aria-label={`增加${label}`}
+          className={`w-11 h-11 rounded-full border-2 flex items-center justify-center transition-colors ${
             value >= max
-              ? 'border-gray-200 text-gray-300 cursor-not-allowed'
+              ? 'border-gray-200 text-gray-400 cursor-not-allowed'
               : 'border-gray-300 text-dark hover:border-accent hover:text-accent active:scale-95'
           }`}
         >
@@ -109,11 +111,16 @@ export default function GuestModal({
           visible ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
+        <div className="flex justify-center pt-3">
+          <div className="w-10 h-1 rounded-full bg-gray-300" />
+        </div>
+
         {/* Header */}
         <div className="flex items-center justify-between px-6 pt-6 pb-2">
           <button
             onClick={handleBackdropClick}
-            className="p-2 -ml-2 rounded-full hover:bg-black/5 transition-colors text-dark"
+            className="p-3 rounded-full hover:bg-black/5 transition-colors text-dark"
+            aria-label="关闭"
           >
             <span className="material-symbols-outlined text-2xl">close</span>
           </button>
@@ -152,7 +159,7 @@ export default function GuestModal({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 pb-8">
+        <div className="px-6 py-4 pb-safe-bottom">
           <button
             onClick={handleConfirm}
             className="w-full bg-dark text-white py-4 rounded-2xl text-lg font-bold shadow-lg hover:bg-dark-hover transition-all active:scale-[0.98]"
