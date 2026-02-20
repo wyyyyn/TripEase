@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { hotels, defaultSearch } from '../data/mockData';
+import { defaultSearch } from '../data/mockData';
+import { usePublishedHotels } from '../store/useStore';
 
 type PriceSortDir = 'asc' | 'desc' | null;
 
@@ -15,6 +16,7 @@ interface ActiveFilters {
 
 export default function HotelList() {
   const navigate = useNavigate();
+  const hotels = usePublishedHotels();
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
     smartSort: true,
@@ -108,7 +110,7 @@ export default function HotelList() {
     }
 
     return result;
-  }, [activeFilters]);
+  }, [activeFilters, hotels]);
 
   // Infinite scroll
   const [displayCount, setDisplayCount] = useState(3);

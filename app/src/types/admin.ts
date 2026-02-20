@@ -1,4 +1,4 @@
-import type { Hotel, Room } from './hotel';
+import type { Hotel } from './hotel';
 
 export type UserRole = 'merchant' | 'admin';
 

@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { hotels, defaultSearch } from '../data/mockData';
+import { defaultSearch } from '../data/mockData';
+import { usePublishedHotels } from '../store/useStore';
 import CalendarModal from '../components/CalendarModal';
 
 const WEEKDAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
@@ -59,6 +60,7 @@ const badgeStyles: Record<string, string> = {
 export default function HotelDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const hotels = usePublishedHotels();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentImage, setCurrentImage] = useState(0);
   const [calendarOpen, setCalendarOpen] = useState(false);
