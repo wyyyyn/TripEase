@@ -33,6 +33,9 @@ lerna-debug.log*
 .DS_Store
 Thumbs.db
 
+# Claude
+CLAUDE.md
+
 # 设计参考资料（不纳入版本控制）
 设计参考/
 携程 App 截图/

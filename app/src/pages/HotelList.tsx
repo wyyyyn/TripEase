@@ -1,10 +1,29 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { hotels, filterTags, defaultSearch } from '../data/mockData';
+import { hotels, defaultSearch } from '../data/mockData';
+
+type PriceSortDir = 'asc' | 'desc' | null;
+
+interface ActiveFilters {
+  smartSort: boolean;
+  priceSort: PriceSortDir;
+  rating45: boolean;
+  breakfast: boolean;
+  freeCancel: boolean;
+  distance: boolean;
+}
 
 export default function HotelList() {
   const navigate = useNavigate();
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
+    smartSort: true,
+    priceSort: null,
+    rating45: false,
+    breakfast: false,
+    freeCancel: false,
+    distance: false,
+  });
 
   const toggleFavorite = (e: React.MouseEvent, hotelId: string) => {
     e.stopPropagation();
@@ -37,6 +56,123 @@ export default function HotelList() {
   const getBadgeText = (color?: string) => {
     return color === 'accent' ? 'text-dark' : 'text-white';
   };
+
+  // Filter logic
+  const handleFilterClick = (filter: keyof ActiveFilters) => {
+    setActiveFilters((prev) => {
+      if (filter === 'smartSort') {
+        return {
+          smartSort: true,
+          priceSort: null,
+          rating45: false,
+          breakfast: false,
+          freeCancel: false,
+          distance: false,
+        };
+      }
+      if (filter === 'priceSort') {
+        const newDir: PriceSortDir =
+          prev.priceSort === null ? 'asc' : prev.priceSort === 'asc' ? 'desc' : null;
+        return { ...prev, smartSort: false, priceSort: newDir };
+      }
+      return { ...prev, smartSort: false, [filter]: !prev[filter] };
+    });
+  };
+
+  const filteredHotels = useMemo(() => {
+    let result = [...hotels];
+
+    if (activeFilters.rating45) {
+      result = result.filter((h) => h.rating >= 4.5);
+    }
+    if (activeFilters.breakfast) {
+      result = result.filter((h) =>
+        h.rooms.some(
+          (r) =>
+            r.badge?.includes('早餐') ||
+            r.features.some((f) => f.includes('早餐'))
+        )
+      );
+    }
+    if (activeFilters.freeCancel) {
+      result = result.filter((h) =>
+        h.tags.includes('免费取消') ||
+        h.rooms.some((r) => r.badge?.includes('免费取消'))
+      );
+    }
+
+    if (activeFilters.priceSort === 'asc') {
+      result.sort((a, b) => a.pricePerNight - b.pricePerNight);
+    } else if (activeFilters.priceSort === 'desc') {
+      result.sort((a, b) => b.pricePerNight - a.pricePerNight);
+    }
+
+    return result;
+  }, [activeFilters]);
+
+  // Infinite scroll
+  const [displayCount, setDisplayCount] = useState(3);
+  const [loading, setLoading] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  // Reset displayCount when filters change
+  useEffect(() => {
+    setDisplayCount(Math.min(3, filteredHotels.length));
+  }, [filteredHotels.length]);
+
+  const allLoaded = displayCount >= filteredHotels.length;
+
+  const loadMore = useCallback(() => {
+    if (loading || allLoaded) return;
+    setLoading(true);
+    setTimeout(() => {
+      setDisplayCount((prev) => Math.min(prev + 2, filteredHotels.length));
+      setLoading(false);
+    }, 800);
+  }, [loading, allLoaded, filteredHotels.length]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [loadMore]);
+
+  const displayedHotels = filteredHotels.slice(0, displayCount);
+
+  // Filter pills config
+  const filterPills = [
+    {
+      key: 'smartSort' as const,
+      label: '智能排序',
+      icon: 'expand_more',
+      active: activeFilters.smartSort,
+    },
+    {
+      key: 'priceSort' as const,
+      label:
+        activeFilters.priceSort === 'asc'
+          ? '价格↑'
+          : activeFilters.priceSort === 'desc'
+            ? '价格↓'
+            : '价格',
+      icon: 'expand_more',
+      active: activeFilters.priceSort !== null,
+    },
+    { key: 'rating45' as const, label: '评分4.5+', active: activeFilters.rating45 },
+    { key: 'breakfast' as const, label: '含早餐', active: activeFilters.breakfast },
+    { key: 'freeCancel' as const, label: '免费取消', active: activeFilters.freeCancel },
+    { key: 'distance' as const, label: '距离', active: activeFilters.distance },
+  ];
 
   return (
     <div className="min-h-dvh bg-cream">
@@ -73,19 +209,20 @@ export default function HotelList() {
 
         {/* Filter Pills */}
         <div className="px-4 pb-4 overflow-x-auto hide-scrollbar flex items-center gap-2">
-          {filterTags.map((tag) => (
+          {filterPills.map((pill) => (
             <button
-              key={tag.label}
+              key={pill.key}
+              onClick={() => handleFilterClick(pill.key)}
               className={`flex items-center gap-1 px-4 py-1.5 rounded-pill text-sm font-medium whitespace-nowrap transition-colors ${
-                tag.active
+                pill.active
                   ? 'bg-accent/20 border border-accent text-dark'
                   : 'bg-white border border-gray-200 text-gray-500 shadow-sm'
               }`}
             >
-              <span>{tag.label}</span>
-              {tag.icon && (
+              <span>{pill.label}</span>
+              {pill.icon && (
                 <span className="material-symbols-outlined text-sm">
-                  {tag.icon}
+                  {pill.icon}
                 </span>
               )}
             </button>
@@ -95,7 +232,17 @@ export default function HotelList() {
 
       {/* Hotel Cards */}
       <main className="px-4 py-4 space-y-5 pb-24">
-        {hotels.map((hotel, index) => (
+        {displayedHotels.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-20">
+            <span className="material-symbols-outlined text-6xl text-gray-300 mb-4">
+              search_off
+            </span>
+            <p className="text-gray-400 text-base font-medium">暂无匹配酒店</p>
+            <p className="text-gray-300 text-sm mt-1">尝试调整筛选条件</p>
+          </div>
+        )}
+
+        {displayedHotels.map((hotel, index) => (
           <div
             key={hotel.id}
             className="bg-white rounded-card shadow-card overflow-hidden group cursor-pointer"
@@ -202,10 +349,17 @@ export default function HotelList() {
           </div>
         ))}
 
-        {/* Loading Spinner */}
-        <div className="py-4 flex flex-col items-center justify-center gap-2">
-          <div className="w-8 h-8 border-4 border-gray-200 border-t-accent rounded-full animate-spin" />
-          <p className="text-xs text-gray-500">正在加载更多酒店...</p>
+        {/* Sentinel / Loading / All loaded */}
+        <div ref={sentinelRef} className="py-4 flex flex-col items-center justify-center gap-2">
+          {loading && (
+            <>
+              <div className="w-8 h-8 border-4 border-gray-200 border-t-accent rounded-full animate-spin" />
+              <p className="text-xs text-gray-500">正在加载更多酒店...</p>
+            </>
+          )}
+          {allLoaded && filteredHotels.length > 0 && (
+            <p className="text-xs text-gray-400">已加载全部酒店</p>
+          )}
         </div>
       </main>
 
