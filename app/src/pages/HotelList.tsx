@@ -177,20 +177,23 @@ export default function HotelList() {
   return (
     <div className="min-h-dvh bg-cream">
       {/* Sticky Header */}
-      <div className="sticky top-0 z-50 bg-cream/95 backdrop-blur-md shadow-sm border-b border-gray-100/50">
+      <div className="sticky top-0 z-50 bg-cream/95 backdrop-blur-md shadow-sm border-b border-gray-100/50 pt-safe">
         {/* Search Bar */}
         <div className="px-4 pb-3 pt-3">
           <div
             className="flex items-center gap-3 bg-white p-3 rounded-card shadow-card cursor-pointer active:scale-[0.99] transform transition-transform border border-gray-50"
             onClick={() => navigate('/')}
+            role="button"
+            tabIndex={0}
+            aria-label="返回搜索"
           >
             <span className="material-symbols-outlined text-dark text-xl">
               search
             </span>
             <div className="flex-1">
-              <h1 className="font-bold text-base text-dark">
+              <p className="font-bold text-base text-dark">
                 {defaultSearch.city}
-              </h1>
+              </p>
               <div className="text-xs text-gray-500 flex items-center gap-1">
                 <span>
                   {defaultSearch.checkIn} - {defaultSearch.checkOut}
@@ -201,7 +204,7 @@ export default function HotelList() {
                 <span>{defaultSearch.guests}位客人</span>
               </div>
             </div>
-            <button className="bg-cream p-2 rounded-full shadow-sm border border-gray-100">
+            <button className="bg-cream p-3 rounded-full shadow-sm border border-gray-100">
               <span className="material-symbols-outlined text-dark">tune</span>
             </button>
           </div>
@@ -213,7 +216,8 @@ export default function HotelList() {
             <button
               key={pill.key}
               onClick={() => handleFilterClick(pill.key)}
-              className={`flex items-center gap-1 px-4 py-1.5 rounded-pill text-sm font-medium whitespace-nowrap transition-colors ${
+              aria-pressed={pill.active}
+              className={`flex items-center gap-1 px-4 py-2.5 min-h-[44px] rounded-pill text-sm font-medium whitespace-nowrap transition-colors ${
                 pill.active
                   ? 'bg-accent/20 border border-accent text-dark'
                   : 'bg-white border border-gray-200 text-gray-500 shadow-sm'
@@ -234,11 +238,11 @@ export default function HotelList() {
       <main className="px-4 py-4 space-y-5 pb-24">
         {displayedHotels.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20">
-            <span className="material-symbols-outlined text-6xl text-gray-300 mb-4">
+            <span className="material-symbols-outlined text-6xl text-gray-400 mb-4">
               search_off
             </span>
-            <p className="text-gray-400 text-base font-medium">暂无匹配酒店</p>
-            <p className="text-gray-300 text-sm mt-1">尝试调整筛选条件</p>
+            <p className="text-gray-500 text-base font-medium">暂无匹配酒店</p>
+            <p className="text-gray-400 text-sm mt-1">尝试调整筛选条件</p>
           </div>
         )}
 
@@ -247,6 +251,9 @@ export default function HotelList() {
             key={hotel.id}
             className="bg-white rounded-card shadow-card overflow-hidden group cursor-pointer"
             onClick={() => navigate(`/hotel/${hotel.id}`)}
+            tabIndex={0}
+            role="link"
+            aria-label={hotel.name}
           >
             {/* Image Section */}
             <div className="relative h-56 w-full overflow-hidden">
@@ -267,6 +274,8 @@ export default function HotelList() {
               <button
                 className="absolute top-3 right-3 bg-white/40 backdrop-blur-md p-2 rounded-full hover:bg-white/60 transition shadow-sm"
                 onClick={(e) => toggleFavorite(e, hotel.id)}
+                aria-label={favorites.has(hotel.id) ? '取消收藏' : '收藏'}
+                aria-pressed={favorites.has(hotel.id)}
               >
                 <span className="material-symbols-outlined text-white text-xl">
                   {favorites.has(hotel.id) ? 'favorite' : 'favorite_border'}
@@ -279,9 +288,9 @@ export default function HotelList() {
               {/* Hotel Name + Rating */}
               <div className="flex justify-between items-start">
                 <div className="flex-1 pr-2">
-                  <h3 className="text-[18px] font-bold text-dark leading-tight mb-1.5">
+                  <h2 className="text-[18px] font-bold text-dark leading-tight mb-1.5">
                     {hotel.name}
-                  </h3>
+                  </h2>
                   <div className="flex items-center text-xs text-gray-500 mb-3">
                     <span className="material-symbols-outlined text-sm mr-1">
                       location_on
@@ -332,17 +341,13 @@ export default function HotelList() {
                   </div>
                 </div>
                 <button
-                  className={`px-5 py-2.5 rounded-pill text-sm font-semibold transition-colors ${
-                    index % 2 === 0
-                      ? 'bg-accent hover:bg-accent-hover text-dark'
-                      : 'bg-gray-100 hover:bg-gray-200 text-dark'
-                  }`}
+                  className="px-5 py-2.5 rounded-pill text-sm font-semibold bg-accent hover:bg-accent-hover text-dark transition-colors"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/hotel/${hotel.id}`);
                   }}
                 >
-                  {index % 2 === 0 ? '查看详情' : '选择房间'}
+                  查看详情
                 </button>
               </div>
             </div>
@@ -358,13 +363,13 @@ export default function HotelList() {
             </>
           )}
           {allLoaded && filteredHotels.length > 0 && (
-            <p className="text-xs text-gray-400">已加载全部酒店</p>
+            <p className="text-xs text-gray-500">已加载全部酒店</p>
           )}
         </div>
       </main>
 
       {/* Map View Button */}
-      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40">
+      <div className="fixed left-1/2 transform -translate-x-1/2 z-40" style={{ bottom: 'max(24px, env(safe-area-inset-bottom))' }}>
         <button className="flex items-center gap-2 bg-dark text-white px-6 py-3.5 rounded-pill shadow-lg font-semibold text-sm hover:scale-105 transition-transform ring-4 ring-white/20 backdrop-blur-sm">
           <span className="material-symbols-outlined text-lg">map</span>
           <span>地图模式</span>
