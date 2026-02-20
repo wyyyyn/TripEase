@@ -6,10 +6,59 @@ import {
   recentSearches,
   featuredHotel,
 } from '../data/mockData';
+import FilterModal, { type FilterState } from '../components/FilterModal';
+import CalendarModal from '../components/CalendarModal';
+import GuestModal from '../components/GuestModal';
+
+const WEEKDAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
+function formatDate(date: Date) {
+  return `${date.getMonth() + 1}月${date.getDate()}日`;
+}
+
+function formatWeekday(date: Date) {
+  return WEEKDAY_NAMES[date.getDay()];
+}
 
 export default function HotelSearchHome() {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState(defaultSearch.keyword || '');
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filters, setFilters] = useState<FilterState>({ priceRange: null, starLevel: null });
+  const hasActiveFilter = filters.priceRange !== null || filters.starLevel !== null;
+
+  // Date state
+  const [checkInDate, setCheckInDate] = useState<Date | null>(null);
+  const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+
+  // Guest state
+  const [rooms, setRooms] = useState(1);
+  const [adults, setAdults] = useState(defaultSearch.guests);
+  const [children, setChildren] = useState(0);
+  const [guestOpen, setGuestOpen] = useState(false);
+
+  // Derived display values
+  const checkInDisplay = checkInDate ? formatDate(checkInDate) : defaultSearch.checkIn;
+  const checkInDayDisplay = checkInDate ? formatWeekday(checkInDate) : defaultSearch.checkInDay;
+  const checkOutDisplay = checkOutDate ? formatDate(checkOutDate) : defaultSearch.checkOut;
+  const checkOutDayDisplay = checkOutDate ? formatWeekday(checkOutDate) : defaultSearch.checkOutDay;
+  const guestDisplay = children > 0
+    ? `${adults}成人 ${children}儿童`
+    : `${adults}位成人`;
+
+  const handleCalendarConfirm = (inDate: Date, outDate: Date) => {
+    setCheckInDate(inDate);
+    setCheckOutDate(outDate);
+    setCalendarOpen(false);
+  };
+
+  const handleGuestConfirm = (r: number, a: number, c: number) => {
+    setRooms(r);
+    setAdults(a);
+    setChildren(c);
+    setGuestOpen(false);
+  };
 
   return (
     <div className="min-h-dvh bg-cream pb-24">
@@ -90,7 +139,10 @@ export default function HotelSearchHome() {
 
           {/* Check-in / Check-out */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer">
+            <div
+              onClick={() => setCalendarOpen(true)}
+              className="border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
+            >
               <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide px-1">
                 入住
               </label>
@@ -100,15 +152,18 @@ export default function HotelSearchHome() {
                 </span>
                 <div>
                   <p className="text-base font-semibold text-dark">
-                    {defaultSearch.checkIn}
+                    {checkInDisplay}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {defaultSearch.checkInDay}
+                    {checkInDayDisplay}
                   </p>
                 </div>
               </div>
             </div>
-            <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer">
+            <div
+              onClick={() => setCalendarOpen(true)}
+              className="border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
+            >
               <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide px-1">
                 退房
               </label>
@@ -118,10 +173,10 @@ export default function HotelSearchHome() {
                 </span>
                 <div>
                   <p className="text-base font-semibold text-dark">
-                    {defaultSearch.checkOut}
+                    {checkOutDisplay}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {defaultSearch.checkOutDay}
+                    {checkOutDayDisplay}
                   </p>
                 </div>
               </div>
@@ -147,7 +202,10 @@ export default function HotelSearchHome() {
                 />
               </div>
             </div>
-            <div className="w-[38%] border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer">
+            <div
+              onClick={() => setGuestOpen(true)}
+              className="w-[38%] border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
+            >
               <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide px-1">
                 入住人数
               </label>
@@ -156,7 +214,7 @@ export default function HotelSearchHome() {
                   person
                 </span>
                 <span className="text-base font-medium text-dark">
-                  {defaultSearch.guests}位成人
+                  {guestDisplay}
                 </span>
               </div>
             </div>
@@ -164,19 +222,40 @@ export default function HotelSearchHome() {
 
           {/* Filter Tags */}
           <div className="flex space-x-3 overflow-x-auto hide-scrollbar pb-1">
-            <button className="flex items-center bg-white text-gray-600 px-4 py-2 rounded-pill text-sm font-medium border border-gray-200 hover:border-accent hover:bg-cream transition-colors whitespace-nowrap shadow-sm">
+            <button
+              onClick={() => setFilterOpen(true)}
+              className={`flex items-center px-4 py-2 rounded-pill text-sm font-medium border transition-colors whitespace-nowrap shadow-sm ${
+                filters.priceRange
+                  ? 'bg-accent/20 border-accent text-dark'
+                  : 'bg-white text-gray-600 border-gray-200 hover:border-accent hover:bg-cream'
+              }`}
+            >
               <span className="material-symbols-outlined text-lg mr-1.5">
                 attach_money
               </span>
               价格
             </button>
-            <button className="flex items-center bg-white text-gray-600 px-4 py-2 rounded-pill text-sm font-medium border border-gray-200 hover:border-accent hover:bg-cream transition-colors whitespace-nowrap shadow-sm">
+            <button
+              onClick={() => setFilterOpen(true)}
+              className={`flex items-center px-4 py-2 rounded-pill text-sm font-medium border transition-colors whitespace-nowrap shadow-sm ${
+                filters.starLevel
+                  ? 'bg-accent/20 border-accent text-dark'
+                  : 'bg-white text-gray-600 border-gray-200 hover:border-accent hover:bg-cream'
+              }`}
+            >
               <span className="material-symbols-outlined text-lg mr-1.5">
                 star_rate
               </span>
               评分
             </button>
-            <button className="flex items-center bg-white text-gray-600 px-4 py-2 rounded-pill text-sm font-medium border border-gray-200 hover:border-accent hover:bg-cream transition-colors whitespace-nowrap shadow-sm">
+            <button
+              onClick={() => setFilterOpen(true)}
+              className={`flex items-center px-4 py-2 rounded-pill text-sm font-medium border transition-colors whitespace-nowrap shadow-sm ${
+                hasActiveFilter
+                  ? 'bg-accent/20 border-accent text-dark'
+                  : 'bg-white text-gray-600 border-gray-200 hover:border-accent hover:bg-cream'
+              }`}
+            >
               <span className="material-symbols-outlined text-lg mr-1.5">
                 tune
               </span>
@@ -275,6 +354,28 @@ export default function HotelSearchHome() {
           </button>
         </div>
       </nav>
+
+      <FilterModal
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        onApply={setFilters}
+        initialFilters={filters}
+      />
+      <CalendarModal
+        open={calendarOpen}
+        onClose={() => setCalendarOpen(false)}
+        onConfirm={handleCalendarConfirm}
+        initialCheckIn={checkInDate}
+        initialCheckOut={checkOutDate}
+      />
+      <GuestModal
+        open={guestOpen}
+        onClose={() => setGuestOpen(false)}
+        onConfirm={handleGuestConfirm}
+        initialRooms={rooms}
+        initialAdults={adults}
+        initialChildren={children}
+      />
     </div>
   );
 }

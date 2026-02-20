@@ -1,6 +1,23 @@
 import { useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { hotels, defaultSearch } from '../data/mockData';
+import CalendarModal from '../components/CalendarModal';
+
+const WEEKDAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
+function formatDate(date: Date) {
+  return `${date.getMonth() + 1}月${date.getDate()}日`;
+}
+
+function formatWeekday(date: Date) {
+  return WEEKDAY_NAMES[date.getDay()];
+}
+
+function diffDays(a: Date, b: Date) {
+  const aa = new Date(a.getFullYear(), a.getMonth(), a.getDate());
+  const bb = new Date(b.getFullYear(), b.getMonth(), b.getDate());
+  return Math.round((bb.getTime() - aa.getTime()) / (1000 * 60 * 60 * 24));
+}
 
 const amenityIcons: Record<string, string> = {
   '免费WiFi': 'wifi',
@@ -44,6 +61,9 @@ export default function HotelDetail() {
   const navigate = useNavigate();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentImage, setCurrentImage] = useState(0);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [checkInDate, setCheckInDate] = useState<Date | null>(null);
+  const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
 
   const hotel = hotels.find((h) => h.id === id);
 
@@ -59,8 +79,21 @@ export default function HotelDetail() {
     (a, b) => a.pricePerNight - b.pricePerNight
   );
   const lowestPrice = sortedRooms[0]?.pricePerNight ?? 0;
-  const nights = defaultSearch.nights;
+  const nights = checkInDate && checkOutDate
+    ? diffDays(checkInDate, checkOutDate)
+    : defaultSearch.nights;
   const totalPrice = lowestPrice * nights;
+
+  const checkInDisplay = checkInDate ? formatDate(checkInDate) : defaultSearch.checkIn;
+  const checkInDayDisplay = checkInDate ? formatWeekday(checkInDate) : defaultSearch.checkInDay;
+  const checkOutDisplay = checkOutDate ? formatDate(checkOutDate) : defaultSearch.checkOut;
+  const checkOutDayDisplay = checkOutDate ? formatWeekday(checkOutDate) : defaultSearch.checkOutDay;
+
+  const handleCalendarConfirm = (inDate: Date, outDate: Date) => {
+    setCheckInDate(inDate);
+    setCheckOutDate(outDate);
+    setCalendarOpen(false);
+  };
 
   const handleScroll = () => {
     const el = scrollRef.current;
@@ -198,10 +231,10 @@ export default function HotelDetail() {
             </p>
             <div className="flex items-baseline gap-1">
               <span className="text-lg font-display font-bold text-dark">
-                {defaultSearch.checkIn}
+                {checkInDisplay}
               </span>
               <span className="text-xs text-icon-gray font-medium">
-                {defaultSearch.checkInDay}
+                {checkInDayDisplay}
               </span>
             </div>
           </div>
@@ -217,14 +250,17 @@ export default function HotelDetail() {
             </p>
             <div className="flex items-baseline justify-end gap-1">
               <span className="text-lg font-display font-bold text-dark">
-                {defaultSearch.checkOut}
+                {checkOutDisplay}
               </span>
               <span className="text-xs text-icon-gray font-medium">
-                {defaultSearch.checkOutDay}
+                {checkOutDayDisplay}
               </span>
             </div>
           </div>
-          <button className="ml-4 p-2 text-dark bg-cream hover:bg-gray-100 rounded-full transition-colors">
+          <button
+            onClick={() => setCalendarOpen(true)}
+            className="ml-4 p-2 text-dark bg-cream hover:bg-gray-100 rounded-full transition-colors"
+          >
             <span className="material-symbols-outlined text-xl">
               calendar_today
             </span>
@@ -336,6 +372,14 @@ export default function HotelDetail() {
           </button>
         </div>
       </div>
+
+      <CalendarModal
+        open={calendarOpen}
+        onClose={() => setCalendarOpen(false)}
+        onConfirm={handleCalendarConfirm}
+        initialCheckIn={checkInDate}
+        initialCheckOut={checkOutDate}
+      />
     </div>
   );
 }
