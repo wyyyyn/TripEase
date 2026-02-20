@@ -246,7 +246,7 @@ export default function HotelList() {
           </div>
         )}
 
-        {displayedHotels.map((hotel, index) => (
+        {displayedHotels.map((hotel) => (
           <div
             key={hotel.id}
             className="bg-white rounded-card shadow-card overflow-hidden group cursor-pointer"

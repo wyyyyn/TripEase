@@ -108,11 +108,12 @@ export default function HotelDetail() {
   return (
     <div className="min-h-dvh bg-cream pb-28">
       {/* Sticky Header */}
-      <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur-md shadow-sm border-b border-gray-100/50">
+      <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur-md shadow-sm border-b border-gray-100/50 pt-safe">
         <div className="px-4 h-14 flex items-center justify-between">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 -ml-2 rounded-full hover:bg-black/5 text-dark transition-colors"
+            aria-label="返回"
+            className="p-3 rounded-full hover:bg-black/5 text-dark transition-colors"
           >
             <span className="material-symbols-outlined text-2xl">
               arrow_back
@@ -122,12 +123,12 @@ export default function HotelDetail() {
             {hotel.name}
           </h1>
           <div className="flex gap-1">
-            <button className="p-2 rounded-full hover:bg-black/5 text-dark transition-colors">
+            <button aria-label="收藏" className="p-3 rounded-full hover:bg-black/5 text-dark transition-colors">
               <span className="material-symbols-outlined text-2xl">
                 favorite
               </span>
             </button>
-            <button className="p-2 -mr-2 rounded-full hover:bg-black/5 text-dark transition-colors">
+            <button aria-label="分享" className="p-3 rounded-full hover:bg-black/5 text-dark transition-colors">
               <span className="material-symbols-outlined text-2xl">
                 ios_share
               </span>
@@ -166,15 +167,15 @@ export default function HotelDetail() {
 
         {/* Hotel Info */}
         <div className="px-5 pt-6 pb-2">
-          <h2 className="text-2xl font-display font-bold text-dark leading-tight">
+          <p className="text-2xl font-display font-bold text-dark leading-tight">
             {hotel.name}
-          </h2>
+          </p>
           <div className="flex items-center gap-1 mt-1 text-accent">
             {Array.from({ length: 5 }).map((_, i) => (
               <span
                 key={i}
                 className={`material-symbols-outlined filled text-lg ${
-                  i < hotel.starRating ? 'text-accent' : 'text-gray-300'
+                  i < hotel.starRating ? 'text-accent' : 'text-gray-400'
                 }`}
               >
                 star
@@ -211,14 +212,14 @@ export default function HotelDetail() {
               </div>
             ))}
             {moreCount > 0 && (
-              <div className="flex flex-col items-center gap-2 text-center">
+              <button type="button" aria-label="查看全部设施" className="flex flex-col items-center gap-2 text-center">
                 <div className="p-3 bg-white rounded-card shadow-sm text-icon-gray border border-gray-100 cursor-pointer hover:bg-gray-50 transition">
                   <span className="text-sm font-bold font-display">
                     +{moreCount}
                   </span>
                 </div>
                 <span className="text-xs font-medium text-icon-gray">更多</span>
-              </div>
+              </button>
             )}
           </div>
         </div>
@@ -259,7 +260,8 @@ export default function HotelDetail() {
           </div>
           <button
             onClick={() => setCalendarOpen(true)}
-            className="ml-4 p-2 text-dark bg-cream hover:bg-gray-100 rounded-full transition-colors"
+            aria-label="修改日期"
+            className="ml-4 p-3 text-dark bg-cream hover:bg-gray-100 rounded-full transition-colors"
           >
             <span className="material-symbols-outlined text-xl">
               calendar_today
@@ -345,7 +347,7 @@ export default function HotelDetail() {
                     </span>
                   </div>
                 </div>
-                <button className="bg-dark hover:bg-dark-hover text-white px-6 py-2.5 rounded-[12px] text-sm font-bold transition-all active:scale-95 shadow-md shadow-dark/20">
+                <button aria-label="预订此房型" className="bg-dark hover:bg-dark-hover text-white px-6 py-2.5 rounded-[12px] text-sm font-bold transition-all active:scale-95 shadow-md shadow-dark/20">
                   预订
                 </button>
               </div>
@@ -355,7 +357,7 @@ export default function HotelDetail() {
       </main>
 
       {/* Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/95 border-t border-gray-100 p-4 pb-8 z-40 backdrop-blur-md">
+      <div className="fixed bottom-0 left-0 right-0 bg-white/95 border-t border-gray-100 p-4 pb-safe-bottom z-40 backdrop-blur-md">
         <div className="max-w-[430px] mx-auto flex items-center justify-between">
           <div className="flex flex-col">
             <span className="text-xs text-icon-gray font-medium">
@@ -367,7 +369,7 @@ export default function HotelDetail() {
               <span className="text-xs font-normal text-icon-gray">+税</span>
             </span>
           </div>
-          <button className="bg-dark text-white px-8 py-3.5 rounded-[14px] font-bold shadow-lg shadow-dark/30 hover:bg-dark-hover transition active:scale-95">
+          <button aria-label="查看可用房型" className="bg-dark text-white px-8 py-3.5 rounded-[14px] font-bold shadow-lg shadow-dark/30 hover:bg-dark-hover transition active:scale-95">
             查看可用房型
           </button>
         </div>
