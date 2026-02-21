@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface FilterState {
   priceRange: string | null;
@@ -32,6 +32,14 @@ export default function FilterModal({ open, onClose, onApply, initialFilters }: 
   const [starLevel, setStarLevel] = useState<string | null>(initialFilters?.starLevel ?? null);
   const [visible, setVisible] = useState(false);
   const [animating, setAnimating] = useState(false);
+  const prevOpenRef = useRef(false);
+
+  // Sync state on open edge (false → true)
+  if (open && !prevOpenRef.current) {
+    setPriceRange(initialFilters?.priceRange ?? null);
+    setStarLevel(initialFilters?.starLevel ?? null);
+  }
+  prevOpenRef.current = open;
 
   useEffect(() => {
     if (open) {
@@ -45,13 +53,6 @@ export default function FilterModal({ open, onClose, onApply, initialFilters }: 
       return () => clearTimeout(timer);
     }
   }, [open]);
-
-  useEffect(() => {
-    if (open) {
-      setPriceRange(initialFilters?.priceRange ?? null);
-      setStarLevel(initialFilters?.starLevel ?? null);
-    }
-  }, [open, initialFilters]);
 
   const handleClear = () => {
     setPriceRange(null);
