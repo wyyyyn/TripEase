@@ -179,6 +179,7 @@ export default function AdminReviewList() {
       </div>
 
       <RejectModal
+        key={rejectTarget}
         open={!!rejectTarget}
         onClose={() => setRejectTarget(null)}
         onConfirm={handleReject}

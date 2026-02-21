@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 interface RejectModalProps {
   open: boolean;
@@ -8,13 +8,6 @@ interface RejectModalProps {
 
 export default function RejectModal({ open, onClose, onConfirm }: RejectModalProps) {
   const [reason, setReason] = useState('');
-  const prevOpenRef = useRef(false);
-
-  // Reset reason on open edge (false → true)
-  if (open && !prevOpenRef.current) {
-    setReason('');
-  }
-  prevOpenRef.current = open;
 
   if (!open) return null;
 

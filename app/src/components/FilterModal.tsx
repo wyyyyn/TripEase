@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 interface FilterState {
   priceRange: string | null;
@@ -30,28 +30,25 @@ const starLevels = [
 export default function FilterModal({ open, onClose, onApply, initialFilters }: FilterModalProps) {
   const [priceRange, setPriceRange] = useState<string | null>(initialFilters?.priceRange ?? null);
   const [starLevel, setStarLevel] = useState<string | null>(initialFilters?.starLevel ?? null);
-  const [visible, setVisible] = useState(false);
-  const [animating, setAnimating] = useState(false);
-  const prevOpenRef = useRef(false);
-
-  // Sync state on open edge (false → true)
-  if (open && !prevOpenRef.current) {
-    setPriceRange(initialFilters?.priceRange ?? null);
-    setStarLevel(initialFilters?.starLevel ?? null);
-  }
-  prevOpenRef.current = open;
+  const [entered, setEntered] = useState(false);
+  const [visible, setVisible] = useState(open);
 
   useEffect(() => {
-    if (open) {
-      setVisible(true);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => setAnimating(true));
-      });
-    } else {
-      setAnimating(false);
-      const timer = setTimeout(() => setVisible(false), 300);
-      return () => clearTimeout(timer);
-    }
+    // Trigger enter animation after mount
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setEntered(true));
+    });
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  // Derive animating state: entered AND still open
+  const animating = entered && open;
+
+  // Delay unmount for exit animation
+  useEffect(() => {
+    if (open) return;
+    const timer = setTimeout(() => setVisible(false), 300);
+    return () => clearTimeout(timer);
   }, [open]);
 
   const handleClear = () => {

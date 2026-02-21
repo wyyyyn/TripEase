@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { defaultSearch } from '../data/mockData';
 import { usePublishedHotels } from '../store/useStore';
@@ -64,6 +64,9 @@ export default function HotelDetail() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentImage, setCurrentImage] = useState(0);
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const [calendarKey, setCalendarKey] = useState(0);
+  const openCalendar = useCallback(() => { setCalendarOpen(true); setCalendarKey((k) => k + 1); }, []);
+  const closeCalendar = useCallback(() => setCalendarOpen(false), []);
   const [checkInDate, setCheckInDate] = useState<Date | null>(null);
   const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
 
@@ -94,7 +97,7 @@ export default function HotelDetail() {
   const handleCalendarConfirm = (inDate: Date, outDate: Date) => {
     setCheckInDate(inDate);
     setCheckOutDate(outDate);
-    setCalendarOpen(false);
+    closeCalendar();
   };
 
   const handleScroll = () => {
@@ -261,7 +264,7 @@ export default function HotelDetail() {
             </div>
           </div>
           <button
-            onClick={() => setCalendarOpen(true)}
+            onClick={openCalendar}
             aria-label="修改日期"
             className="ml-4 p-3 text-dark bg-cream hover:bg-gray-100 rounded-full transition-colors"
           >
@@ -378,8 +381,9 @@ export default function HotelDetail() {
       </div>
 
       <CalendarModal
+        key={calendarKey}
         open={calendarOpen}
-        onClose={() => setCalendarOpen(false)}
+        onClose={closeCalendar}
         onConfirm={handleCalendarConfirm}
         initialCheckIn={checkInDate}
         initialCheckOut={checkOutDate}

@@ -12,6 +12,8 @@ export default function AdminReviewDetail() {
   useHotels();
   const hotel = id ? getHotelById(id) : undefined;
   const [rejectOpen, setRejectOpen] = useState(false);
+  const [rejectKey, setRejectKey] = useState(0);
+  const openReject = () => { setRejectOpen(true); setRejectKey((k) => k + 1); };
 
   if (!hotel) {
     return (
@@ -63,7 +65,7 @@ export default function AdminReviewDetail() {
                 通过审核
               </button>
               <button
-                onClick={() => setRejectOpen(true)}
+                onClick={openReject}
                 className="bg-red-500 hover:bg-red-600 text-white font-bold py-2.5 px-5 rounded-xl transition-colors text-sm"
               >
                 拒绝
@@ -200,6 +202,7 @@ export default function AdminReviewDetail() {
       </div>
 
       <RejectModal
+        key={rejectKey}
         open={rejectOpen}
         onClose={() => setRejectOpen(false)}
         onConfirm={handleReject}

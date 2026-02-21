@@ -1,9 +1,17 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { defaultSearch, recentSearches } from '../data/mockData';
 import FilterModal, { type FilterState } from '../components/FilterModal';
 import CalendarModal from '../components/CalendarModal';
 import GuestModal from '../components/GuestModal';
+
+function useOpenCounter() {
+  const [open, setOpen] = useState(false);
+  const [key, setKey] = useState(0);
+  const doOpen = useCallback(() => { setOpen(true); setKey((k) => k + 1); }, []);
+  const doClose = useCallback(() => setOpen(false), []);
+  return { open, key, doOpen, doClose } as const;
+}
 
 const WEEKDAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
@@ -18,18 +26,18 @@ function formatWeekday(date: Date) {
 export default function SearchPage() {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState('');
-  const [filterOpen, setFilterOpen] = useState(false);
+  const filter = useOpenCounter();
   const [filters, setFilters] = useState<FilterState>({ priceRange: null, starLevel: null });
   const hasActiveFilter = filters.priceRange !== null || filters.starLevel !== null;
 
   const [checkInDate, setCheckInDate] = useState<Date | null>(null);
   const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
-  const [calendarOpen, setCalendarOpen] = useState(false);
+  const calendar = useOpenCounter();
 
   const [rooms, setRooms] = useState(1);
   const [adults, setAdults] = useState(defaultSearch.guests);
   const [children, setChildren] = useState(0);
-  const [guestOpen, setGuestOpen] = useState(false);
+  const guest = useOpenCounter();
 
   const checkInDisplay = checkInDate ? formatDate(checkInDate) : defaultSearch.checkIn;
   const checkInDayDisplay = checkInDate ? formatWeekday(checkInDate) : defaultSearch.checkInDay;
@@ -42,14 +50,14 @@ export default function SearchPage() {
   const handleCalendarConfirm = (inDate: Date, outDate: Date) => {
     setCheckInDate(inDate);
     setCheckOutDate(outDate);
-    setCalendarOpen(false);
+    calendar.doClose();
   };
 
   const handleGuestConfirm = (r: number, a: number, c: number) => {
     setRooms(r);
     setAdults(a);
     setChildren(c);
-    setGuestOpen(false);
+    guest.doClose();
   };
 
   return (
@@ -107,7 +115,7 @@ export default function SearchPage() {
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
-              onClick={() => setCalendarOpen(true)}
+              onClick={calendar.doOpen}
               className="text-left border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
             >
               <label className="block text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide px-0.5">入住</label>
@@ -121,7 +129,7 @@ export default function SearchPage() {
             </button>
             <button
               type="button"
-              onClick={() => setCalendarOpen(true)}
+              onClick={calendar.doOpen}
               className="text-left border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
             >
               <label className="block text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide px-0.5">退房</label>
@@ -138,7 +146,7 @@ export default function SearchPage() {
           {/* Guests */}
           <button
             type="button"
-            onClick={() => setGuestOpen(true)}
+            onClick={guest.doOpen}
             className="text-left w-full border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
           >
             <label className="block text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide px-0.5">入住人数</label>
@@ -151,7 +159,7 @@ export default function SearchPage() {
           {/* Filter Tags */}
           <div className="flex space-x-2.5 overflow-x-auto hide-scrollbar pb-0.5">
             <button
-              onClick={() => setFilterOpen(true)}
+              onClick={filter.doOpen}
               className={`flex items-center px-3.5 py-2 rounded-pill text-[13px] font-medium border transition-colors whitespace-nowrap ${
                 filters.priceRange
                   ? 'bg-accent/20 border-accent text-dark'
@@ -162,7 +170,7 @@ export default function SearchPage() {
               价格
             </button>
             <button
-              onClick={() => setFilterOpen(true)}
+              onClick={filter.doOpen}
               className={`flex items-center px-3.5 py-2 rounded-pill text-[13px] font-medium border transition-colors whitespace-nowrap ${
                 filters.starLevel
                   ? 'bg-accent/20 border-accent text-dark'
@@ -173,7 +181,7 @@ export default function SearchPage() {
               评分
             </button>
             <button
-              onClick={() => setFilterOpen(true)}
+              onClick={filter.doOpen}
               className={`flex items-center px-3.5 py-2 rounded-pill text-[13px] font-medium border transition-colors whitespace-nowrap ${
                 hasActiveFilter
                   ? 'bg-accent/20 border-accent text-dark'
@@ -216,21 +224,24 @@ export default function SearchPage() {
       </main>
 
       <FilterModal
-        open={filterOpen}
-        onClose={() => setFilterOpen(false)}
+        key={filter.key}
+        open={filter.open}
+        onClose={filter.doClose}
         onApply={setFilters}
         initialFilters={filters}
       />
       <CalendarModal
-        open={calendarOpen}
-        onClose={() => setCalendarOpen(false)}
+        key={calendar.key}
+        open={calendar.open}
+        onClose={calendar.doClose}
         onConfirm={handleCalendarConfirm}
         initialCheckIn={checkInDate}
         initialCheckOut={checkOutDate}
       />
       <GuestModal
-        open={guestOpen}
-        onClose={() => setGuestOpen(false)}
+        key={guest.key}
+        open={guest.open}
+        onClose={guest.doClose}
         onConfirm={handleGuestConfirm}
         initialRooms={rooms}
         initialAdults={adults}
