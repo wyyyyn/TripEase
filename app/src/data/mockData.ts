@@ -292,146 +292,173 @@ export const featuredHotel = {
   discount: '8折优惠',
 };
 
-// Banner carousel slides — top-tier hotels with unique promotions
-export const bannerSlides = [
-  {
-    id: '5',
-    name: '上海外滩华尔道夫酒店',
-    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80',
-    rating: 4.9,
-    reviewCount: 5210,
-    badge: '春日尊享 8折',
-    subtitle: '外滩景观·米其林晚宴·Spa礼遇',
-  },
-  {
-    id: '2',
-    name: '上海静安洲际酒店',
-    image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80',
-    rating: 4.7,
-    reviewCount: 10234,
-    badge: '连住3晚减600',
-    subtitle: '城市天际线·行政酒廊·双人下午茶',
-  },
-  {
-    id: '1',
-    name: '上海安曼纳卓悦酒店',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80',
-    rating: 4.8,
-    reviewCount: 7494,
-    badge: '亲子套餐立减',
-    subtitle: '无边泳池·儿童乐园·家庭套房',
-  },
-];
+// Tab categories
+export const homeTabs = [
+  { key: 'hotel', label: '酒店', emoji: '🏨' },
+  { key: 'homestay', label: '民宿', emoji: '🏡' },
+  { key: 'hourly', label: '钟点房', emoji: '⏰' },
+] as const;
 
-// Popular hotels by city — horizontal scroll cards (Airbnb style)
-export const popularHotels = [
-  {
-    id: 'ph1',
-    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80',
-    name: '外滩景观套房',
-    city: '上海',
-    dates: '3月15–17日',
-    price: 1280,
-    nights: 2,
-    rating: 4.95,
-  },
-  {
-    id: 'ph2',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80',
-    name: '故宫旁四合院民宿',
-    city: '北京',
-    dates: '3月20–22日',
-    price: 980,
-    nights: 2,
-    rating: 4.92,
-  },
-  {
-    id: 'ph3',
-    image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&q=80',
-    name: '西湖畔精品度假屋',
-    city: '杭州',
-    dates: '4月1–3日',
-    price: 860,
-    nights: 2,
-    rating: 4.88,
-  },
-  {
-    id: 'ph4',
-    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80',
-    name: '鼓浪屿海景别墅',
-    city: '厦门',
-    dates: '3月28–30日',
-    price: 1560,
-    nights: 2,
-    rating: 4.91,
-  },
-  {
-    id: 'ph5',
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80',
-    name: '太古里设计师酒店',
-    city: '成都',
-    dates: '4月5–7日',
-    price: 720,
-    nights: 2,
-    rating: 4.87,
-  },
-  {
-    id: 'ph6',
-    image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&q=80',
-    name: '环球中心天堂洲际',
-    city: '成都',
-    dates: '4月10–12日',
-    price: 1100,
-    nights: 2,
-    rating: 4.83,
-  },
-];
+export type HomeTabKey = (typeof homeTabs)[number]['key'];
 
-// Editor's picks — compact 2-row horizontal grid
-export const editorPicks = [
-  {
-    id: 'ep1',
-    image: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=400&q=80',
-    name: '上海外滩W酒店',
-    price: 1580,
-    rating: 4.81,
-  },
-  {
-    id: 'ep2',
-    image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400&q=80',
-    name: '安缦法云·杭州',
-    price: 3200,
-    rating: 4.93,
-  },
-  {
-    id: 'ep3',
-    image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=400&q=80',
-    name: '北京瑰丽酒店',
-    price: 2680,
-    rating: 4.88,
-  },
-  {
-    id: 'ep4',
-    image: 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=400&q=80',
-    name: '三亚亚特兰蒂斯',
-    price: 1980,
-    rating: 4.85,
-  },
-  {
-    id: 'ep5',
-    image: 'https://images.unsplash.com/photo-1590490360182-c33d82de0e5c?w=400&q=80',
-    name: '丽江古城花间堂',
-    price: 880,
-    rating: 4.79,
-  },
-  {
-    id: 'ep6',
-    image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&q=80',
-    name: '成都博舍酒店',
-    price: 1260,
-    rating: 4.82,
-  },
-];
+// Banner slide type
+type BannerSlide = { id: string; name: string; image: string; rating: number; reviewCount: number; badge: string; subtitle: string };
+type PopularHotel = { id: string; image: string; name: string; city: string; dates: string; price: number; nights: number; rating: number };
+type EditorPick = { id: string; image: string; name: string; price: number; rating: number };
+
+// Banner carousel slides per tab
+export const bannersByTab: Record<HomeTabKey, BannerSlide[]> = {
+  hotel: [
+    {
+      id: '5',
+      name: '上海外滩华尔道夫酒店',
+      image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80',
+      rating: 4.9,
+      reviewCount: 5210,
+      badge: '春日尊享 8折',
+      subtitle: '外滩景观·米其林晚宴·Spa礼遇',
+    },
+    {
+      id: '2',
+      name: '上海静安洲际酒店',
+      image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80',
+      rating: 4.7,
+      reviewCount: 10234,
+      badge: '连住3晚减600',
+      subtitle: '城市天际线·行政酒廊·双人下午茶',
+    },
+    {
+      id: '1',
+      name: '上海安曼纳卓悦酒店',
+      image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80',
+      rating: 4.8,
+      reviewCount: 7494,
+      badge: '亲子套餐立减',
+      subtitle: '无边泳池·儿童乐园·家庭套房',
+    },
+  ],
+  homestay: [
+    {
+      id: 'hs1',
+      name: '莫干山竹林隐居',
+      image: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=800&q=80',
+      rating: 4.9,
+      reviewCount: 3280,
+      badge: '春日特惠',
+      subtitle: '山景竹屋·私汤温泉·管家服务',
+    },
+    {
+      id: 'hs2',
+      name: '大理古城白族庭院',
+      image: 'https://images.unsplash.com/photo-1587061949409-02df41d5e562?w=800&q=80',
+      rating: 4.8,
+      reviewCount: 2150,
+      badge: '连住立减200',
+      subtitle: '苍山洱海·古城漫步·手作体验',
+    },
+    {
+      id: 'hs3',
+      name: '安吉帐篷客野奢',
+      image: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800&q=80',
+      rating: 4.7,
+      reviewCount: 1890,
+      badge: '亲子首选',
+      subtitle: '竹海星空·户外营地·采茶体验',
+    },
+  ],
+  hourly: [
+    {
+      id: 'hr1',
+      name: '上海虹桥亚朵酒店',
+      image: 'https://images.unsplash.com/photo-1590490360182-c33d82de0e5c?w=800&q=80',
+      rating: 4.6,
+      reviewCount: 4520,
+      badge: '4h ¥128起',
+      subtitle: '高铁直达·即刻入住·安静休息',
+    },
+    {
+      id: 'hr2',
+      name: '浦东机场CitiGO',
+      image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80',
+      rating: 4.5,
+      reviewCount: 3100,
+      badge: '中转首选 ¥99',
+      subtitle: '机场步行5分钟·24h自助·行李寄存',
+    },
+    {
+      id: 'hr3',
+      name: '南京路全季钟点房',
+      image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800&q=80',
+      rating: 4.4,
+      reviewCount: 2680,
+      badge: '午休特惠 ¥68',
+      subtitle: '地铁上盖·品质午休·灵活时段',
+    },
+  ],
+};
+
+// Keep legacy export for backward compat
+export const bannerSlides = bannersByTab.hotel;
+
+// Popular hotels per tab
+export const popularByTab: Record<HomeTabKey, PopularHotel[]> = {
+  hotel: [
+    { id: 'ph1', image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80', name: '外滩景观套房', city: '上海', dates: '3月15–17日', price: 1280, nights: 2, rating: 4.95 },
+    { id: 'ph2', image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80', name: '故宫旁精品酒店', city: '北京', dates: '3月20–22日', price: 980, nights: 2, rating: 4.92 },
+    { id: 'ph3', image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&q=80', name: '西湖畔五星酒店', city: '杭州', dates: '4月1–3日', price: 860, nights: 2, rating: 4.88 },
+    { id: 'ph4', image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80', name: '鼓浪屿海景酒店', city: '厦门', dates: '3月28–30日', price: 1560, nights: 2, rating: 4.91 },
+    { id: 'ph5', image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80', name: '太古里设计师酒店', city: '成都', dates: '4月5–7日', price: 720, nights: 2, rating: 4.87 },
+  ],
+  homestay: [
+    { id: 'phs1', image: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=600&q=80', name: '竹林独栋别墅', city: '莫干山', dates: '3月15–17日', price: 680, nights: 2, rating: 4.96 },
+    { id: 'phs2', image: 'https://images.unsplash.com/photo-1587061949409-02df41d5e562?w=600&q=80', name: '洱海边白族小院', city: '大理', dates: '3月22–24日', price: 420, nights: 2, rating: 4.93 },
+    { id: 'phs3', image: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600&q=80', name: '海景悬崖民宿', city: '厦门', dates: '4月3–5日', price: 550, nights: 2, rating: 4.89 },
+    { id: 'phs4', image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80', name: '古镇河畔小筑', city: '丽江', dates: '4月8–10日', price: 380, nights: 2, rating: 4.91 },
+    { id: 'phs5', image: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=600&q=80', name: '山谷树屋营地', city: '安吉', dates: '4月12–14日', price: 760, nights: 2, rating: 4.88 },
+  ],
+  hourly: [
+    { id: 'phr1', image: 'https://images.unsplash.com/photo-1590490360182-c33d82de0e5c?w=600&q=80', name: '虹桥站亚朵', city: '上海', dates: '随时可订', price: 128, nights: 0, rating: 4.6 },
+    { id: 'phr2', image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80', name: '浦东机场CitiGO', city: '上海', dates: '随时可订', price: 99, nights: 0, rating: 4.5 },
+    { id: 'phr3', image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&q=80', name: '南京路全季', city: '上海', dates: '随时可订', price: 68, nights: 0, rating: 4.4 },
+    { id: 'phr4', image: 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600&q=80', name: '北京南站桔子', city: '北京', dates: '随时可订', price: 88, nights: 0, rating: 4.3 },
+    { id: 'phr5', image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&q=80', name: '杭州东站漫心', city: '杭州', dates: '随时可订', price: 108, nights: 0, rating: 4.5 },
+  ],
+};
+
+// Keep legacy export
+export const popularHotels = popularByTab.hotel;
+
+// Editor picks per tab
+export const picksByTab: Record<HomeTabKey, EditorPick[]> = {
+  hotel: [
+    { id: 'ep1', image: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=400&q=80', name: '上海外滩W酒店', price: 1580, rating: 4.81 },
+    { id: 'ep2', image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400&q=80', name: '安缦法云·杭州', price: 3200, rating: 4.93 },
+    { id: 'ep3', image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=400&q=80', name: '北京瑰丽酒店', price: 2680, rating: 4.88 },
+    { id: 'ep4', image: 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=400&q=80', name: '三亚亚特兰蒂斯', price: 1980, rating: 4.85 },
+    { id: 'ep5', image: 'https://images.unsplash.com/photo-1590490360182-c33d82de0e5c?w=400&q=80', name: '丽江古城花间堂', price: 880, rating: 4.79 },
+    { id: 'ep6', image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&q=80', name: '成都博舍酒店', price: 1260, rating: 4.82 },
+  ],
+  homestay: [
+    { id: 'eps1', image: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=400&q=80', name: '莫干山裸心堡', price: 1680, rating: 4.95 },
+    { id: 'eps2', image: 'https://images.unsplash.com/photo-1587061949409-02df41d5e562?w=400&q=80', name: '大理喜林苑', price: 980, rating: 4.91 },
+    { id: 'eps3', image: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=400&q=80', name: '厦门海边树屋', price: 520, rating: 4.87 },
+    { id: 'eps4', image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&q=80', name: '丽江花马天堂', price: 680, rating: 4.83 },
+    { id: 'eps5', image: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=400&q=80', name: '安吉帐篷客', price: 1280, rating: 4.89 },
+    { id: 'eps6', image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&q=80', name: '桐庐秘境山居', price: 460, rating: 4.85 },
+  ],
+  hourly: [
+    { id: 'eph1', image: 'https://images.unsplash.com/photo-1590490360182-c33d82de0e5c?w=400&q=80', name: '亚朵·4h休息房', price: 128, rating: 4.6 },
+    { id: 'eph2', image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&q=80', name: '全季·午休特惠', price: 68, rating: 4.4 },
+    { id: 'eph3', image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=400&q=80', name: '桔子·灵活3h', price: 88, rating: 4.3 },
+    { id: 'eph4', image: 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=400&q=80', name: 'CitiGO·中转休息', price: 99, rating: 4.5 },
+    { id: 'eph5', image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400&q=80', name: '漫心·半日房', price: 108, rating: 4.5 },
+    { id: 'eph6', image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=400&q=80', name: '维也纳·白领午休', price: 78, rating: 4.2 },
+  ],
+};
+
+// Keep legacy export
+export const editorPicks = picksByTab.hotel;
+
 
 // User recommendations — Xiaohongshu-style waterfall feed
 export const userRecommendations: {

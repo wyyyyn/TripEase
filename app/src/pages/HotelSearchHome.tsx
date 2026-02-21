@@ -2,11 +2,13 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   recentSearches,
-  bannerSlides,
-  popularHotels,
-  editorPicks,
+  homeTabs,
+  bannersByTab,
+  popularByTab,
+  picksByTab,
   userRecommendations,
 } from '../data/mockData';
+import type { HomeTabKey } from '../data/mockData';
 
 function formatViews(views: number): string {
   if (views >= 10000) return (views / 10000).toFixed(1) + '万';
@@ -15,17 +17,22 @@ function formatViews(views: number): string {
 
 export default function HotelSearchHome() {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<HomeTabKey>('hotel');
   const [currentSlide, setCurrentSlide] = useState(0);
   const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
   const touchStartX = useRef(0);
   const touchDeltaX = useRef(0);
 
+  const bannerSlides = bannersByTab[activeTab];
+  const popularHotels = popularByTab[activeTab];
+  const editorPicks = picksByTab[activeTab];
+
   const resetTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % bannerSlides.length);
+      setCurrentSlide((prev) => (prev + 1) % bannersByTab[activeTab].length);
     }, 4000);
-  }, []);
+  }, [activeTab]);
 
   useEffect(() => {
     resetTimer();
@@ -55,6 +62,12 @@ export default function HotelSearchHome() {
     }
   };
 
+  const handleTabChange = (key: HomeTabKey) => {
+    setActiveTab(key);
+    setCurrentSlide(0);
+    resetTimer();
+  };
+
   return (
     <div className="min-h-dvh bg-cream pb-24">
       {/* Status bar spacer */}
@@ -81,6 +94,24 @@ export default function HotelSearchHome() {
       </header>
 
       <main className="px-5 space-y-6">
+        {/* Category Tabs */}
+        <div className="flex gap-2 px-1">
+          {homeTabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => handleTabChange(tab.key)}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-pill text-sm font-semibold transition-all ${
+                activeTab === tab.key
+                  ? 'bg-dark text-white shadow-md'
+                  : 'bg-white text-gray-600 shadow-subtle hover:shadow-card'
+              }`}
+            >
+              <span className="text-base">{tab.emoji}</span>
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
         {/* Banner Carousel */}
         <div
           className="relative w-full h-48 rounded-2xl overflow-hidden shadow-soft"
@@ -164,7 +195,9 @@ export default function HotelSearchHome() {
         {/* Popular Hotels by City */}
         <div>
           <div className="flex justify-between items-center mb-4 px-1">
-            <h3 className="text-lg font-bold text-dark">热门酒店</h3>
+            <h3 className="text-lg font-bold text-dark">
+              {activeTab === 'hotel' ? '热门酒店' : activeTab === 'homestay' ? '热门民宿' : '热门钟点房'}
+            </h3>
             <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
               <span className="material-symbols-outlined text-lg text-dark">arrow_forward</span>
             </button>
@@ -179,7 +212,7 @@ export default function HotelSearchHome() {
                     className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <span className="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-dark text-[11px] font-bold px-2.5 py-1 rounded-pill shadow-sm">
-                    人气优选
+                    {activeTab === 'hotel' ? '人气优选' : activeTab === 'homestay' ? '特色推荐' : '即时可订'}
                   </span>
                   <button className="absolute top-2.5 right-2.5 w-7 h-7 bg-white/60 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/90 transition-colors">
                     <span className="material-symbols-outlined text-base text-gray-600">favorite</span>
@@ -190,7 +223,7 @@ export default function HotelSearchHome() {
                   <p className="text-xs text-gray-500 mt-0.5">{hotel.dates}</p>
                   <p className="text-xs text-gray-600 mt-1 flex items-center">
                     <span className="font-bold text-dark">¥{hotel.price}</span>
-                    <span className="text-gray-400 ml-0.5">/ {hotel.nights}晚</span>
+                    <span className="text-gray-400 ml-0.5">/ {hotel.nights > 0 ? `${hotel.nights}晚` : '次'}</span>
                     <span className="mx-1.5 text-gray-300">·</span>
                     <span
                       className="material-symbols-outlined text-xs text-accent"
@@ -211,7 +244,9 @@ export default function HotelSearchHome() {
           <div className="flex justify-between items-center mb-3 px-1">
             <div>
               <h3 className="text-lg font-bold text-dark">编辑精选</h3>
-              <p className="text-xs text-gray-500 mt-0.5">精心挑选的特色好店</p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {activeTab === 'hotel' ? '精心挑选的特色好店' : activeTab === 'homestay' ? '住过都说好的民宿' : '灵活时段 即订即住'}
+              </p>
             </div>
             <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
               <span className="material-symbols-outlined text-lg text-dark">arrow_forward</span>
