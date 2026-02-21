@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { defaultSearch, recentSearches } from '../data/mockData';
+import { defaultSearch, recentSearches, cityLandmarks } from '../data/mockData';
 import FilterModal, { type FilterState } from '../components/FilterModal';
 import CalendarModal from '../components/CalendarModal';
 import GuestModal from '../components/GuestModal';
@@ -147,39 +147,38 @@ export default function SearchPage() {
             </div>
           </button>
 
-          {/* Filter Tags */}
-          <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-0.5">
-            <button
-              onClick={filter.doOpen}
-              className={`flex items-center gap-1 px-4 py-2.5 rounded-2xl text-sm font-medium transition-colors whitespace-nowrap ${
-                filters.priceRange
-                  ? 'bg-accent/20 text-dark'
-                  : 'bg-gray-50 text-dark hover:bg-gray-100'
-              }`}
-            >
-              <span className="material-symbols-outlined text-base text-gray-500">attach_money</span>
-              价格
+          {/* Quick Filter Tags */}
+          <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-0.5">
+            <button className="flex items-center gap-1 px-3.5 py-2 rounded-full text-xs font-medium bg-gray-50 text-dark hover:bg-gray-100 transition-colors whitespace-nowrap">
+              <span className="material-symbols-outlined text-sm text-accent">emoji_events</span>
+              上榜酒店
             </button>
-            <button
-              onClick={filter.doOpen}
-              className={`flex items-center gap-1 px-4 py-2.5 rounded-2xl text-sm font-medium transition-colors whitespace-nowrap ${
-                filters.starLevel
-                  ? 'bg-accent/20 text-dark'
-                  : 'bg-gray-50 text-dark hover:bg-gray-100'
-              }`}
-            >
-              <span className="material-symbols-outlined text-base text-gray-500">star_outline</span>
-              评分
+            <button className="flex items-center gap-1 px-3.5 py-2 rounded-full text-xs font-medium bg-gray-50 text-dark hover:bg-gray-100 transition-colors whitespace-nowrap">
+              <span className="material-symbols-outlined text-sm text-amber-500">star</span>
+              4.7分以上
             </button>
+            <button className="flex items-center gap-1 px-3.5 py-2 rounded-full text-xs font-medium bg-gray-50 text-dark hover:bg-gray-100 transition-colors whitespace-nowrap">
+              <span className="material-symbols-outlined text-sm text-gray-500">airport_shuttle</span>
+              免费接送机
+            </button>
+            {(cityLandmarks[defaultSearch.city] ?? []).map((lm) => (
+              <button
+                key={lm.name}
+                className="flex items-center gap-1 px-3.5 py-2 rounded-full text-xs font-medium bg-gray-50 text-dark hover:bg-gray-100 transition-colors whitespace-nowrap"
+              >
+                <span className="material-symbols-outlined text-sm text-gray-500">{lm.icon}</span>
+                {lm.name}
+              </button>
+            ))}
             <button
               onClick={filter.doOpen}
-              className={`flex items-center gap-1 px-4 py-2.5 rounded-2xl text-sm font-medium transition-colors whitespace-nowrap ${
+              className={`flex items-center gap-1 px-3.5 py-2 rounded-full text-xs font-medium transition-colors whitespace-nowrap ${
                 hasActiveFilter
                   ? 'bg-accent/20 text-dark'
                   : 'bg-gray-50 text-dark hover:bg-gray-100'
               }`}
             >
-              <span className="material-symbols-outlined text-base text-gray-500">tune</span>
+              <span className="material-symbols-outlined text-sm text-gray-500">tune</span>
               更多筛选
             </button>
           </div>

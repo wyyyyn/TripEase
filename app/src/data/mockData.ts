@@ -284,6 +284,42 @@ export const recentSearches = [
   { city: '杭州', dates: '1月25日 - 1月28日', guests: '1位成人' },
 ];
 
+// 城市知名景点 — 用于搜索页动态快捷标签
+export const cityLandmarks: Record<string, { name: string; icon: string }[]> = {
+  上海: [
+    { name: '外滩附近', icon: 'location_city' },
+    { name: '迪士尼附近', icon: 'attractions' },
+  ],
+  北京: [
+    { name: '故宫附近', icon: 'account_balance' },
+    { name: '环球影城附近', icon: 'attractions' },
+  ],
+  杭州: [
+    { name: '西湖附近', icon: 'water' },
+    { name: '灵隐寺附近', icon: 'temple_buddhist' },
+  ],
+  成都: [
+    { name: '春熙路附近', icon: 'storefront' },
+    { name: '大熊猫基地附近', icon: 'park' },
+  ],
+  广州: [
+    { name: '广州塔附近', icon: 'cell_tower' },
+    { name: '长隆附近', icon: 'attractions' },
+  ],
+  三亚: [
+    { name: '亚龙湾附近', icon: 'beach_access' },
+    { name: '海棠湾附近', icon: 'beach_access' },
+  ],
+  西安: [
+    { name: '兵马俑附近', icon: 'museum' },
+    { name: '大雁塔附近', icon: 'temple_buddhist' },
+  ],
+  重庆: [
+    { name: '解放碑附近', icon: 'location_city' },
+    { name: '洪崖洞附近', icon: 'castle' },
+  ],
+};
+
 export const featuredHotel = {
   name: '上海外滩华尔道夫酒店',
   image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80',
