@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
-  recentSearches,
   homeTabs,
   bannersByTab,
   popularByTab,
@@ -83,35 +82,17 @@ export default function HotelSearchHome() {
             TripEase
           </h1>
         </div>
-        <div className="flex space-x-4">
+        <div className="flex space-x-1">
           <button className="p-3 rounded-full hover:bg-white hover:shadow-subtle transition-all text-icon-gray" aria-label="通知">
             <span className="material-symbols-outlined">notifications</span>
           </button>
-          <button className="p-3 rounded-full hover:bg-white hover:shadow-subtle transition-all text-icon-gray" aria-label="账户">
-            <span className="material-symbols-outlined">account_circle</span>
+          <button className="p-3 rounded-full hover:bg-white hover:shadow-subtle transition-all text-icon-gray" aria-label="收藏">
+            <span className="material-symbols-outlined">favorite</span>
           </button>
         </div>
       </header>
 
       <main className="px-5 space-y-6">
-        {/* Category Tabs */}
-        <div className="flex gap-2 px-1">
-          {homeTabs.map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => handleTabChange(tab.key)}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-pill text-sm font-semibold transition-all ${
-                activeTab === tab.key
-                  ? 'bg-dark text-white shadow-md'
-                  : 'bg-white text-gray-600 shadow-subtle hover:shadow-card'
-              }`}
-            >
-              <span className="text-base">{tab.emoji}</span>
-              {tab.label}
-            </button>
-          ))}
-        </div>
-
         {/* Banner Carousel */}
         <div
           className="relative w-full h-48 rounded-2xl overflow-hidden shadow-soft"
@@ -161,36 +142,46 @@ export default function HotelSearchHome() {
           </div>
         </div>
 
-        {/* Search Bar */}
-        <button
-          onClick={() => navigate('/search')}
-          className="w-full flex items-center bg-white rounded-pill px-5 py-3.5 shadow-soft hover:shadow-card transition-shadow cursor-pointer"
-          aria-label="搜索酒店"
-        >
-          <span className="material-symbols-outlined text-gray-400 text-xl mr-3">search</span>
-          <span className="text-gray-400 text-[15px] font-medium">搜索酒店</span>
-        </button>
-
-        {/* Recent Searches */}
-        <div className="px-1 -mt-2">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-bold text-dark">最近搜索</h3>
-            <span className="text-xs text-gray-400 cursor-pointer hover:text-gray-600 transition-colors">清空</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {recentSearches.map((item, idx) => (
+        {/* Category Tabs + Search Bar — glass card */}
+        <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-soft border border-white/80 overflow-hidden">
+          {/* Tabs */}
+          <div className="flex">
+            {homeTabs.map((tab, idx) => (
               <button
-                key={idx}
-                onClick={() => navigate('/search')}
-                className="flex items-center gap-1.5 px-3.5 py-2 bg-white rounded-pill shadow-subtle text-sm hover:shadow-card transition-shadow"
+                key={tab.key}
+                onClick={() => handleTabChange(tab.key)}
+                className={`flex-1 relative flex items-center justify-center gap-1.5 py-3 text-sm font-semibold transition-colors ${
+                  activeTab === tab.key
+                    ? 'text-dark'
+                    : 'text-gray-400'
+                }`}
               >
-                <span className="material-symbols-outlined text-gray-400 text-base">history</span>
-                <span className="font-medium text-dark">{item.city}</span>
-                <span className="text-gray-400 text-xs">{item.dates}</span>
+                {idx > 0 && activeTab !== tab.key && activeTab !== homeTabs[idx - 1].key && (
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-px h-4 bg-gray-200" />
+                )}
+                <span className="material-symbols-outlined text-lg" style={activeTab === tab.key ? { fontVariationSettings: "'FILL' 1" } : undefined}>{tab.icon}</span>
+                {tab.label}
+                {activeTab === tab.key && (
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-dark rounded-full" />
+                )}
               </button>
             ))}
           </div>
+          {/* Divider */}
+          <div className="h-px bg-gray-100 mx-4" />
+          {/* Search Bar */}
+          <button
+            onClick={() => navigate('/search')}
+            className="w-full flex items-center px-5 py-3.5 cursor-pointer hover:bg-white/50 transition-colors"
+            aria-label="搜索酒店"
+          >
+            <span className="material-symbols-outlined text-gray-400 text-xl mr-3">search</span>
+            <span className="text-gray-400 text-[15px] font-medium">
+              {activeTab === 'hotel' ? '搜索酒店' : activeTab === 'homestay' ? '搜索民宿' : '搜索钟点房'}
+            </span>
+          </button>
         </div>
+
 
         {/* Popular Hotels by City */}
         <div>

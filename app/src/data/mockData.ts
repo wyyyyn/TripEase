@@ -294,9 +294,9 @@ export const featuredHotel = {
 
 // Tab categories
 export const homeTabs = [
-  { key: 'hotel', label: '酒店', emoji: '🏨' },
-  { key: 'homestay', label: '民宿', emoji: '🏡' },
-  { key: 'hourly', label: '钟点房', emoji: '⏰' },
+  { key: 'hotel', label: '酒店', icon: 'apartment' },
+  { key: 'homestay', label: '民宿', icon: 'cottage' },
+  { key: 'hourly', label: '钟点房', icon: 'schedule' },
 ] as const;
 
 export type HomeTabKey = (typeof homeTabs)[number]['key'];
