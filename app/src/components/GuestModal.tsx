@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface GuestModalProps {
   open: boolean;
@@ -72,17 +72,23 @@ export default function GuestModal({
   const [adults, setAdults] = useState(initialAdults);
   const [children, setChildren] = useState(initialChildren);
   const [visible, setVisible] = useState(false);
+  const prevOpenRef = useRef(false);
+
+  // Sync state on open edge (false → true)
+  if (open && !prevOpenRef.current) {
+    setRooms(initialRooms);
+    setAdults(initialAdults);
+    setChildren(initialChildren);
+  }
+  prevOpenRef.current = open;
 
   useEffect(() => {
     if (open) {
-      setRooms(initialRooms);
-      setAdults(initialAdults);
-      setChildren(initialChildren);
       requestAnimationFrame(() => setVisible(true));
     } else {
       setVisible(false);
     }
-  }, [open, initialRooms, initialAdults, initialChildren]);
+  }, [open]);
 
   const handleConfirm = () => {
     onConfirm(rooms, adults, children);
