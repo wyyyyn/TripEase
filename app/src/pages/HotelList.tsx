@@ -116,11 +116,13 @@ export default function HotelList() {
   const [displayCount, setDisplayCount] = useState(3);
   const [loading, setLoading] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const [prevFilteredLength, setPrevFilteredLength] = useState(filteredHotels.length);
 
-  // Reset displayCount when filters change
-  useEffect(() => {
+  // Reset displayCount when filters change (React-approved render-time state adjustment)
+  if (filteredHotels.length !== prevFilteredLength) {
+    setPrevFilteredLength(filteredHotels.length);
     setDisplayCount(Math.min(3, filteredHotels.length));
-  }, [filteredHotels.length]);
+  }
 
   const allLoaded = displayCount >= filteredHotels.length;
 
