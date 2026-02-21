@@ -1,11 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { getCurrentUser } from '../../store/authStore';
-import { useHotels } from '../../store/useStore';
+import { useHotels, useAuth } from '../../store/useStore';
 import StatusBadge from '../../components/admin/StatusBadge';
 
 export default function MerchantHotelList() {
   const navigate = useNavigate();
-  const user = getCurrentUser();
+  const user = useAuth();
   const allHotels = useHotels();
   const hotels = allHotels.filter((h) => h.ownerId === user?.id);
 
