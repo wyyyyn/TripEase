@@ -29,7 +29,12 @@ function notifyChange(): void {
 export function getAllHotels(): ManagedHotel[] {
   seedIfNeeded();
   const raw = localStorage.getItem(STORAGE_KEY);
-  return raw ? JSON.parse(raw) : [];
+  if (!raw) return [];
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return [];
+  }
 }
 
 function saveAll(hotels: ManagedHotel[]): void {

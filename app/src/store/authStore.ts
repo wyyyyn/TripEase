@@ -9,7 +9,12 @@ function generateId(): string {
 
 function getUsers(): AuthUser[] {
   const raw = localStorage.getItem(USERS_KEY);
-  return raw ? JSON.parse(raw) : [];
+  if (!raw) return [];
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return [];
+  }
 }
 
 function saveUsers(users: AuthUser[]): void {
@@ -56,5 +61,10 @@ export function logout(): void {
 
 export function getCurrentUser(): AuthUser | null {
   const raw = localStorage.getItem(SESSION_KEY);
-  return raw ? JSON.parse(raw) : null;
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
 }
