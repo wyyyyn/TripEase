@@ -1,4 +1,4 @@
-import { useSyncExternalStore, useCallback } from 'react';
+import { useSyncExternalStore } from 'react';
 import { getAllHotels, getPublishedHotels, getHotelsByOwner } from './hotelStore';
 import { getCurrentUser } from './authStore';
 import type { ManagedHotel } from '../types/admin';
@@ -16,10 +16,12 @@ function subscribe(cb: () => void): () => void {
 
 let _hotelCache: ManagedHotel[] | null = null;
 let _publishedCache: Hotel[] | null = null;
+let _merchantCache: { ownerId: string; data: ManagedHotel[] } | null = null;
 
 function invalidateCache() {
   _hotelCache = null;
   _publishedCache = null;
+  _merchantCache = null;
 }
 
 window.addEventListener('tripease_store_change', invalidateCache);
@@ -42,19 +44,14 @@ export function usePublishedHotels(): Hotel[] {
 export function useMerchantHotels(): ManagedHotel[] {
   const user = getCurrentUser();
   const ownerId = user?.id ?? '';
-  return useSyncExternalStore(
-    subscribe,
-    useCallback(() => getHotelsByOwner(ownerId), [ownerId]),
-  );
+  return useSyncExternalStore(subscribe, () => {
+    if (!_merchantCache || _merchantCache.ownerId !== ownerId) {
+      _merchantCache = { ownerId, data: getHotelsByOwner(ownerId) };
+    }
+    return _merchantCache.data;
+  });
 }
 
 export function useAuth(): AuthUser | null {
-  return useSyncExternalStore(
-    (cb) => {
-      // Re-check on storage events for cross-tab
-      window.addEventListener('storage', cb);
-      return () => window.removeEventListener('storage', cb);
-    },
-    () => getCurrentUser(),
-  );
+  return useSyncExternalStore(subscribe, () => getCurrentUser());
 }
