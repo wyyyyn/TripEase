@@ -1,8 +1,7 @@
-import { getCurrentUser } from '../../store/authStore';
-import { useHotels } from '../../store/useStore';
+import { useHotels, useAuth } from '../../store/useStore';
 
 export default function AdminDashboard() {
-  const user = getCurrentUser();
+  const user = useAuth();
   const allHotels = useHotels();
 
   const myHotels = user?.role === 'merchant'
