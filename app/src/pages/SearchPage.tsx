@@ -43,6 +43,9 @@ export default function SearchPage() {
   const checkInDayDisplay = checkInDate ? formatWeekday(checkInDate) : defaultSearch.checkInDay;
   const checkOutDisplay = checkOutDate ? formatDate(checkOutDate) : defaultSearch.checkOut;
   const checkOutDayDisplay = checkOutDate ? formatWeekday(checkOutDate) : defaultSearch.checkOutDay;
+  const nightsDisplay = checkInDate && checkOutDate
+    ? Math.round((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24))
+    : defaultSearch.nights;
   const guestDisplay = children > 0
     ? `${adults}成人 ${children}儿童`
     : `${adults}位成人`;
@@ -112,36 +115,30 @@ export default function SearchPage() {
           </div>
 
           {/* Check-in / Check-out */}
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={calendar.doOpen}
-              className="text-left border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
-            >
-              <label className="block text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide px-0.5">入住</label>
-              <div className="flex items-center">
-                <span className="material-symbols-outlined text-gray-400 mr-2 text-lg">calendar_today</span>
-                <div>
-                  <p className="text-sm font-semibold text-dark">{checkInDisplay}</p>
-                  <p className="text-[11px] text-gray-500">{checkInDayDisplay}</p>
-                </div>
-              </div>
-            </button>
-            <button
-              type="button"
-              onClick={calendar.doOpen}
-              className="text-left border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
-            >
-              <label className="block text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide px-0.5">退房</label>
-              <div className="flex items-center">
-                <span className="material-symbols-outlined text-gray-400 mr-2 text-lg">event</span>
-                <div>
-                  <p className="text-sm font-semibold text-dark">{checkOutDisplay}</p>
-                  <p className="text-[11px] text-gray-500">{checkOutDayDisplay}</p>
-                </div>
-              </div>
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={calendar.doOpen}
+            className="w-full border border-gray-100 rounded-xl px-5 py-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer flex items-center"
+          >
+            {/* 入住 */}
+            <div className="flex-1 text-center">
+              <p className="text-xs text-gray-400 mb-0.5">入住</p>
+              <p className="text-lg font-bold text-dark">{checkInDisplay}</p>
+              <p className="text-xs text-gray-400 mt-0.5">{checkInDayDisplay}</p>
+            </div>
+            {/* 晚数 */}
+            <div className="mx-3">
+              <span className="inline-block bg-accent/20 text-dark text-xs font-bold px-3 py-1 rounded-full">
+                {nightsDisplay}晚
+              </span>
+            </div>
+            {/* 退房 */}
+            <div className="flex-1 text-center">
+              <p className="text-xs text-gray-400 mb-0.5">退房</p>
+              <p className="text-lg font-bold text-dark">{checkOutDisplay}</p>
+              <p className="text-xs text-gray-400 mt-0.5">{checkOutDayDisplay}</p>
+            </div>
+          </button>
 
           {/* Guests */}
           <button
