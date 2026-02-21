@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 
 interface CalendarModalProps {
   open: boolean;
@@ -55,19 +55,28 @@ export default function CalendarModal({
   const [checkIn, setCheckIn] = useState<Date | null>(initialCheckIn ?? null);
   const [checkOut, setCheckOut] = useState<Date | null>(initialCheckOut ?? null);
   const [visible, setVisible] = useState(false);
+  const prevOpenRef = useRef(false);
+
+  const today = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
+
+  // Only sync state on open edge (false → true), avoid cascading renders
+  if (open && !prevOpenRef.current) {
+    setCheckIn(initialCheckIn ?? null);
+    setCheckOut(initialCheckOut ?? null);
+  }
+  prevOpenRef.current = open;
 
   useEffect(() => {
     if (open) {
-      setCheckIn(initialCheckIn ?? null);
-      setCheckOut(initialCheckOut ?? null);
       requestAnimationFrame(() => setVisible(true));
     } else {
       setVisible(false);
     }
-  }, [open, initialCheckIn, initialCheckOut]);
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  }, [open]);
 
   const months: { year: number; month: number }[] = [];
   for (let i = 0; i < 3; i++) {
