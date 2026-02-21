@@ -1,8 +1,9 @@
 import { NavLink, Outlet, Navigate, useNavigate } from 'react-router-dom';
-import { getCurrentUser, logout } from '../store/authStore';
+import { logout } from '../store/authStore';
+import { useAuth } from '../store/useStore';
 
 export default function AdminLayout() {
-  const user = getCurrentUser();
+  const user = useAuth();
   const navigate = useNavigate();
 
   if (!user) return <Navigate to="/admin/login" replace />;
