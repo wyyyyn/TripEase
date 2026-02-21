@@ -1,7 +1,8 @@
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   recentSearches,
-  featuredHotel,
+  bannerSlides,
   popularHotels,
   editorPicks,
   userRecommendations,
@@ -14,6 +15,45 @@ function formatViews(views: number): string {
 
 export default function HotelSearchHome() {
   const navigate = useNavigate();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
+  const touchStartX = useRef(0);
+  const touchDeltaX = useRef(0);
+
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % bannerSlides.length);
+    }, 4000);
+  }, []);
+
+  useEffect(() => {
+    resetTimer();
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [resetTimer]);
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+    resetTimer();
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchDeltaX.current = 0;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchDeltaX.current = e.touches[0].clientX - touchStartX.current;
+  };
+
+  const handleTouchEnd = () => {
+    const threshold = 50;
+    if (touchDeltaX.current < -threshold) {
+      goToSlide((currentSlide + 1) % bannerSlides.length);
+    } else if (touchDeltaX.current > threshold) {
+      goToSlide((currentSlide - 1 + bannerSlides.length) % bannerSlides.length);
+    }
+  };
 
   return (
     <div className="min-h-dvh bg-cream pb-24">
@@ -41,34 +81,65 @@ export default function HotelSearchHome() {
       </header>
 
       <main className="px-5 space-y-6">
-        {/* Featured Deal Banner */}
-        <Link
-          to="/hotel/5"
-          className="relative w-full h-48 rounded-2xl overflow-hidden shadow-soft group cursor-pointer block transform transition hover:scale-[1.01]"
+        {/* Hero Banner Carousel */}
+        <div
+          className="relative w-full h-48 rounded-2xl overflow-hidden shadow-soft"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
-          <img
-            alt={featuredHotel.name}
-            className="w-full h-full object-cover"
-            src={featuredHotel.image}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex flex-col justify-end p-5">
-            <span className="bg-accent text-dark text-xs font-bold px-3 py-1.5 rounded-pill w-max mb-2 uppercase tracking-wider">
-              {featuredHotel.discount}
-            </span>
-            <h2 className="text-white text-xl font-bold">
-              {featuredHotel.name}
-            </h2>
-            <p className="text-white/90 text-sm mt-1 flex items-center font-medium">
-              <span
-                className="material-symbols-outlined text-sm mr-1 text-accent"
-                style={{ fontVariationSettings: "'FILL' 1" }}
+          <div
+            className="flex h-full transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          >
+            {bannerSlides.map((slide) => (
+              <Link
+                key={slide.id}
+                to={`/hotel/${slide.id}`}
+                className="relative w-full h-full flex-shrink-0 block"
               >
-                star
-              </span>
-              {featuredHotel.rating} ({featuredHotel.reviewCount}+ Reviews)
-            </p>
+                <img
+                  alt={slide.name}
+                  className="w-full h-full object-cover"
+                  src={slide.image}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex flex-col justify-end p-5">
+                  <span className="bg-accent text-dark text-xs font-bold px-3 py-1.5 rounded-pill w-max mb-2 tracking-wider">
+                    {slide.badge}
+                  </span>
+                  <h2 className="text-white text-xl font-bold">
+                    {slide.name}
+                  </h2>
+                  <p className="text-white/80 text-xs mt-1">{slide.subtitle}</p>
+                  <p className="text-white/90 text-sm mt-1 flex items-center font-medium">
+                    <span
+                      className="material-symbols-outlined text-sm mr-1 text-accent"
+                      style={{ fontVariationSettings: "'FILL' 1" }}
+                    >
+                      star
+                    </span>
+                    {slide.rating} ({slide.reviewCount}+ Reviews)
+                  </p>
+                </div>
+              </Link>
+            ))}
           </div>
-        </Link>
+          {/* Indicator dots */}
+          <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex gap-1.5">
+            {bannerSlides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={(e) => { e.preventDefault(); goToSlide(idx); }}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  idx === currentSlide
+                    ? 'w-5 bg-white'
+                    : 'w-1.5 bg-white/50'
+                }`}
+                aria-label={`切换到第${idx + 1}张`}
+              />
+            ))}
+          </div>
+        </div>
 
         {/* Search Bar */}
         <button

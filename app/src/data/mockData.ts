@@ -292,6 +292,37 @@ export const featuredHotel = {
   discount: '8折优惠',
 };
 
+// Banner carousel slides — top-tier hotels with unique promotions
+export const bannerSlides = [
+  {
+    id: '5',
+    name: '上海外滩华尔道夫酒店',
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80',
+    rating: 4.9,
+    reviewCount: 5210,
+    badge: '春日尊享 8折',
+    subtitle: '外滩景观·米其林晚宴·Spa礼遇',
+  },
+  {
+    id: '2',
+    name: '上海静安洲际酒店',
+    image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80',
+    rating: 4.7,
+    reviewCount: 10234,
+    badge: '连住3晚减600',
+    subtitle: '城市天际线·行政酒廊·双人下午茶',
+  },
+  {
+    id: '1',
+    name: '上海安曼纳卓悦酒店',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80',
+    rating: 4.8,
+    reviewCount: 7494,
+    badge: '亲子套餐立减',
+    subtitle: '无边泳池·儿童乐园·家庭套房',
+  },
+];
+
 // Popular hotels by city — horizontal scroll cards (Airbnb style)
 export const popularHotels = [
   {
