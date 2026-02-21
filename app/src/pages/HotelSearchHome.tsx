@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   defaultSearch,
-  categories,
   recentSearches,
   featuredHotel,
+  popularHotels,
+  editorPicks,
+  userRecommendations,
 } from '../data/mockData';
 import FilterModal, { type FilterState } from '../components/FilterModal';
 import CalendarModal from '../components/CalendarModal';
@@ -18,6 +20,11 @@ function formatDate(date: Date) {
 
 function formatWeekday(date: Date) {
   return WEEKDAY_NAMES[date.getDay()];
+}
+
+function formatViews(views: number): string {
+  if (views >= 10000) return (views / 10000).toFixed(1) + '万';
+  return views.toLocaleString();
 }
 
 export default function HotelSearchHome() {
@@ -282,30 +289,90 @@ export default function HotelSearchHome() {
           </button>
         </div>
 
-        {/* Popular Categories */}
+        {/* Popular Hotels by City */}
         <div>
           <div className="flex justify-between items-center mb-4 px-1">
-            <h3 className="text-lg font-bold text-dark">热门分类</h3>
-            <span className="text-dark text-sm font-medium underline decoration-accent decoration-2 underline-offset-4 cursor-pointer hover:text-accent transition-colors">
-              查看全部
-            </span>
+            <h3 className="text-lg font-bold text-dark">热门酒店</h3>
+            <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+              <span className="material-symbols-outlined text-lg text-dark">arrow_forward</span>
+            </button>
           </div>
-          <div className="flex space-x-4 overflow-x-auto hide-scrollbar pb-4 px-1">
-            {categories.map((cat) => (
-              <div
-                key={cat.label}
-                className="flex flex-col items-center space-y-2 min-w-[72px] cursor-pointer group"
-              >
-                <div className="w-16 h-16 rounded-pill bg-white border border-gray-100 flex items-center justify-center group-hover:border-accent group-hover:bg-accent/10 transition-colors shadow-sm">
-                  <span className="material-symbols-outlined text-dark text-2xl">
-                    {cat.icon}
+          <div className="flex space-x-4 overflow-x-auto hide-scrollbar pb-2 px-1">
+            {popularHotels.map((hotel) => (
+              <div key={hotel.id} className="min-w-[220px] max-w-[220px] cursor-pointer group">
+                <div className="relative rounded-xl overflow-hidden">
+                  <img
+                    src={hotel.image}
+                    alt={hotel.name}
+                    className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <span className="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-sm text-dark text-[11px] font-bold px-2.5 py-1 rounded-pill shadow-sm">
+                    人气优选
                   </span>
+                  <button className="absolute top-2.5 right-2.5 w-7 h-7 bg-white/60 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/90 transition-colors">
+                    <span className="material-symbols-outlined text-base text-gray-600">favorite</span>
+                  </button>
                 </div>
-                <span className="text-xs font-medium text-gray-600 group-hover:text-dark transition-colors">
-                  {cat.label}
-                </span>
+                <div className="mt-2.5 px-0.5">
+                  <p className="text-sm font-bold text-dark truncate">{hotel.name} · {hotel.city}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{hotel.dates}</p>
+                  <p className="text-xs text-gray-600 mt-1 flex items-center">
+                    <span className="font-bold text-dark">¥{hotel.price}</span>
+                    <span className="text-gray-400 ml-0.5">/ {hotel.nights}晚</span>
+                    <span className="mx-1.5 text-gray-300">·</span>
+                    <span
+                      className="material-symbols-outlined text-xs text-accent"
+                      style={{ fontVariationSettings: "'FILL' 1" }}
+                    >
+                      star
+                    </span>
+                    <span className="font-medium ml-0.5">{hotel.rating}</span>
+                  </p>
+                </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Editor's Picks */}
+        <div>
+          <div className="flex justify-between items-center mb-3 px-1">
+            <div>
+              <h3 className="text-lg font-bold text-dark">编辑精选</h3>
+              <p className="text-xs text-gray-500 mt-0.5">精心挑选的特色好店</p>
+            </div>
+            <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+              <span className="material-symbols-outlined text-lg text-dark">arrow_forward</span>
+            </button>
+          </div>
+          <div className="overflow-x-auto hide-scrollbar px-1">
+            <div className="grid grid-rows-2 grid-flow-col gap-3 pb-2" style={{ width: 'max-content' }}>
+              {editorPicks.map((pick) => (
+                <div key={pick.id} className="w-[160px] bg-white rounded-xl overflow-hidden shadow-subtle border border-gray-50 cursor-pointer hover:shadow-card transition-shadow">
+                  <div className="relative h-[100px]">
+                    <img src={pick.image} alt={pick.name} className="w-full h-full object-cover" />
+                    <button className="absolute top-2 right-2 w-6 h-6 bg-white/60 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/90 transition-colors">
+                      <span className="material-symbols-outlined text-sm text-gray-500">favorite</span>
+                    </button>
+                  </div>
+                  <div className="p-2.5">
+                    <p className="text-[13px] font-semibold text-dark truncate">{pick.name}</p>
+                    <div className="flex items-center justify-between mt-1.5">
+                      <span className="text-xs font-bold text-red-500">¥{pick.price}<span className="font-normal text-gray-400">起</span></span>
+                      <span className="text-[11px] text-gray-500 flex items-center">
+                        <span
+                          className="material-symbols-outlined text-xs mr-0.5 text-accent"
+                          style={{ fontVariationSettings: "'FILL' 1" }}
+                        >
+                          star
+                        </span>
+                        {pick.rating}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -329,6 +396,99 @@ export default function HotelSearchHome() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* User Recommendations — Xiaohongshu-style waterfall */}
+        <div className="px-1">
+          <h3 className="text-lg font-bold text-dark mb-4">种草推荐</h3>
+          <div className="flex gap-3 items-start">
+            {/* Left column */}
+            <div className="flex-1 space-y-3">
+              {userRecommendations.filter((_, i) => i % 2 === 0).map((rec) => (
+                <div key={rec.id} className="bg-white rounded-xl overflow-hidden shadow-subtle cursor-pointer hover:shadow-card transition-shadow">
+                  <img
+                    src={rec.image}
+                    alt={rec.title}
+                    className="w-full object-cover"
+                    style={{ aspectRatio: rec.aspectRatio }}
+                  />
+                  <div className="p-3">
+                    <p className="text-[13px] font-semibold text-dark line-clamp-2 leading-snug">{rec.title}</p>
+                    {rec.tag && (
+                      <div className="flex items-center mt-2">
+                        {rec.hotLabel ? (
+                          <span className="text-[11px] text-orange-500 font-medium">🔥 {rec.hotLabel}</span>
+                        ) : (
+                          <span className="inline-flex items-center text-[11px] text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full font-medium">
+                            {rec.tag}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    {rec.rating && (
+                      <div className="flex items-center mt-1.5">
+                        <span className="text-xs font-bold text-accent">{rec.rating}分</span>
+                        <span className="text-[11px] text-gray-400 ml-1.5">{rec.reviewCount}条评论</span>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between mt-2">
+                      <div className="flex items-center min-w-0">
+                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex-shrink-0" />
+                        <span className="text-[11px] text-gray-500 ml-1.5 truncate">{rec.author}</span>
+                      </div>
+                      <div className="flex items-center text-[11px] text-gray-400 flex-shrink-0 ml-2">
+                        <span className="material-symbols-outlined text-xs mr-0.5">visibility</span>
+                        {formatViews(rec.views)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Right column */}
+            <div className="flex-1 space-y-3">
+              {userRecommendations.filter((_, i) => i % 2 === 1).map((rec) => (
+                <div key={rec.id} className="bg-white rounded-xl overflow-hidden shadow-subtle cursor-pointer hover:shadow-card transition-shadow">
+                  <img
+                    src={rec.image}
+                    alt={rec.title}
+                    className="w-full object-cover"
+                    style={{ aspectRatio: rec.aspectRatio }}
+                  />
+                  <div className="p-3">
+                    <p className="text-[13px] font-semibold text-dark line-clamp-2 leading-snug">{rec.title}</p>
+                    {rec.tag && (
+                      <div className="flex items-center mt-2">
+                        {rec.hotLabel ? (
+                          <span className="text-[11px] text-orange-500 font-medium">🔥 {rec.hotLabel}</span>
+                        ) : (
+                          <span className="inline-flex items-center text-[11px] text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full font-medium">
+                            {rec.tag}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    {rec.rating && (
+                      <div className="flex items-center mt-1.5">
+                        <span className="text-xs font-bold text-accent">{rec.rating}分</span>
+                        <span className="text-[11px] text-gray-400 ml-1.5">{rec.reviewCount}条评论</span>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between mt-2">
+                      <div className="flex items-center min-w-0">
+                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex-shrink-0" />
+                        <span className="text-[11px] text-gray-500 ml-1.5 truncate">{rec.author}</span>
+                      </div>
+                      <div className="flex items-center text-[11px] text-gray-400 flex-shrink-0 ml-2">
+                        <span className="material-symbols-outlined text-xs mr-0.5">visibility</span>
+                        {formatViews(rec.views)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </main>

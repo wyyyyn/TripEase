@@ -291,3 +291,182 @@ export const featuredHotel = {
   reviewCount: 5210,
   discount: '8折优惠',
 };
+
+// Popular hotels by city — horizontal scroll cards (Airbnb style)
+export const popularHotels = [
+  {
+    id: 'ph1',
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80',
+    name: '外滩景观套房',
+    city: '上海',
+    dates: '3月15–17日',
+    price: 1280,
+    nights: 2,
+    rating: 4.95,
+  },
+  {
+    id: 'ph2',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80',
+    name: '故宫旁四合院民宿',
+    city: '北京',
+    dates: '3月20–22日',
+    price: 980,
+    nights: 2,
+    rating: 4.92,
+  },
+  {
+    id: 'ph3',
+    image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&q=80',
+    name: '西湖畔精品度假屋',
+    city: '杭州',
+    dates: '4月1–3日',
+    price: 860,
+    nights: 2,
+    rating: 4.88,
+  },
+  {
+    id: 'ph4',
+    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80',
+    name: '鼓浪屿海景别墅',
+    city: '厦门',
+    dates: '3月28–30日',
+    price: 1560,
+    nights: 2,
+    rating: 4.91,
+  },
+  {
+    id: 'ph5',
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80',
+    name: '太古里设计师酒店',
+    city: '成都',
+    dates: '4月5–7日',
+    price: 720,
+    nights: 2,
+    rating: 4.87,
+  },
+  {
+    id: 'ph6',
+    image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&q=80',
+    name: '环球中心天堂洲际',
+    city: '成都',
+    dates: '4月10–12日',
+    price: 1100,
+    nights: 2,
+    rating: 4.83,
+  },
+];
+
+// Editor's picks — compact 2-row horizontal grid
+export const editorPicks = [
+  {
+    id: 'ep1',
+    image: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=400&q=80',
+    name: '上海外滩W酒店',
+    price: 1580,
+    rating: 4.81,
+  },
+  {
+    id: 'ep2',
+    image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400&q=80',
+    name: '安缦法云·杭州',
+    price: 3200,
+    rating: 4.93,
+  },
+  {
+    id: 'ep3',
+    image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=400&q=80',
+    name: '北京瑰丽酒店',
+    price: 2680,
+    rating: 4.88,
+  },
+  {
+    id: 'ep4',
+    image: 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=400&q=80',
+    name: '三亚亚特兰蒂斯',
+    price: 1980,
+    rating: 4.85,
+  },
+  {
+    id: 'ep5',
+    image: 'https://images.unsplash.com/photo-1590490360182-c33d82de0e5c?w=400&q=80',
+    name: '丽江古城花间堂',
+    price: 880,
+    rating: 4.79,
+  },
+  {
+    id: 'ep6',
+    image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&q=80',
+    name: '成都博舍酒店',
+    price: 1260,
+    rating: 4.82,
+  },
+];
+
+// User recommendations — Xiaohongshu-style waterfall feed
+export const userRecommendations: {
+  id: string;
+  image: string;
+  aspectRatio: string;
+  title: string;
+  tag?: string;
+  hotLabel?: string;
+  rating?: number;
+  reviewCount?: number;
+  author: string;
+  views: number;
+}[] = [
+  {
+    id: 'rec1',
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&q=80',
+    aspectRatio: '3/4',
+    title: '安吉设计感酒店榜，出片率100%的美学天花板',
+    tag: '携程口碑榜',
+    author: '旅行达人小王',
+    views: 28000,
+  },
+  {
+    id: 'rec2',
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=400&q=80',
+    aspectRatio: '4/3',
+    title: 'staycation 周末好去处！上海小众酒店合集',
+    author: '爱旅行HAO',
+    views: 5249,
+  },
+  {
+    id: 'rec3',
+    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&q=80',
+    aspectRatio: '4/5',
+    title: '温州乐清希尔顿欢朋酒店',
+    tag: '温州高档酒店榜 No.8',
+    rating: 4.7,
+    reviewCount: 1200,
+    author: '酒店探店官',
+    views: 12000,
+  },
+  {
+    id: 'rec4',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80',
+    aspectRatio: '3/4',
+    title: '住进外滩W酒店云端套房，才懂什么叫把上海踩在脚下',
+    author: '招财菲菲',
+    views: 20000,
+  },
+  {
+    id: 'rec5',
+    image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400&q=80',
+    aspectRatio: '1/1',
+    title: '南康路任性住一次LV酒店，绝美设计不踩雷',
+    tag: '旅行热点',
+    hotLabel: '54.3w人在看',
+    author: '马达欧尼',
+    views: 28000,
+  },
+  {
+    id: 'rec6',
+    image: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=400&q=80',
+    aspectRatio: '4/3',
+    title: '杭州这家酒店也太绝了！无边泳池+湖景房推荐',
+    author: '旅行种草机',
+    views: 15600,
+  },
+];
