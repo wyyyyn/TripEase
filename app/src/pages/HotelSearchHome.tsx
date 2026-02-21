@@ -124,22 +124,42 @@ export default function HotelSearchHome() {
 
         {/* Search Form Card */}
         <div className="bg-white rounded-2xl shadow-soft p-6 space-y-6">
-          {/* Destination */}
-          <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors">
-            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide px-1">
-              目的地
-            </label>
-            <div className="flex items-center cursor-pointer">
-              <span className="material-symbols-outlined text-accent mr-3 text-2xl">
-                near_me
-              </span>
-              <div className="flex-1">
-                <p className="text-lg font-semibold text-dark">
-                  {defaultSearch.city}
-                </p>
-                <p className="text-xs text-gray-500 mt-0.5 font-medium">
-                  {defaultSearch.citySubtext}
-                </p>
+          {/* Destination + Keyword */}
+          <div className="flex gap-4">
+            <div className="flex-1 border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors">
+              <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide px-1">
+                目的地
+              </label>
+              <div className="flex items-center cursor-pointer">
+                <span className="material-symbols-outlined text-accent mr-2 text-2xl">
+                  near_me
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-base font-semibold text-dark truncate">
+                    {defaultSearch.city}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5 font-medium truncate">
+                    {defaultSearch.citySubtext}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex-1 border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors">
+              <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide px-1">
+                关键词
+              </label>
+              <div className="flex items-center">
+                <span className="material-symbols-outlined text-gray-500 mr-2">
+                  search
+                </span>
+                <input
+                  className="w-full bg-transparent border-none p-0 text-base font-medium text-dark placeholder-gray-500 focus:outline-none"
+                  placeholder="酒店名称..."
+                  type="text"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  aria-label="搜索酒店关键词"
+                />
               </div>
             </div>
           </div>
@@ -194,45 +214,25 @@ export default function HotelSearchHome() {
             </button>
           </div>
 
-          {/* Keyword + Guests */}
-          <div className="flex gap-4">
-            <div className="flex-1 border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors">
-              <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide px-1">
-                关键词
-              </label>
-              <div className="flex items-center">
-                <span className="material-symbols-outlined text-gray-500 mr-2">
-                  search
-                </span>
-                <input
-                  className="w-full bg-transparent border-none p-0 text-base font-medium text-dark placeholder-gray-500 focus:outline-none"
-                  placeholder="酒店名称..."
-                  type="text"
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                  aria-label="搜索酒店关键词"
-                />
-              </div>
+          {/* Guests */}
+          <button
+            type="button"
+            onClick={() => setGuestOpen(true)}
+            className="text-left w-full border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
+            aria-label="选择入住人数"
+          >
+            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide px-1">
+              入住人数
+            </label>
+            <div className="flex items-center">
+              <span className="material-symbols-outlined text-gray-500 mr-2">
+                person
+              </span>
+              <span className="text-base font-medium text-dark">
+                {guestDisplay}
+              </span>
             </div>
-            <button
-              type="button"
-              onClick={() => setGuestOpen(true)}
-              className="text-left w-[38%] border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
-              aria-label="选择入住人数"
-            >
-              <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide px-1">
-                入住人数
-              </label>
-              <div className="flex items-center">
-                <span className="material-symbols-outlined text-gray-500 mr-2">
-                  person
-                </span>
-                <span className="text-base font-medium text-dark">
-                  {guestDisplay}
-                </span>
-              </div>
-            </button>
-          </div>
+          </button>
 
           {/* Filter Tags */}
           <div className="flex space-x-3 overflow-x-auto hide-scrollbar pb-1">
