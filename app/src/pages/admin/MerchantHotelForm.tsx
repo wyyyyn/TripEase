@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getHotelById, createHotel, updateHotel } from '../../store/hotelStore';
 import { useAuth } from '../../store/useStore';
@@ -27,27 +27,11 @@ export default function MerchantHotelForm() {
   const user = useAuth();
   const isEdit = !!id;
 
-  const [form, setForm] = useState<HotelFormData>({
-    name: '',
-    englishName: '',
-    address: '',
-    starRating: 5,
-    openDate: '',
-    images: [],
-    tags: [],
-    amenities: [],
-    rooms: [],
-  });
-
-  const [imageUrl, setImageUrl] = useState('');
-  const [editingRoom, setEditingRoom] = useState<RoomFormData | null>(null);
-  const [editingRoomIndex, setEditingRoomIndex] = useState<number | null>(null);
-
-  useEffect(() => {
+  const [form, setForm] = useState<HotelFormData>(() => {
     if (isEdit) {
       const hotel = getHotelById(id);
       if (hotel) {
-        setForm({
+        return {
           name: hotel.name,
           englishName: '',
           address: hotel.address,
@@ -67,10 +51,25 @@ export default function MerchantHotelForm() {
             size: r.size,
             features: r.features,
           })),
-        });
+        };
       }
     }
-  }, [id, isEdit]);
+    return {
+      name: '',
+      englishName: '',
+      address: '',
+      starRating: 5,
+      openDate: '',
+      images: [],
+      tags: [],
+      amenities: [],
+      rooms: [],
+    };
+  });
+
+  const [imageUrl, setImageUrl] = useState('');
+  const [editingRoom, setEditingRoom] = useState<RoomFormData | null>(null);
+  const [editingRoomIndex, setEditingRoomIndex] = useState<number | null>(null);
 
   const updateField = <K extends keyof HotelFormData>(key: K, value: HotelFormData[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
