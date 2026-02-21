@@ -186,10 +186,18 @@ export default function SearchPage() {
           </div>
         </div>
 
+        {/* Search Button */}
+        <button
+          onClick={() => navigate('/list')}
+          className="w-full bg-dark hover:bg-dark-hover text-white font-bold py-4 rounded-2xl shadow-lg active:scale-[0.98] transform transition duration-200 flex justify-center items-center text-lg"
+        >
+          搜索酒店
+        </button>
+
         {/* Recent Searches */}
         <div className="px-1">
           <h3 className="text-sm font-bold text-dark mb-3">最近搜索</h3>
-          <div className="space-y-2.5">
+          <div className="space-y-2.5 pb-4">
             {recentSearches.map((item, idx) => (
               <div
                 key={idx}
@@ -204,16 +212,6 @@ export default function SearchPage() {
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Search Button — sticky bottom */}
-        <div className="pt-2 pb-4">
-          <button
-            onClick={() => navigate('/list')}
-            className="w-full bg-dark hover:bg-dark-hover text-white font-bold py-4 rounded-2xl shadow-lg active:scale-[0.98] transform transition duration-200 flex justify-center items-center text-lg"
-          >
-            搜索酒店
-          </button>
         </div>
       </main>
 

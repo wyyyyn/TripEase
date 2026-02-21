@@ -80,25 +80,19 @@ export default function HotelSearchHome() {
           <span className="text-gray-400 text-[15px] font-medium">搜索酒店</span>
         </button>
 
-        {/* Recent Searches */}
-        <div className="px-1">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-bold text-dark">最近搜索</h3>
-            <span className="text-xs text-gray-400 cursor-pointer hover:text-gray-600 transition-colors">清空</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {recentSearches.map((item, idx) => (
-              <button
-                key={idx}
-                onClick={() => navigate('/search')}
-                className="flex items-center gap-1.5 px-3.5 py-2 bg-white rounded-pill shadow-subtle text-sm hover:shadow-card transition-shadow"
-              >
-                <span className="material-symbols-outlined text-gray-400 text-base">history</span>
-                <span className="font-medium text-dark">{item.city}</span>
-                <span className="text-gray-400 text-xs">{item.dates}</span>
-              </button>
-            ))}
-          </div>
+        {/* Recent Searches — compact inline cards */}
+        <div className="flex gap-2.5 overflow-x-auto hide-scrollbar -mt-2">
+          {recentSearches.map((item, idx) => (
+            <button
+              key={idx}
+              onClick={() => navigate('/search')}
+              className="flex-shrink-0 w-[88px] bg-white rounded-xl p-2.5 shadow-subtle hover:shadow-card transition-shadow text-center"
+            >
+              <span className="material-symbols-outlined text-accent text-lg">location_on</span>
+              <p className="text-xs font-bold text-dark mt-1 truncate">{item.city}</p>
+              <p className="text-[10px] text-gray-400 mt-0.5 truncate">{item.guests}</p>
+            </button>
+          ))}
         </div>
 
         {/* Popular Hotels by City */}
