@@ -46,9 +46,11 @@ export default function SearchPage() {
   const nightsDisplay = checkInDate && checkOutDate
     ? Math.round((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24))
     : defaultSearch.nights;
-  const guestDisplay = children > 0
-    ? `${adults}成人 ${children}儿童`
-    : `${adults}位成人`;
+  const guestDisplay = [
+    `${rooms}间`,
+    `${adults}成人`,
+    children > 0 ? `${children}儿童` : '',
+  ].filter(Boolean).join(' · ');
 
   const handleCalendarConfirm = (inDate: Date, outDate: Date) => {
     setCheckInDate(inDate);
@@ -134,15 +136,17 @@ export default function SearchPage() {
             </div>
           </button>
 
-          {/* Guests */}
+          {/* Guests & Rooms */}
           <button
             type="button"
             onClick={guest.doOpen}
             className="text-left w-full border border-gray-100 rounded-2xl p-4 hover:border-gray-300 transition-colors cursor-pointer flex items-center gap-3"
           >
-            <span className="material-symbols-outlined text-gray-400 text-2xl">person_outline</span>
+            <span className="material-symbols-outlined text-gray-400 text-2xl">
+              {children > 0 ? 'family_restroom' : 'person_outline'}
+            </span>
             <div>
-              <label className="block text-xs text-gray-400 mb-0.5">入住人数</label>
+              <label className="block text-xs text-gray-400 mb-0.5">客房及住客</label>
               <span className="text-base font-medium text-dark">{guestDisplay}</span>
             </div>
           </button>
