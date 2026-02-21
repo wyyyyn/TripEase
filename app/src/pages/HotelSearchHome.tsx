@@ -1,26 +1,11 @@
-import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
-  defaultSearch,
   recentSearches,
   featuredHotel,
   popularHotels,
   editorPicks,
   userRecommendations,
 } from '../data/mockData';
-import FilterModal, { type FilterState } from '../components/FilterModal';
-import CalendarModal from '../components/CalendarModal';
-import GuestModal from '../components/GuestModal';
-
-const WEEKDAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-
-function formatDate(date: Date) {
-  return `${date.getMonth() + 1}月${date.getDate()}日`;
-}
-
-function formatWeekday(date: Date) {
-  return WEEKDAY_NAMES[date.getDay()];
-}
 
 function formatViews(views: number): string {
   if (views >= 10000) return (views / 10000).toFixed(1) + '万';
@@ -29,43 +14,6 @@ function formatViews(views: number): string {
 
 export default function HotelSearchHome() {
   const navigate = useNavigate();
-  const [keyword, setKeyword] = useState(defaultSearch.keyword || '');
-  const [filterOpen, setFilterOpen] = useState(false);
-  const [filters, setFilters] = useState<FilterState>({ priceRange: null, starLevel: null });
-  const hasActiveFilter = filters.priceRange !== null || filters.starLevel !== null;
-
-  // Date state
-  const [checkInDate, setCheckInDate] = useState<Date | null>(null);
-  const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
-  const [calendarOpen, setCalendarOpen] = useState(false);
-
-  // Guest state
-  const [rooms, setRooms] = useState(1);
-  const [adults, setAdults] = useState(defaultSearch.guests);
-  const [children, setChildren] = useState(0);
-  const [guestOpen, setGuestOpen] = useState(false);
-
-  // Derived display values
-  const checkInDisplay = checkInDate ? formatDate(checkInDate) : defaultSearch.checkIn;
-  const checkInDayDisplay = checkInDate ? formatWeekday(checkInDate) : defaultSearch.checkInDay;
-  const checkOutDisplay = checkOutDate ? formatDate(checkOutDate) : defaultSearch.checkOut;
-  const checkOutDayDisplay = checkOutDate ? formatWeekday(checkOutDate) : defaultSearch.checkOutDay;
-  const guestDisplay = children > 0
-    ? `${adults}成人 ${children}儿童`
-    : `${adults}位成人`;
-
-  const handleCalendarConfirm = (inDate: Date, outDate: Date) => {
-    setCheckInDate(inDate);
-    setCheckOutDate(outDate);
-    setCalendarOpen(false);
-  };
-
-  const handleGuestConfirm = (r: number, a: number, c: number) => {
-    setRooms(r);
-    setAdults(a);
-    setChildren(c);
-    setGuestOpen(false);
-  };
 
   return (
     <div className="min-h-dvh bg-cream pb-24">
@@ -122,191 +70,35 @@ export default function HotelSearchHome() {
           </div>
         </Link>
 
-        {/* Search Form Card */}
-        <div className="bg-white rounded-2xl shadow-soft p-6 space-y-6">
-          {/* Destination + Keyword */}
-          <div className="flex gap-4">
-            <div className="flex-1 border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors">
-              <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide px-1">
-                目的地
-              </label>
-              <div className="flex items-center cursor-pointer">
-                <span className="material-symbols-outlined text-accent mr-2 text-2xl">
-                  near_me
-                </span>
-                <div className="flex-1 min-w-0">
-                  <p className="text-base font-semibold text-dark truncate">
-                    {defaultSearch.city}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-0.5 font-medium truncate">
-                    {defaultSearch.citySubtext}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="flex-1 border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors">
-              <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide px-1">
-                关键词
-              </label>
-              <div className="flex items-center">
-                <span className="material-symbols-outlined text-gray-500 mr-2">
-                  search
-                </span>
-                <input
-                  className="w-full bg-transparent border-none p-0 text-base font-medium text-dark placeholder-gray-500 focus:outline-none"
-                  placeholder="酒店名称..."
-                  type="text"
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                  aria-label="搜索酒店关键词"
-                />
-              </div>
-            </div>
+        {/* Search Bar */}
+        <button
+          onClick={() => navigate('/search')}
+          className="w-full flex items-center bg-white rounded-pill px-5 py-3.5 shadow-soft hover:shadow-card transition-shadow cursor-pointer"
+          aria-label="搜索酒店"
+        >
+          <span className="material-symbols-outlined text-gray-400 text-xl mr-3">search</span>
+          <span className="text-gray-400 text-[15px] font-medium">搜索酒店</span>
+        </button>
+
+        {/* Recent Searches */}
+        <div className="px-1">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm font-bold text-dark">最近搜索</h3>
+            <span className="text-xs text-gray-400 cursor-pointer hover:text-gray-600 transition-colors">清空</span>
           </div>
-
-          {/* Check-in / Check-out */}
-          <div className="grid grid-cols-2 gap-4">
-            <button
-              type="button"
-              onClick={() => setCalendarOpen(true)}
-              className="text-left border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
-              aria-label="选择入住日期"
-            >
-              <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide px-1">
-                入住
-              </label>
-              <div className="flex items-center">
-                <span className="material-symbols-outlined text-gray-500 mr-2">
-                  calendar_today
-                </span>
-                <div>
-                  <p className="text-base font-semibold text-dark">
-                    {checkInDisplay}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {checkInDayDisplay}
-                  </p>
-                </div>
-              </div>
-            </button>
-            <button
-              type="button"
-              onClick={() => setCalendarOpen(true)}
-              className="text-left border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
-              aria-label="选择退房日期"
-            >
-              <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide px-1">
-                退房
-              </label>
-              <div className="flex items-center">
-                <span className="material-symbols-outlined text-gray-500 mr-2">
-                  event
-                </span>
-                <div>
-                  <p className="text-base font-semibold text-dark">
-                    {checkOutDisplay}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {checkOutDayDisplay}
-                  </p>
-                </div>
-              </div>
-            </button>
+          <div className="flex flex-wrap gap-2">
+            {recentSearches.map((item, idx) => (
+              <button
+                key={idx}
+                onClick={() => navigate('/search')}
+                className="flex items-center gap-1.5 px-3.5 py-2 bg-white rounded-pill shadow-subtle text-sm hover:shadow-card transition-shadow"
+              >
+                <span className="material-symbols-outlined text-gray-400 text-base">history</span>
+                <span className="font-medium text-dark">{item.city}</span>
+                <span className="text-gray-400 text-xs">{item.dates}</span>
+              </button>
+            ))}
           </div>
-
-          {/* Guests */}
-          <button
-            type="button"
-            onClick={() => setGuestOpen(true)}
-            className="text-left w-full border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
-            aria-label="选择入住人数"
-          >
-            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide px-1">
-              入住人数
-            </label>
-            <div className="flex items-center">
-              <span className="material-symbols-outlined text-gray-500 mr-2">
-                person
-              </span>
-              <span className="text-base font-medium text-dark">
-                {guestDisplay}
-              </span>
-            </div>
-          </button>
-
-          {/* Filter Tags */}
-          <div className="flex space-x-3 overflow-x-auto hide-scrollbar pb-1">
-            <button
-              onClick={() => setFilterOpen(true)}
-              className={`flex items-center px-4 py-2.5 min-h-[44px] rounded-pill text-sm font-medium border transition-colors whitespace-nowrap shadow-sm ${
-                filters.priceRange
-                  ? 'bg-accent/20 border-accent text-dark'
-                  : 'bg-white text-gray-600 border-gray-200 hover:border-accent hover:bg-cream'
-              }`}
-              aria-label="按价格筛选"
-            >
-              <span className="material-symbols-outlined text-lg mr-1.5">
-                attach_money
-              </span>
-              价格
-            </button>
-            <button
-              onClick={() => setFilterOpen(true)}
-              className={`flex items-center px-4 py-2.5 min-h-[44px] rounded-pill text-sm font-medium border transition-colors whitespace-nowrap shadow-sm ${
-                filters.starLevel
-                  ? 'bg-accent/20 border-accent text-dark'
-                  : 'bg-white text-gray-600 border-gray-200 hover:border-accent hover:bg-cream'
-              }`}
-              aria-label="按评分筛选"
-            >
-              <span className="material-symbols-outlined text-lg mr-1.5">
-                star_rate
-              </span>
-              评分
-            </button>
-            <button
-              onClick={() => setFilterOpen(true)}
-              className={`flex items-center px-4 py-2.5 min-h-[44px] rounded-pill text-sm font-medium border transition-colors whitespace-nowrap shadow-sm ${
-                hasActiveFilter
-                  ? 'bg-accent/20 border-accent text-dark'
-                  : 'bg-white text-gray-600 border-gray-200 hover:border-accent hover:bg-cream'
-              }`}
-              aria-label="更多筛选"
-            >
-              <span className="material-symbols-outlined text-lg mr-1.5">
-                tune
-              </span>
-              更多筛选
-            </button>
-          </div>
-
-          {/* Recent Searches */}
-          <div>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">最近搜索</p>
-            <div className="space-y-2">
-              {recentSearches.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center p-2.5 rounded-xl bg-gray-50/80 cursor-pointer hover:bg-gray-100 transition-colors"
-                >
-                  <span className="material-symbols-outlined text-gray-400 text-lg mr-2.5">history</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-dark">{item.city}</p>
-                    <p className="text-[11px] text-gray-500 truncate">{item.dates} · {item.guests}</p>
-                  </div>
-                  <span className="material-symbols-outlined text-gray-300 text-lg">north_west</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Search Button */}
-          <button
-            onClick={() => navigate('/list')}
-            className="w-full bg-dark hover:bg-dark-hover text-white font-bold py-4 rounded-2xl shadow-lg active:scale-[0.98] transform transition duration-200 flex justify-center items-center text-lg"
-          >
-            搜索酒店
-          </button>
         </div>
 
         {/* Popular Hotels by City */}
@@ -522,27 +314,6 @@ export default function HotelSearchHome() {
         </div>
       </nav>
 
-      <FilterModal
-        open={filterOpen}
-        onClose={() => setFilterOpen(false)}
-        onApply={setFilters}
-        initialFilters={filters}
-      />
-      <CalendarModal
-        open={calendarOpen}
-        onClose={() => setCalendarOpen(false)}
-        onConfirm={handleCalendarConfirm}
-        initialCheckIn={checkInDate}
-        initialCheckOut={checkOutDate}
-      />
-      <GuestModal
-        open={guestOpen}
-        onClose={() => setGuestOpen(false)}
-        onConfirm={handleGuestConfirm}
-        initialRooms={rooms}
-        initialAdults={adults}
-        initialChildren={children}
-      />
     </div>
   );
 }

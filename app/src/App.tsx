@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import MobileLayout from './layouts/MobileLayout';
 import HotelSearchHome from './pages/HotelSearchHome';
+import SearchPage from './pages/SearchPage';
 import HotelList from './pages/HotelList';
 import HotelDetail from './pages/HotelDetail';
 
@@ -30,6 +31,7 @@ export default function App() {
           {/* Mobile */}
           <Route element={<MobileLayout />}>
             <Route path="/" element={<HotelSearchHome />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/list" element={<HotelList />} />
             <Route path="/hotel/:id" element={<HotelDetail />} />
           </Route>
