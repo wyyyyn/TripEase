@@ -44,7 +44,7 @@ export function register(
 
 export function login(
   username: string,
-  _password: string,
+  _: string,
 ): { ok: true; user: AuthUser } | { ok: false; error: string } {
   const users = getUsers();
   const user = users.find((u) => u.username === username);

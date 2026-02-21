@@ -45,7 +45,7 @@ function saveAll(hotels: ManagedHotel[]): void {
 export function getPublishedHotels(): Hotel[] {
   return getAllHotels()
     .filter((h) => h.status === 'published')
-    .map(({ ownerId, status, rejectReason, createdAt, updatedAt, ...hotel }) => hotel);
+    .map(({ ownerId: _, status: _s, rejectReason: _r, createdAt: _c, updatedAt: _u, ...hotel }) => hotel);
 }
 
 export function getHotelsByOwner(ownerId: string): ManagedHotel[] {
