@@ -1,12 +1,26 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
+  defaultSearch,
   recentSearches,
   bannerSlides,
   popularHotels,
   editorPicks,
   userRecommendations,
 } from '../data/mockData';
+import FilterModal, { type FilterState } from '../components/FilterModal';
+import CalendarModal from '../components/CalendarModal';
+import GuestModal from '../components/GuestModal';
+
+const WEEKDAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
+function formatDate(date: Date) {
+  return `${date.getMonth() + 1}月${date.getDate()}日`;
+}
+
+function formatWeekday(date: Date) {
+  return WEEKDAY_NAMES[date.getDay()];
+}
 
 function formatViews(views: number): string {
   if (views >= 10000) return (views / 10000).toFixed(1) + '万';
@@ -15,6 +29,42 @@ function formatViews(views: number): string {
 
 export default function HotelSearchHome() {
   const navigate = useNavigate();
+
+  // Search state
+  const [keyword, setKeyword] = useState(defaultSearch.keyword || '');
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filters, setFilters] = useState<FilterState>({ priceRange: null, starLevel: null });
+  const hasActiveFilter = filters.priceRange !== null || filters.starLevel !== null;
+  const [checkInDate, setCheckInDate] = useState<Date | null>(null);
+  const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [rooms, setRooms] = useState(1);
+  const [adults, setAdults] = useState(defaultSearch.guests);
+  const [children, setChildren] = useState(0);
+  const [guestOpen, setGuestOpen] = useState(false);
+
+  const checkInDisplay = checkInDate ? formatDate(checkInDate) : defaultSearch.checkIn;
+  const checkInDayDisplay = checkInDate ? formatWeekday(checkInDate) : defaultSearch.checkInDay;
+  const checkOutDisplay = checkOutDate ? formatDate(checkOutDate) : defaultSearch.checkOut;
+  const checkOutDayDisplay = checkOutDate ? formatWeekday(checkOutDate) : defaultSearch.checkOutDay;
+  const guestDisplay = children > 0
+    ? `${adults}成人 ${children}儿童`
+    : `${adults}位成人`;
+
+  const handleCalendarConfirm = (inDate: Date, outDate: Date) => {
+    setCheckInDate(inDate);
+    setCheckOutDate(outDate);
+    setCalendarOpen(false);
+  };
+
+  const handleGuestConfirm = (r: number, a: number, c: number) => {
+    setRooms(r);
+    setAdults(a);
+    setChildren(c);
+    setGuestOpen(false);
+  };
+
+  // Carousel state
   const [currentSlide, setCurrentSlide] = useState(0);
   const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
   const touchStartX = useRef(0);
@@ -141,28 +191,125 @@ export default function HotelSearchHome() {
           </div>
         </div>
 
-        {/* Search Bar */}
-        <button
-          onClick={() => navigate('/search')}
-          className="w-full flex items-center bg-white rounded-pill px-5 py-3.5 shadow-soft hover:shadow-card transition-shadow cursor-pointer"
-          aria-label="搜索酒店"
-        >
-          <span className="material-symbols-outlined text-gray-400 text-xl mr-3">search</span>
-          <span className="text-gray-400 text-[15px] font-medium">搜索酒店</span>
-        </button>
+        {/* Search Form Card */}
+        <div className="bg-white rounded-2xl shadow-soft p-5 space-y-4">
+          {/* Destination + Keyword */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer">
+              <label className="block text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide">目的地</label>
+              <div className="flex items-center">
+                <span className="material-symbols-outlined text-accent mr-2 text-xl">near_me</span>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-dark truncate">{defaultSearch.city}</p>
+                  <p className="text-[11px] text-gray-500">{defaultSearch.citySubtext}</p>
+                </div>
+              </div>
+            </div>
+            <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors">
+              <label className="block text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide">关键词</label>
+              <div className="flex items-center">
+                <span className="material-symbols-outlined text-gray-400 mr-2">search</span>
+                <input
+                  className="w-full bg-transparent border-none p-0 text-sm font-medium text-dark placeholder-gray-400 focus:outline-none"
+                  placeholder="酒店名称..."
+                  type="text"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
 
-        {/* Recent Searches — compact inline cards */}
+          {/* Check-in / Check-out */}
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => setCalendarOpen(true)}
+              className="text-left border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
+            >
+              <label className="block text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide">入住</label>
+              <div className="flex items-center">
+                <span className="material-symbols-outlined text-gray-400 mr-2 text-lg">calendar_today</span>
+                <div>
+                  <p className="text-sm font-semibold text-dark">{checkInDisplay}</p>
+                  <p className="text-[11px] text-gray-500">{checkInDayDisplay}</p>
+                </div>
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => setCalendarOpen(true)}
+              className="text-left border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
+            >
+              <label className="block text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide">退房</label>
+              <div className="flex items-center">
+                <span className="material-symbols-outlined text-gray-400 mr-2 text-lg">event</span>
+                <div>
+                  <p className="text-sm font-semibold text-dark">{checkOutDisplay}</p>
+                  <p className="text-[11px] text-gray-500">{checkOutDayDisplay}</p>
+                </div>
+              </div>
+            </button>
+          </div>
+
+          {/* Guests + Filters */}
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={() => setGuestOpen(true)}
+              className="text-left flex-1 border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
+            >
+              <label className="block text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide">入住人数</label>
+              <div className="flex items-center">
+                <span className="material-symbols-outlined text-gray-400 mr-2 text-lg">person</span>
+                <span className="text-sm font-medium text-dark">{guestDisplay}</span>
+              </div>
+            </button>
+            <div className="flex items-end gap-2 pb-1">
+              <button
+                onClick={() => setFilterOpen(true)}
+                className={`flex items-center px-3 py-2 rounded-pill text-xs font-medium border transition-colors whitespace-nowrap ${
+                  filters.priceRange
+                    ? 'bg-accent/20 border-accent text-dark'
+                    : 'bg-gray-50 text-gray-500 border-gray-100 hover:border-accent/40'
+                }`}
+              >
+                价格
+              </button>
+              <button
+                onClick={() => setFilterOpen(true)}
+                className={`flex items-center px-3 py-2 rounded-pill text-xs font-medium border transition-colors whitespace-nowrap ${
+                  hasActiveFilter
+                    ? 'bg-accent/20 border-accent text-dark'
+                    : 'bg-gray-50 text-gray-500 border-gray-100 hover:border-accent/40'
+                }`}
+              >
+                <span className="material-symbols-outlined text-sm mr-0.5">tune</span>
+                筛选
+              </button>
+            </div>
+          </div>
+
+          {/* Search Button */}
+          <button
+            onClick={() => navigate('/list')}
+            className="w-full bg-dark hover:bg-dark-hover text-white font-bold py-3.5 rounded-2xl shadow-lg active:scale-[0.98] transform transition duration-200 flex justify-center items-center text-base"
+          >
+            搜索酒店
+          </button>
+        </div>
+
+        {/* Recent Searches — compact inline */}
         <div className="flex gap-2.5 overflow-x-auto hide-scrollbar -mt-2">
           {recentSearches.map((item, idx) => (
-            <button
+            <div
               key={idx}
-              onClick={() => navigate('/search')}
-              className="flex-shrink-0 w-[88px] bg-white rounded-xl p-2.5 shadow-subtle hover:shadow-card transition-shadow text-center"
+              className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 bg-white rounded-pill shadow-subtle text-xs cursor-pointer hover:shadow-card transition-shadow"
             >
-              <span className="material-symbols-outlined text-accent text-lg">location_on</span>
-              <p className="text-xs font-bold text-dark mt-1 truncate">{item.city}</p>
-              <p className="text-[10px] text-gray-400 mt-0.5 truncate">{item.guests}</p>
-            </button>
+              <span className="material-symbols-outlined text-gray-400 text-sm">history</span>
+              <span className="font-medium text-dark">{item.city}</span>
+              <span className="text-gray-400">{item.dates}</span>
+            </div>
           ))}
         </div>
 
@@ -379,6 +526,27 @@ export default function HotelSearchHome() {
         </div>
       </nav>
 
+      <FilterModal
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        onApply={setFilters}
+        initialFilters={filters}
+      />
+      <CalendarModal
+        open={calendarOpen}
+        onClose={() => setCalendarOpen(false)}
+        onConfirm={handleCalendarConfirm}
+        initialCheckIn={checkInDate}
+        initialCheckOut={checkOutDate}
+      />
+      <GuestModal
+        open={guestOpen}
+        onClose={() => setGuestOpen(false)}
+        onConfirm={handleGuestConfirm}
+        initialRooms={rooms}
+        initialAdults={adults}
+        initialChildren={children}
+      />
     </div>
   );
 }
