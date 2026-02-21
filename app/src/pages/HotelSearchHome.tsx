@@ -280,6 +280,26 @@ export default function HotelSearchHome() {
             </button>
           </div>
 
+          {/* Recent Searches */}
+          <div>
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">最近搜索</p>
+            <div className="space-y-2">
+              {recentSearches.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center p-2.5 rounded-xl bg-gray-50/80 cursor-pointer hover:bg-gray-100 transition-colors"
+                >
+                  <span className="material-symbols-outlined text-gray-400 text-lg mr-2.5">history</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-dark">{item.city}</p>
+                    <p className="text-[11px] text-gray-500 truncate">{item.dates} · {item.guests}</p>
+                  </div>
+                  <span className="material-symbols-outlined text-gray-300 text-lg">north_west</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Search Button */}
           <button
             onClick={() => navigate('/list')}
@@ -373,29 +393,6 @@ export default function HotelSearchHome() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-
-        {/* Recent Searches */}
-        <div className="px-1">
-          <h3 className="text-lg font-bold text-dark mb-4">最近搜索</h3>
-          <div className="space-y-3">
-            {recentSearches.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex items-center p-3 bg-white rounded-2xl shadow-subtle border border-gray-100 cursor-pointer hover:border-accent/30 transition-colors"
-              >
-                <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center mr-4 text-dark">
-                  <span className="material-symbols-outlined">history</span>
-                </div>
-                <div>
-                  <p className="font-bold text-dark text-sm">{item.city}</p>
-                  <p className="text-xs text-gray-500">
-                    {item.dates} · {item.guests}
-                  </p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
 
