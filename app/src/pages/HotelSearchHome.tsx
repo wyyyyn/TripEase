@@ -69,36 +69,17 @@ export default function HotelSearchHome() {
 
   return (
     <div className="min-h-dvh bg-cream pb-24">
-      {/* Status bar spacer */}
-      <div className="pt-safe w-full" />
-
-      {/* Header */}
-      <header className="flex justify-between items-center px-6 py-4">
-        <div className="flex items-center space-x-2">
-          <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center text-dark">
-            <span className="material-symbols-outlined">travel_explore</span>
-          </div>
-          <h1 className="text-xl font-bold tracking-tight text-dark">
-            TripEase
-          </h1>
-        </div>
-        <div className="flex space-x-1">
-          <button className="p-3 rounded-full hover:bg-white hover:shadow-subtle transition-all text-icon-gray" aria-label="通知">
-            <span className="material-symbols-outlined">notifications</span>
-          </button>
-          <button className="p-3 rounded-full hover:bg-white hover:shadow-subtle transition-all text-icon-gray" aria-label="收藏">
-            <span className="material-symbols-outlined">favorite</span>
-          </button>
-        </div>
-      </header>
-
-      <main className="px-5 space-y-6">
-        {/* Banner Carousel */}
+      {/* Hero Banner — image extends behind header */}
+      <div
+        className="relative w-full"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* Image slides */}
         <div
-          className="relative w-full h-48 rounded-2xl overflow-hidden shadow-soft"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
+          className="w-full overflow-hidden"
+          style={{ height: 'calc(env(safe-area-inset-top, 0px) + 304px)' }}
         >
           <div
             className="flex h-full transition-transform duration-500 ease-out"
@@ -115,33 +96,71 @@ export default function HotelSearchHome() {
                   className="w-full h-full object-cover"
                   src={slide.image}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex flex-col justify-end p-5">
-                  <span className="bg-accent text-dark text-xs font-bold px-3 py-1.5 rounded-pill w-max mb-2 tracking-wider">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/5 flex flex-col justify-end px-6 pb-16">
+                  <span className="bg-white/15 backdrop-blur-sm text-white text-[10px] font-semibold px-3 py-1 rounded-full w-max mb-2 uppercase tracking-widest border border-white/20">
                     {slide.badge}
                   </span>
-                  <h2 className="text-white text-lg font-bold leading-tight">{slide.name}</h2>
-                  <p className="text-white/80 text-xs mt-1">{slide.subtitle}</p>
+                  <div className="flex items-center gap-0.5 mb-1">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <span
+                        key={i}
+                        className="material-symbols-outlined text-sm text-amber-400"
+                        style={{ fontVariationSettings: "'FILL' 1" }}
+                      >star</span>
+                    ))}
+                  </div>
+                  <h2 className="text-white text-xl font-bold leading-tight drop-shadow-sm">{slide.name}</h2>
+                  <p className="text-white/70 text-xs mt-1">{slide.subtitle}</p>
                 </div>
               </Link>
             ))}
           </div>
-          {/* Dots */}
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-            {bannerSlides.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => goToSlide(idx)}
-                className={`rounded-full transition-all duration-300 ${
-                  idx === currentSlide
-                    ? 'w-5 h-1.5 bg-white'
-                    : 'w-1.5 h-1.5 bg-white/50'
-                }`}
-                aria-label={`切换到第${idx + 1}张`}
-              />
-            ))}
-          </div>
+          {/* Bottom fade to cream */}
+          <div className="absolute bottom-0 inset-x-0 h-12 bg-gradient-to-t from-cream via-cream/70 to-transparent pointer-events-none z-10" />
         </div>
 
+        {/* Header — overlaid on banner, semi-transparent */}
+        <div className="absolute top-0 inset-x-0 z-30">
+          <div className="pt-safe w-full" />
+          <header className="flex justify-between items-center px-6 py-3">
+            <div className="flex items-center space-x-2">
+              <div className="w-10 h-10 bg-accent/90 backdrop-blur-md rounded-full flex items-center justify-center text-dark border border-accent/30">
+                <span className="material-symbols-outlined">travel_explore</span>
+              </div>
+              <h1 className="text-xl font-bold tracking-tight text-white drop-shadow-sm">
+                TripEase
+              </h1>
+            </div>
+            <div className="flex space-x-1">
+              <button className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md text-white/80 hover:bg-white/20 transition-all border border-white/10" aria-label="通知">
+                <span className="material-symbols-outlined text-xl">notifications</span>
+              </button>
+              <button className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md text-white/80 hover:bg-white/20 transition-all border border-white/10" aria-label="收藏">
+                <span className="material-symbols-outlined text-xl">favorite</span>
+              </button>
+            </div>
+          </header>
+        </div>
+
+        {/* Dots */}
+        <div className="absolute bottom-16 right-5 flex gap-1.5 z-20">
+          {bannerSlides.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => goToSlide(idx)}
+              className={`rounded-full transition-all duration-300 ${
+                idx === currentSlide
+                  ? 'w-5 h-1.5 bg-white/80'
+                  : 'w-1.5 h-1.5 bg-white/40'
+              }`}
+              aria-label={`切换到第${idx + 1}张`}
+            />
+          ))}
+        </div>
+
+      </div>
+
+      <main className="px-5 space-y-6 -mt-12 relative z-20">
         {/* Category Tabs + Search Bar — glass card */}
         <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-soft border border-white/80 overflow-hidden">
           {/* Tabs */}
@@ -150,7 +169,7 @@ export default function HotelSearchHome() {
               <button
                 key={tab.key}
                 onClick={() => handleTabChange(tab.key)}
-                className={`flex-1 relative flex items-center justify-center gap-1.5 py-3 text-sm font-semibold transition-colors ${
+                className={`flex-1 relative flex items-center justify-center gap-1.5 py-3.5 text-sm font-semibold transition-colors ${
                   activeTab === tab.key
                     ? 'text-dark'
                     : 'text-gray-400'
@@ -172,7 +191,7 @@ export default function HotelSearchHome() {
           {/* Search Bar */}
           <button
             onClick={() => navigate('/search')}
-            className="w-full flex items-center px-5 py-3.5 cursor-pointer hover:bg-white/50 transition-colors"
+            className="w-full flex items-center px-5 py-4 cursor-pointer hover:bg-white/50 transition-colors"
             aria-label="搜索酒店"
           >
             <span className="material-symbols-outlined text-gray-400 text-xl mr-3">search</span>
