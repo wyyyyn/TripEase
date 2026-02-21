@@ -79,30 +79,26 @@ export default function SearchPage() {
         <h1 className="text-lg font-bold text-dark">搜索酒店</h1>
       </header>
 
-      <main className="px-5 space-y-5">
+      <main className="px-4 space-y-6">
         {/* Search Form */}
-        <div className="bg-white rounded-2xl shadow-soft p-5 space-y-4">
+        <div className="bg-surface rounded-3xl shadow-soft p-5 space-y-4">
           {/* Destination */}
-          <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors">
-            <label className="block text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide px-0.5">
-              目的地
-            </label>
-            <div className="flex items-center cursor-pointer">
-              <span className="material-symbols-outlined text-accent mr-2.5 text-xl">near_me</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-base font-semibold text-dark truncate">{defaultSearch.city}</p>
-                <p className="text-[11px] text-gray-500 mt-0.5 font-medium">{defaultSearch.citySubtext}</p>
+          <div className="group border border-gray-100 rounded-2xl p-4 hover:border-gray-300 transition-colors cursor-pointer">
+            <label className="block text-xs text-gray-400 mb-1">目的地</label>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-lg font-bold text-dark mb-0.5">{defaultSearch.city}</p>
+                <p className="text-xs text-gray-400">{defaultSearch.citySubtext}</p>
               </div>
+              <span className="material-symbols-outlined text-accent rotate-45 group-hover:scale-110 transition-transform">navigation</span>
             </div>
           </div>
 
           {/* Keyword */}
-          <div className="border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors">
-            <label className="block text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide px-0.5">
-              关键词
-            </label>
-            <div className="flex items-center">
-              <span className="material-symbols-outlined text-gray-400 mr-2">search</span>
+          <div className="group border border-gray-100 rounded-2xl p-4 hover:border-gray-300 transition-colors cursor-text flex items-center gap-3">
+            <span className="material-symbols-outlined text-gray-400 text-2xl group-focus-within:text-dark transition-colors">search</span>
+            <div className="flex-1">
+              <label className="block text-xs text-gray-400 mb-0.5">关键词</label>
               <input
                 className="w-full bg-transparent border-none p-0 text-base font-medium text-dark placeholder-gray-400 focus:outline-none"
                 placeholder="酒店名称、地标..."
@@ -118,24 +114,22 @@ export default function SearchPage() {
           <button
             type="button"
             onClick={calendar.doOpen}
-            className="w-full border border-gray-100 rounded-xl px-5 py-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer flex items-center"
+            className="w-full border border-gray-100 rounded-2xl p-4 hover:border-gray-300 transition-colors cursor-pointer flex items-center relative"
           >
             {/* 入住 */}
-            <div className="flex-1 text-center">
-              <p className="text-xs text-gray-400 mb-0.5">入住</p>
-              <p className="text-lg font-bold text-dark">{checkInDisplay}</p>
+            <div className="flex-1 text-left">
+              <p className="text-xs text-gray-400 mb-1">入住</p>
+              <p className="text-xl font-bold text-dark">{checkInDisplay}</p>
               <p className="text-xs text-gray-400 mt-0.5">{checkInDayDisplay}</p>
             </div>
             {/* 晚数 */}
-            <div className="mx-3">
-              <span className="inline-block bg-accent/20 text-dark text-xs font-bold px-3 py-1 rounded-full">
-                {nightsDisplay}晚
-              </span>
-            </div>
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-[#FFF8E1] text-yellow-800 text-xs font-bold px-3 py-1 rounded-full">
+              {nightsDisplay}晚
+            </span>
             {/* 退房 */}
-            <div className="flex-1 text-center">
-              <p className="text-xs text-gray-400 mb-0.5">退房</p>
-              <p className="text-lg font-bold text-dark">{checkOutDisplay}</p>
+            <div className="flex-1 text-right">
+              <p className="text-xs text-gray-400 mb-1">退房</p>
+              <p className="text-xl font-bold text-dark">{checkOutDisplay}</p>
               <p className="text-xs text-gray-400 mt-0.5">{checkOutDayDisplay}</p>
             </div>
           </button>
@@ -144,48 +138,48 @@ export default function SearchPage() {
           <button
             type="button"
             onClick={guest.doOpen}
-            className="text-left w-full border border-gray-100 rounded-xl p-3 bg-gray-50/50 hover:bg-gray-50 hover:border-accent/30 transition-colors cursor-pointer"
+            className="text-left w-full border border-gray-100 rounded-2xl p-4 hover:border-gray-300 transition-colors cursor-pointer flex items-center gap-3"
           >
-            <label className="block text-[11px] font-semibold text-gray-400 mb-1 uppercase tracking-wide px-0.5">入住人数</label>
-            <div className="flex items-center">
-              <span className="material-symbols-outlined text-gray-400 mr-2 text-lg">person</span>
-              <span className="text-sm font-medium text-dark">{guestDisplay}</span>
+            <span className="material-symbols-outlined text-gray-400 text-2xl">person_outline</span>
+            <div>
+              <label className="block text-xs text-gray-400 mb-0.5">入住人数</label>
+              <span className="text-base font-medium text-dark">{guestDisplay}</span>
             </div>
           </button>
 
           {/* Filter Tags */}
-          <div className="flex space-x-2.5 overflow-x-auto hide-scrollbar pb-0.5">
+          <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-0.5">
             <button
               onClick={filter.doOpen}
-              className={`flex items-center px-3.5 py-2 rounded-pill text-[13px] font-medium border transition-colors whitespace-nowrap ${
+              className={`flex items-center gap-1 px-4 py-2.5 rounded-2xl text-sm font-medium transition-colors whitespace-nowrap ${
                 filters.priceRange
-                  ? 'bg-accent/20 border-accent text-dark'
-                  : 'bg-gray-50 text-gray-600 border-gray-100 hover:border-accent/40'
+                  ? 'bg-accent/20 text-dark'
+                  : 'bg-gray-50 text-dark hover:bg-gray-100'
               }`}
             >
-              <span className="material-symbols-outlined text-base mr-1">attach_money</span>
+              <span className="material-symbols-outlined text-base text-gray-500">attach_money</span>
               价格
             </button>
             <button
               onClick={filter.doOpen}
-              className={`flex items-center px-3.5 py-2 rounded-pill text-[13px] font-medium border transition-colors whitespace-nowrap ${
+              className={`flex items-center gap-1 px-4 py-2.5 rounded-2xl text-sm font-medium transition-colors whitespace-nowrap ${
                 filters.starLevel
-                  ? 'bg-accent/20 border-accent text-dark'
-                  : 'bg-gray-50 text-gray-600 border-gray-100 hover:border-accent/40'
+                  ? 'bg-accent/20 text-dark'
+                  : 'bg-gray-50 text-dark hover:bg-gray-100'
               }`}
             >
-              <span className="material-symbols-outlined text-base mr-1">star_rate</span>
+              <span className="material-symbols-outlined text-base text-gray-500">star_outline</span>
               评分
             </button>
             <button
               onClick={filter.doOpen}
-              className={`flex items-center px-3.5 py-2 rounded-pill text-[13px] font-medium border transition-colors whitespace-nowrap ${
+              className={`flex items-center gap-1 px-4 py-2.5 rounded-2xl text-sm font-medium transition-colors whitespace-nowrap ${
                 hasActiveFilter
-                  ? 'bg-accent/20 border-accent text-dark'
-                  : 'bg-gray-50 text-gray-600 border-gray-100 hover:border-accent/40'
+                  ? 'bg-accent/20 text-dark'
+                  : 'bg-gray-50 text-dark hover:bg-gray-100'
               }`}
             >
-              <span className="material-symbols-outlined text-base mr-1">tune</span>
+              <span className="material-symbols-outlined text-base text-gray-500">tune</span>
               更多筛选
             </button>
           </div>
@@ -194,26 +188,28 @@ export default function SearchPage() {
         {/* Search Button */}
         <button
           onClick={() => navigate('/list')}
-          className="w-full bg-dark hover:bg-dark-hover text-white font-bold py-4 rounded-2xl shadow-lg active:scale-[0.98] transform transition duration-200 flex justify-center items-center text-lg"
+          className="w-full bg-dark hover:bg-dark-hover text-white font-bold py-4 rounded-2xl shadow-lg shadow-dark/20 active:scale-[0.98] transform transition-all duration-200 flex justify-center items-center text-lg"
         >
           搜索酒店
         </button>
 
         {/* Recent Searches */}
-        <div className="px-1">
-          <h3 className="text-sm font-bold text-dark mb-3">最近搜索</h3>
-          <div className="space-y-2.5 pb-4">
+        <div>
+          <h3 className="text-sm font-bold text-dark mb-4 pl-1">最近搜索</h3>
+          <div className="space-y-3 pb-4">
             {recentSearches.map((item, idx) => (
               <div
                 key={idx}
-                className="flex items-center p-3 bg-white rounded-xl shadow-subtle cursor-pointer hover:shadow-card transition-shadow"
+                className="flex items-center justify-between p-4 bg-surface rounded-2xl shadow-sm cursor-pointer hover:bg-gray-50 transition-colors"
               >
-                <span className="material-symbols-outlined text-gray-400 text-lg mr-3">history</span>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-dark">{item.city}</p>
-                  <p className="text-[11px] text-gray-500 truncate">{item.dates} · {item.guests}</p>
+                <div className="flex items-start gap-3">
+                  <span className="material-symbols-outlined text-gray-400 mt-0.5">history</span>
+                  <div>
+                    <p className="text-base font-bold text-dark">{item.city}</p>
+                    <p className="text-xs text-gray-400 mt-1">{item.dates} · {item.guests}</p>
+                  </div>
                 </div>
-                <span className="material-symbols-outlined text-gray-300 text-lg">north_west</span>
+                <span className="material-symbols-outlined text-gray-300 text-xl -rotate-45">arrow_forward</span>
               </div>
             ))}
           </div>
