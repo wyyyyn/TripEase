@@ -178,6 +178,69 @@ CREATE INDEX idx_orders_hotel_id        ON orders(hotel_id);
 CREATE INDEX idx_user_reviews_hotel_id  ON user_reviews(hotel_id);
 
 -- ============================================================
+-- 11. 城市表
+-- ============================================================
+
+CREATE TABLE cities (
+  id         BIGINT       PRIMARY KEY AUTO_INCREMENT,
+  name       VARCHAR(50)  NOT NULL UNIQUE,           -- 城市名：上海、北京
+  pinyin     VARCHAR(100),                           -- 拼音，用于搜索
+  lat        DECIMAL(10,7),
+  lng        DECIMAL(10,7),
+  is_hot     BOOLEAN      NOT NULL DEFAULT FALSE,    -- 热门城市
+  sort_order INT          NOT NULL DEFAULT 0,
+  created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================================
+-- 12. 城市知名景点（动态快捷标签来源）
+-- ============================================================
+
+CREATE TABLE city_landmarks (
+  id         BIGINT       PRIMARY KEY AUTO_INCREMENT,
+  city_id    BIGINT       NOT NULL,
+  name       VARCHAR(100) NOT NULL,                  -- 景点名：外滩、迪士尼
+  label      VARCHAR(100) NOT NULL,                  -- 标签显示文案：外滩附近
+  icon       VARCHAR(50)  NOT NULL DEFAULT 'location_on',  -- Material icon 名
+  lat        DECIMAL(10,7),
+  lng        DECIMAL(10,7),
+  radius_km  DECIMAL(5,2) NOT NULL DEFAULT 3.00,     -- 筛选半径（公里）
+  sort_order INT          NOT NULL DEFAULT 0,
+  is_active  BOOLEAN      NOT NULL DEFAULT TRUE,
+  created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (city_id) REFERENCES cities(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_city_landmarks_city_id ON city_landmarks(city_id);
+
+-- ============================================================
+-- 13. 搜索快捷标签定义
+-- ============================================================
+
+CREATE TABLE quick_tags (
+  id          BIGINT       PRIMARY KEY AUTO_INCREMENT,
+  code        VARCHAR(50)  NOT NULL UNIQUE,           -- 唯一标识：top_ranked, high_rating, free_shuttle
+  label       VARCHAR(50)  NOT NULL,                  -- 前端显示文案：上榜酒店
+  icon        VARCHAR(50)  NOT NULL,                  -- Material icon 名
+  icon_color  VARCHAR(20),                            -- 图标颜色 class：text-accent, text-amber-500
+  tag_type    ENUM('static', 'dynamic') NOT NULL DEFAULT 'static',
+  -- static = 所有城市通用（上榜酒店、4.7分以上、免费接送机）
+  -- dynamic = 按城市生成（景点标签，从 city_landmarks 读取）
+  filter_key  VARCHAR(50),                            -- 后端筛选字段映射
+  filter_value VARCHAR(100),                          -- 筛选值，如 "4.7" 或 "free_shuttle"
+  sort_order  INT          NOT NULL DEFAULT 0,
+  is_active   BOOLEAN      NOT NULL DEFAULT TRUE,
+  created_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================================
+-- 索引
+-- ============================================================
+
+CREATE INDEX idx_quick_tags_active_sort ON quick_tags(is_active, sort_order);
+
+-- ============================================================
 -- 种子数据：预置标签 & 设施
 -- ============================================================
 
@@ -202,3 +265,40 @@ INSERT INTO amenities (name, icon) VALUES
   ('无障碍',     'accessible'),
   ('厨房',       'kitchen'),
   ('洗衣机',     'local_laundry_service');
+
+-- 快捷标签种子数据
+INSERT INTO quick_tags (code, label, icon, icon_color, tag_type, filter_key, filter_value, sort_order) VALUES
+  ('top_ranked',   '上榜酒店',   'emoji_events',    'text-accent',    'static',  'is_top_ranked', '1',    1),
+  ('high_rating',  '4.7分以上',  'star',            'text-amber-500', 'static',  'rating',        '4.7',  2),
+  ('free_shuttle', '免费接送机', 'airport_shuttle',  NULL,             'static',  'amenity',       'free_shuttle', 3),
+  ('landmark',     '景点附近',   'location_on',      NULL,             'dynamic', 'landmark_id',   NULL,   10);
+
+-- 城市种子数据
+INSERT INTO cities (name, pinyin, is_hot, sort_order) VALUES
+  ('上海', 'shanghai', TRUE, 1),
+  ('北京', 'beijing',  TRUE, 2),
+  ('杭州', 'hangzhou', TRUE, 3),
+  ('成都', 'chengdu',  TRUE, 4),
+  ('广州', 'guangzhou', TRUE, 5),
+  ('三亚', 'sanya',    TRUE, 6),
+  ('西安', 'xian',     TRUE, 7),
+  ('重庆', 'chongqing', TRUE, 8);
+
+-- 城市景点种子数据
+INSERT INTO city_landmarks (city_id, name, label, icon, sort_order) VALUES
+  (1, '外滩',     '外滩附近',       'location_city', 1),
+  (1, '迪士尼',   '迪士尼附近',     'attractions',   2),
+  (2, '故宫',     '故宫附近',       'account_balance', 1),
+  (2, '环球影城', '环球影城附近',   'attractions',   2),
+  (3, '西湖',     '西湖附近',       'water',         1),
+  (3, '灵隐寺',   '灵隐寺附近',     'temple_buddhist', 2),
+  (4, '春熙路',   '春熙路附近',     'storefront',    1),
+  (4, '大熊猫基地', '大熊猫基地附近', 'park',        2),
+  (5, '广州塔',   '广州塔附近',     'cell_tower',    1),
+  (5, '长隆',     '长隆附近',       'attractions',   2),
+  (6, '亚龙湾',   '亚龙湾附近',     'beach_access',  1),
+  (6, '海棠湾',   '海棠湾附近',     'beach_access',  2),
+  (7, '兵马俑',   '兵马俑附近',     'museum',        1),
+  (7, '大雁塔',   '大雁塔附近',     'temple_buddhist', 2),
+  (8, '解放碑',   '解放碑附近',     'location_city', 1),
+  (8, '洪崖洞',   '洪崖洞附近',     'castle',        2);
