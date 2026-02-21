@@ -198,7 +198,7 @@ export default function MerchantHotelForm() {
                         star <= form.starRating ? 'text-accent' : 'text-gray-300'
                       }`}
                     >
-                      star
+                      star_rate
                     </span>
                   </button>
                 ))}

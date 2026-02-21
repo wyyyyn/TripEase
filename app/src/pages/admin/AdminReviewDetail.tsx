@@ -48,7 +48,7 @@ export default function AdminReviewDetail() {
             <StatusBadge status={hotel.status} />
             <div className="flex items-center gap-0.5">
               {Array.from({ length: hotel.starRating }).map((_, i) => (
-                <span key={i} className="material-symbols-outlined text-accent text-sm">star</span>
+                <span key={i} className="material-symbols-outlined text-accent text-sm">star_rate</span>
               ))}
             </div>
           </div>

@@ -306,7 +306,7 @@ export default function HotelList() {
                   <div className="bg-accent/20 text-dark text-xs font-bold px-2 py-1 rounded-lg flex items-center gap-1">
                     {hotel.rating}
                     <span className="material-symbols-outlined text-[12px]">
-                      star
+                      star_rate
                     </span>
                   </div>
                   <p className="text-[10px] text-gray-500 mt-1">

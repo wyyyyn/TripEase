@@ -79,7 +79,7 @@ export default function MerchantHotelList() {
                       <div className="flex items-center gap-0.5">
                         {Array.from({ length: hotel.starRating }).map((_, i) => (
                           <span key={i} className="material-symbols-outlined text-accent text-sm">
-                            star
+                            star_rate
                           </span>
                         ))}
                       </div>

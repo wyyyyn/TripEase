@@ -220,7 +220,7 @@ export default function HotelSearchHome() {
                       className="material-symbols-outlined text-xs text-accent"
                       style={{ fontVariationSettings: "'FILL' 1" }}
                     >
-                      star
+                      star_rate
                     </span>
                     <span className="font-medium ml-0.5">{hotel.rating}</span>
                   </p>
@@ -262,7 +262,7 @@ export default function HotelSearchHome() {
                           className="material-symbols-outlined text-xs mr-0.5 text-accent"
                           style={{ fontVariationSettings: "'FILL' 1" }}
                         >
-                          star
+                          star_rate
                         </span>
                         {pick.rating}
                       </span>

@@ -180,7 +180,7 @@ export default function HotelDetail() {
                   i < hotel.starRating ? 'text-accent' : 'text-gray-400'
                 }`}
               >
-                star
+                star_rate
               </span>
             ))}
             <span className="text-sm font-medium text-icon-gray ml-1">
