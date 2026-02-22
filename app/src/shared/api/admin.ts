@@ -18,6 +18,17 @@ interface ApiResult<T> {
   data: T;
 }
 
+/** 仪表板统计数据 */
+export interface DashboardStatsResponse {
+  total: number;
+  draft: number;
+  pending: number;
+  approved: number;
+  rejected: number;
+  published: number;
+  offline: number;
+}
+
 /** 审核日志条目 */
 export interface ReviewLogResponse {
   id: number;
@@ -31,6 +42,19 @@ export interface ReviewLogResponse {
 }
 
 // ---------- API 函数 ----------
+
+/**
+ * 仪表板统计（admin 看全部，merchant 看自己的）
+ *
+ * 后端用 GROUP BY 直接在数据库算好了每种状态的数量，
+ * 只返回几个数字，比拉全部酒店列表高效得多。
+ */
+export async function getDashboardStatsAPI(): Promise<DashboardStatsResponse> {
+  const result = await apiClient<ApiResult<DashboardStatsResponse>>(
+    '/api/admin/stats',
+  );
+  return result.data;
+}
 
 /**
  * 管理员：查询所有酒店（可按状态筛选）

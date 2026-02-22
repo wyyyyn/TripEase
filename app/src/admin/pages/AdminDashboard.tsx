@@ -1,27 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../shared/store/useStore';
-import { getAdminHotelsAPI } from '../../shared/api/admin';
-import { getHotelsByOwnerAPI } from '../../shared/store/hotelStore';
-import type { ManagedHotel } from '../../shared/types/admin';
-import { listItemToManagedHotel } from '../../shared/store/hotelStore';
+import {
+  getDashboardStatsAPI,
+  type DashboardStatsResponse,
+} from '../../shared/api/admin';
 
 export default function AdminDashboard() {
   const user = useAuth();
-  const [hotels, setHotels] = useState<ManagedHotel[]>([]);
+  const [stats, setStats] = useState<DashboardStatsResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
       try {
-        if (user?.role === 'admin') {
-          // 管理员：看所有酒店
-          const list = await getAdminHotelsAPI();
-          setHotels(list.map(listItemToManagedHotel));
-        } else if (user?.role === 'merchant') {
-          // 商户：只看自己的酒店
-          const list = await getHotelsByOwnerAPI();
-          setHotels(list);
-        }
+        // 后端会根据角色自动判断：admin 看全部，merchant 看自己的
+        const data = await getDashboardStatsAPI();
+        setStats(data);
       } catch {
         // 静默处理，dashboard 只是展示统计数据
       } finally {
@@ -31,41 +25,41 @@ export default function AdminDashboard() {
     if (user) load();
   }, [user]);
 
-  const stats = [
+  const statCards = [
     {
       icon: 'hotel',
       label: '酒店总数',
-      value: hotels.length,
+      value: stats?.total ?? 0,
       color: 'bg-blue-50 text-blue-600',
     },
     {
       icon: 'pending_actions',
       label: '待审核',
-      value: hotels.filter((h) => h.status === 'pending').length,
+      value: stats?.pending ?? 0,
       color: 'bg-amber-50 text-amber-600',
     },
     {
       icon: 'check_circle',
       label: '已发布',
-      value: hotels.filter((h) => h.status === 'published').length,
+      value: stats?.published ?? 0,
       color: 'bg-emerald-50 text-emerald-600',
     },
     {
       icon: 'edit_note',
       label: '草稿',
-      value: hotels.filter((h) => h.status === 'draft').length,
+      value: stats?.draft ?? 0,
       color: 'bg-gray-50 text-gray-600',
     },
     {
       icon: 'cancel',
       label: '已拒绝',
-      value: hotels.filter((h) => h.status === 'rejected').length,
+      value: stats?.rejected ?? 0,
       color: 'bg-red-50 text-red-600',
     },
     {
       icon: 'cloud_off',
       label: '已下线',
-      value: hotels.filter((h) => h.status === 'offline').length,
+      value: stats?.offline ?? 0,
       color: 'bg-gray-50 text-gray-500',
     },
   ];
@@ -85,7 +79,7 @@ export default function AdminDashboard() {
         <p className="text-gray-400">加载中...</p>
       ) : (
         <div className="grid grid-cols-3 gap-6">
-          {stats.map((stat) => (
+          {statCards.map((stat) => (
             <div
               key={stat.label}
               className="bg-white rounded-2xl shadow-subtle border border-gray-100 p-6"
