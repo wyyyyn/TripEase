@@ -1,7 +1,6 @@
 import { useSyncExternalStore } from 'react';
-import { getAllHotels, getPublishedHotels } from './hotelStore';
+import { getPublishedHotels } from './hotelStore';
 import { getCurrentUser } from './authStore';
-import type { ManagedHotel } from '../types/admin';
 import type { AuthUser } from '../types/admin';
 import type { Hotel } from '../types/hotel';
 
@@ -14,22 +13,14 @@ function subscribe(cb: () => void): () => void {
   };
 }
 
-let _hotelCache: ManagedHotel[] | null = null;
+// C 端用：获取已发布的酒店（Step 7 会替换为 API）
 let _publishedCache: Hotel[] | null = null;
 function invalidateCache() {
-  _hotelCache = null;
   _publishedCache = null;
 }
 
 window.addEventListener('tripease_store_change', invalidateCache);
 window.addEventListener('storage', invalidateCache);
-
-export function useHotels(): ManagedHotel[] {
-  return useSyncExternalStore(subscribe, () => {
-    if (!_hotelCache) _hotelCache = getAllHotels();
-    return _hotelCache;
-  });
-}
 
 export function usePublishedHotels(): Hotel[] {
   return useSyncExternalStore(subscribe, () => {

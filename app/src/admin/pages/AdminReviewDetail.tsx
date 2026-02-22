@@ -1,36 +1,94 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getHotelById, changeStatus } from '../../shared/store/hotelStore';
-import { useHotels } from '../../shared/store/useStore';
+import { getAdminHotelDetailAPI, changeHotelStatusAPI, getReviewLogsAPI } from '../../shared/api/admin';
+import type { ReviewLogResponse } from '../../shared/api/admin';
+import { toManagedHotel } from '../../shared/store/hotelStore';
 import StatusBadge from '../components/StatusBadge';
 import RejectModal from '../components/RejectModal';
+import type { ManagedHotel } from '../../shared/types/admin';
+
+// 状态名称的中文映射（用于审核日志展示）
+const STATUS_LABEL: Record<string, string> = {
+  draft: '草稿',
+  pending: '待审核',
+  approved: '已通过',
+  rejected: '已拒绝',
+  published: '已发布',
+  offline: '已下线',
+};
 
 export default function AdminReviewDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  // Subscribe to store changes so UI updates after actions
-  useHotels();
-  const hotel = id ? getHotelById(id) : undefined;
+  const [hotel, setHotel] = useState<ManagedHotel | null>(null);
+  const [logs, setLogs] = useState<ReviewLogResponse[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [rejectOpen, setRejectOpen] = useState(false);
   const [rejectKey, setRejectKey] = useState(0);
   const openReject = () => { setRejectOpen(true); setRejectKey((k) => k + 1); };
 
-  if (!hotel) {
+  const numericId = id ? Number(id) : NaN;
+
+  // 加载酒店详情 + 审核日志
+  const fetchData = async () => {
+    if (Number.isNaN(numericId)) return;
+    setLoading(true);
+    setError('');
+    try {
+      const [detail, reviewLogs] = await Promise.all([
+        getAdminHotelDetailAPI(numericId),
+        getReviewLogsAPI(numericId),
+      ]);
+      setHotel(toManagedHotel(detail));
+      setLogs(reviewLogs);
+    } catch (err: any) {
+      setError(err.message || '加载失败');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [numericId]);
+
+  // 审核操作
+  const handleAction = async (status: 'approved' | 'published' | 'offline') => {
+    try {
+      await changeHotelStatusAPI(numericId, status);
+      fetchData();
+    } catch (err: any) {
+      alert(err.message || '操作失败');
+    }
+  };
+
+  // 拒绝操作
+  const handleReject = async (reason: string) => {
+    try {
+      await changeHotelStatusAPI(numericId, 'rejected', reason);
+      setRejectOpen(false);
+      fetchData();
+    } catch (err: any) {
+      alert(err.message || '操作失败');
+    }
+  };
+
+  if (loading) {
     return (
       <div className="p-8">
-        <p className="text-gray-500">酒店未找到</p>
+        <p className="text-gray-500">加载中...</p>
       </div>
     );
   }
 
-  const handleAction = (status: 'approved' | 'published' | 'offline') => {
-    changeStatus(hotel.id, status);
-  };
-
-  const handleReject = (reason: string) => {
-    changeStatus(hotel.id, 'rejected', reason);
-    setRejectOpen(false);
-  };
+  if (error || !hotel) {
+    return (
+      <div className="p-8">
+        <p className="text-gray-500">{error || '酒店未找到'}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-8 max-w-4xl">
@@ -194,6 +252,35 @@ export default function AdminReviewDetail() {
                       <span className="font-medium text-dark">¥{room.pricePerNight}/晚</span>
                     </div>
                   </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Review Logs */}
+        {logs.length > 0 && (
+          <section className="bg-white rounded-2xl shadow-subtle border border-gray-100 p-6">
+            <h2 className="text-lg font-bold text-dark mb-4">审核记录</h2>
+            <div className="space-y-3">
+              {logs.map((log) => (
+                <div
+                  key={log.id}
+                  className="flex items-center gap-4 p-3 border border-gray-100 rounded-xl text-sm"
+                >
+                  <div className="flex-1">
+                    <span className="font-medium text-dark">{log.operatorName}</span>
+                    <span className="text-gray-500 mx-2">将状态从</span>
+                    <span className="font-medium">{STATUS_LABEL[log.fromStatus] || log.fromStatus}</span>
+                    <span className="text-gray-500 mx-2">变更为</span>
+                    <span className="font-medium">{STATUS_LABEL[log.toStatus] || log.toStatus}</span>
+                  </div>
+                  {log.reason && (
+                    <span className="text-gray-500 text-xs">原因：{log.reason}</span>
+                  )}
+                  <span className="text-xs text-gray-400 shrink-0">
+                    {new Date(log.createdAt).toLocaleString('zh-CN')}
+                  </span>
                 </div>
               ))}
             </div>
