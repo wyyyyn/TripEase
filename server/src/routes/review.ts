@@ -16,8 +16,14 @@ import * as reviewController from '../controllers/reviewController.js';
 
 const router = Router();
 
-// 全局中间件：所有审核路由都要求 登录 + admin 角色
+// 全局中间件：所有审核路由都要求登录
 router.use(requireAuth);
+
+// ─── 仪表板统计（admin + merchant 都可以访问）────
+// 放在 requireRole('admin') 之前，因为商户也需要看自己的统计
+router.get('/stats', requireRole('admin', 'merchant'), reviewController.getDashboardStats);
+
+// 以下路由只允许 admin 角色
 router.use(requireRole('admin'));
 
 // ─── 酒店列表 ───────────────────────────

@@ -14,7 +14,7 @@
 import pool from '../config/db.js';
 import type { RowDataPacket } from 'mysql2/promise';
 import type { HotelStatus, HotelListItem, HotelDetail } from '../types/hotel.js';
-import type { ReviewLogItem } from '../types/review.js';
+import type { ReviewLogItem, DashboardStats } from '../types/review.js';
 import { VALID_TRANSITIONS } from '../types/review.js';
 import { getHotelById } from './hotelService.js';
 
@@ -177,4 +177,57 @@ export async function getReviewLogs(
     reason: r.reason,
     createdAt: r.created_at.toISOString(),
   }));
+}
+
+// ===== 4. 仪表板统计 =====
+
+/**
+ * 获取仪表板统计数据
+ *
+ * 用 SQL 的 GROUP BY 直接在数据库里算出每种状态有几个酒店，
+ * 而不是把所有酒店拉到前端再一个个数。
+ *
+ * 类比：你想知道班上有几个男生几个女生，
+ * 应该让班长数好告诉你（数据库 GROUP BY），
+ * 而不是把全班同学叫过来让你自己数（前端 filter）。
+ *
+ * @param ownerId - 如果传了，只统计该商户的酒店；不传则统计所有
+ */
+export async function getDashboardStats(
+  ownerId?: number,
+): Promise<DashboardStats> {
+  let sql = 'SELECT status, COUNT(*) AS cnt FROM hotels';
+  const params: any[] = [];
+
+  if (ownerId !== undefined) {
+    sql += ' WHERE owner_id = ?';
+    params.push(ownerId);
+  }
+
+  sql += ' GROUP BY status';
+
+  const [rows] = await pool.query<RowDataPacket[]>(sql, params);
+
+  // 初始化所有状态为 0
+  const stats: DashboardStats = {
+    total: 0,
+    draft: 0,
+    pending: 0,
+    approved: 0,
+    rejected: 0,
+    published: 0,
+    offline: 0,
+  };
+
+  // 填入数据库返回的实际数量
+  for (const row of rows as any[]) {
+    const status = row.status as keyof Omit<DashboardStats, 'total'>;
+    const count = Number(row.cnt);
+    if (status in stats) {
+      stats[status] = count;
+    }
+    stats.total += count;
+  }
+
+  return stats;
 }

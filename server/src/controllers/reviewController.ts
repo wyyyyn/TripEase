@@ -117,6 +117,29 @@ export async function changeStatus(req: AuthRequest, res: Response) {
 }
 
 // ══════════════════════════════════════════════
+// GET /api/admin/stats  —— 仪表板统计数据
+//
+// 管理员：返回全平台酒店统计
+// 商户：只返回自己酒店的统计
+//
+// 为什么不让前端拉所有酒店再数？
+// → 如果有 1000 家酒店，前端得传输 1000 条记录只为算 6 个数字
+// → 数据库 GROUP BY 一条 SQL 搞定，高效 100 倍
+// ══════════════════════════════════════════════
+export async function getDashboardStats(req: AuthRequest, res: Response) {
+  try {
+    const user = req.user!;
+    // admin 看全部，merchant 只看自己的
+    const ownerId = user.role === 'admin' ? undefined : user.userId;
+    const stats = await reviewService.getDashboardStats(ownerId);
+    success(res, stats);
+  } catch (err) {
+    console.error('Failed to get dashboard stats:', err);
+    return fail(res, 'Failed to get dashboard stats', 500);
+  }
+}
+
+// ══════════════════════════════════════════════
 // GET /api/admin/hotels/:id/logs  —— 查询审核日志
 // 谁在什么时候做了什么操作，一目了然
 // ══════════════════════════════════════════════

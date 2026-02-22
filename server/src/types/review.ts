@@ -34,6 +34,23 @@ export interface ReviewLogRow {
   created_at: Date;
 }
 
+// ===== Dashboard 统计 =====
+
+/**
+ * 仪表板统计数据
+ * 类比：酒店管理首页上方的"一排数字卡片"，
+ * 告诉你总共有多少家酒店、几家在审核中、几家已上线等。
+ */
+export interface DashboardStats {
+  total: number;      // 酒店总数
+  draft: number;      // 草稿
+  pending: number;    // 待审核
+  approved: number;   // 已通过（待发布）
+  rejected: number;   // 已拒绝
+  published: number;  // 已上架
+  offline: number;    // 已下线
+}
+
 // ===== API 响应类型 =====
 
 /** 返回给前端的审核日志（含操作人姓名） */
