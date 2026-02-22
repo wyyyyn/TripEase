@@ -7,15 +7,20 @@ export default function AdminLogin() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // 请求进行中的加载状态
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     if (!username.trim() || !password.trim()) {
       setError('请填写用户名和密码');
       return;
     }
-    const result = login(username, password);
+
+    setLoading(true);
+    const result = await login(username, password);
+    setLoading(false);
+
     if (!result.ok) {
       setError(result.error);
       return;
@@ -44,6 +49,7 @@ export default function AdminLogin() {
               onChange={(e) => setUsername(e.target.value)}
               className="w-full border border-gray-200 rounded-xl p-3 bg-gray-50/50 focus:border-accent focus:outline-none transition-colors"
               placeholder="请输入用户名"
+              disabled={loading}
             />
           </div>
           <div>
@@ -54,6 +60,7 @@ export default function AdminLogin() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border border-gray-200 rounded-xl p-3 bg-gray-50/50 focus:border-accent focus:outline-none transition-colors"
               placeholder="请输入密码"
+              disabled={loading}
             />
           </div>
 
@@ -63,9 +70,10 @@ export default function AdminLogin() {
 
           <button
             type="submit"
-            className="w-full bg-dark hover:bg-dark-hover text-white font-bold py-3 px-6 rounded-2xl transition-colors"
+            disabled={loading}
+            className="w-full bg-dark hover:bg-dark-hover text-white font-bold py-3 px-6 rounded-2xl transition-colors disabled:opacity-50"
           >
-            登录
+            {loading ? '登录中...' : '登录'}
           </button>
         </form>
 

@@ -1,9 +1,10 @@
 import type { Hotel } from './hotel';
 
-export type UserRole = 'merchant' | 'admin';
+// 角色类型：与后端 ENUM('customer', 'merchant', 'admin') 对齐
+export type UserRole = 'customer' | 'merchant' | 'admin';
 
 export interface AuthUser {
-  id: string;
+  id: number;       // 数据库自增 ID（后端返回 number）
   username: string;
   role: UserRole;
   createdAt: string;
@@ -18,7 +19,7 @@ export type ReviewStatus =
   | 'offline';
 
 export interface ManagedHotel extends Hotel {
-  ownerId: string;
+  ownerId: string; // Step 5 改造 hotelStore 时会统一改为 number
   status: ReviewStatus;
   rejectReason?: string;
   createdAt: string;

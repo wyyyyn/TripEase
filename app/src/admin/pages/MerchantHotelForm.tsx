@@ -127,7 +127,7 @@ export default function MerchantHotelForm() {
     if (isEdit) {
       updateHotel(id, form, submit);
     } else {
-      createHotel(user.id, form, submit);
+      createHotel(String(user.id), form, submit);
     }
     navigate('/admin/hotels');
   };

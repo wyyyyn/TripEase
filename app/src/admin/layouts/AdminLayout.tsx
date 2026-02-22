@@ -1,11 +1,33 @@
+import { useState, useEffect } from 'react';
 import { NavLink, Outlet, Navigate, useNavigate } from 'react-router-dom';
-import { logout } from '../../shared/store/authStore';
+import { logout, initAuth } from '../../shared/store/authStore';
 import { useAuth } from '../../shared/store/useStore';
 
 export default function AdminLayout() {
   const user = useAuth();
   const navigate = useNavigate();
+  const [authChecked, setAuthChecked] = useState(false); // token 验证是否完成
 
+  // 应用挂载时，用 token 向后端确认登录状态
+  useEffect(() => {
+    initAuth().finally(() => setAuthChecked(true));
+  }, []);
+
+  // token 验证中 → 显示加载状态，避免闪烁到登录页
+  if (!authChecked) {
+    return (
+      <div className="min-h-dvh bg-cream flex items-center justify-center">
+        <div className="text-center">
+          <span className="material-symbols-outlined text-accent text-4xl animate-spin">
+            progress_activity
+          </span>
+          <p className="text-gray-500 text-sm mt-3">验证登录状态...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 验证完毕但没有用户 → 跳转登录页
   if (!user) return <Navigate to="/admin/login" replace />;
 
   const handleLogout = () => {

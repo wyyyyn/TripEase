@@ -43,7 +43,9 @@ export function usePublishedHotels(): Hotel[] {
 
 export function useMerchantHotels(): ManagedHotel[] {
   const user = getCurrentUser();
-  const ownerId = user?.id ?? '';
+  // user.id 现在是 number（来自后端），hotelStore 还是 string（Step 5 才改造）
+  // 这里临时用 String() 做转换，Step 5 会统一
+  const ownerId = user?.id != null ? String(user.id) : '';
   return useSyncExternalStore(subscribe, () => {
     if (!_merchantCache || _merchantCache.ownerId !== ownerId) {
       _merchantCache = { ownerId, data: getHotelsByOwner(ownerId) };
