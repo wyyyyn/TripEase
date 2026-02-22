@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ffd83d",
+                        "background-light": "#fcfbf7",
+                        "background-dark": "#1a1811",
+                        "navy-custom": "#181710",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem", // 12px
+                        "xl": "1.25rem", // 20px
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex items-center justify-center font-display">
+<div class="flex w-full min-h-screen flex-col lg:flex-row">
+<!-- Left Side: Brand Hero Section -->
+<div class="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 overflow-hidden bg-navy-custom">
+<!-- Background Image with Overlay -->
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-t from-navy-custom via-navy-custom/60 to-transparent z-10"></div>
+<img alt="Luxury hotel lobby interior" class="w-full h-full object-cover" data-alt="Modern luxury hotel lobby with warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6ISGHa1TR6_D4yCPuri0gVygWWhTG-AZ-_tdm3AP6S6SwwdqPrL6mS6kI1Afh31UiZMmy_ACAvvyk2PVO_fdybgVmxu7OsCZ3HPu8_PZPp5CJqAJ7nH33Rqb2EOjRU1AdmJj4Fw3ENyGbSxNE6rOJ_HiY5IHcQu0HSB_6CChdYHmLkwgUcZtvzgMtHfjyZ6GO1vXNqgTAylJzONKpZfSIkJb5ZrA-KKgGw7VbQIZ9HveiTemfVY3-GBo5rlPisGODwi3RwWSlZVo"/>
+</div>
+<!-- Logo/Header Area -->
+<div class="relative z-20 flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-navy-custom text-xl">hotel_class</span>
+</div>
+<h2 class="text-white text-2xl font-bold tracking-tight">TripEase</h2>
+</div>
+<!-- Text Content -->
+<div class="relative z-20 max-w-lg mb-12">
+<h1 class="text-white text-5xl font-extrabold leading-tight tracking-tight mb-6">
+                    掌控酒店运营，<br/>从这里开始
+                </h1>
+<p class="text-white/80 text-lg font-medium leading-relaxed">专为独立业主与连锁品牌打造的智能管理中枢</p>
+</div>
+<!-- Stats Bar -->
+<div class="relative z-20 flex flex-wrap gap-6">
+<div class="flex flex-col gap-1 px-6 py-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 min-w-[140px]">
+<p class="text-white/60 text-sm font-medium">活跃酒店</p>
+<p class="text-primary text-2xl font-bold">2.5k+</p>
+</div>
+<div class="flex flex-col gap-1 px-6 py-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 min-w-[140px]">
+<p class="text-white/60 text-sm font-medium">系统在线率</p>
+<p class="text-primary text-2xl font-bold">99.9%</p>
+</div>
+<div class="flex flex-col gap-1 px-6 py-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 min-w-[140px]">
+<p class="text-white/60 text-sm font-medium">专业支持</p>
+<p class="text-primary text-2xl font-bold">24/7</p>
+</div>
+</div>
+</div>
+<!-- Right Side: Login Card Section -->
+<div class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 bg-background-light dark:bg-background-dark">
+<div class="w-full max-w-[480px] bg-white dark:bg-zinc-900 rounded-xl shadow-xl shadow-navy-custom/5 border border-primary/10 p-8 sm:p-10">
+<!-- Login Header -->
+<div class="mb-10">
+<h2 class="text-navy-custom dark:text-white text-3xl font-bold mb-2">欢迎回来</h2>
+<p class="text-zinc-500 dark:text-zinc-400 font-medium">请登录您的账户</p>
+</div>
+<!-- Form -->
+<form class="space-y-6">
+<!-- Email Field -->
+<div class="flex flex-col gap-2">
+<label class="text-navy-custom dark:text-zinc-300 text-sm font-semibold px-1">邮箱地址</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-zinc-400 group-focus-within:text-primary transition-colors">mail</span>
+</div>
+<input class="block w-full pl-12 pr-4 h-14 bg-background-light dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 rounded-lg text-navy-custom dark:text-white placeholder:text-zinc-400 focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all text-base font-normal" placeholder="example@hotel.com" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between px-1">
+<label class="text-navy-custom dark:text-zinc-300 text-sm font-semibold">密码</label>
+<a class="text-primary hover:text-primary/80 text-sm font-bold transition-colors" href="#">忘记密码？</a>
+</div>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-zinc-400 group-focus-within:text-primary transition-colors">lock</span>
+</div>
+<input class="block w-full pl-12 pr-4 h-14 bg-background-light dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 rounded-lg text-navy-custom dark:text-white placeholder:text-zinc-400 focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all text-base font-normal" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<!-- Remember Me -->
+<div class="flex items-center gap-3 px-1">
+<input class="w-5 h-5 rounded border-zinc-300 dark:border-zinc-700 text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" id="remember" type="checkbox"/>
+<label class="text-zinc-600 dark:text-zinc-400 text-sm font-medium cursor-pointer" for="remember">记住我（7天内免登录）</label>
+</div>
+<!-- Login Button -->
+<button class="w-full h-14 bg-navy-custom hover:bg-navy-custom/90 dark:bg-primary dark:text-navy-custom text-white rounded-lg font-bold text-lg flex items-center justify-center gap-2 transition-all transform active:scale-[0.98] shadow-lg shadow-navy-custom/10" type="submit">
+                        立即登录 
+                        <span class="material-symbols-outlined text-primary dark:text-navy-custom text-xl">arrow_forward</span>
+</button>
+</form>
+<!-- Footer -->
+<div class="mt-10 pt-8 border-t border-zinc-100 dark:border-zinc-800 text-center">
+<p class="text-zinc-500 dark:text-zinc-400 font-medium">
+                        还没有账号？ 
+                        <a class="text-primary hover:text-primary/80 font-bold ml-1 inline-flex items-center transition-colors" href="#">
+                            立即注册
+                        </a>
+</p>
+</div>
+</div>
+</div>
+</div>
+</body></html>

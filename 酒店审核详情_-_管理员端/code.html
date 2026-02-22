@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Audit Portal - Hotel Review</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ffd83d",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#231f0f",
+                        "approve": "#0d9488", // Teal
+                        "reject": "#f43f5e",  // Coral/Rose
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e5e7eb;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-6 py-3">
+<div class="max-w-[1440px] mx-auto flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-1.5 rounded-lg">
+<span class="material-symbols-outlined text-background-dark font-bold">domain_verification</span>
+</div>
+<h1 class="text-lg font-extrabold tracking-tight">Audit Portal</h1>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">仪表盘</a>
+<a class="text-sm font-semibold text-primary border-b-2 border-primary pb-0.5" href="#">酒店审核</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">商户管理</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+<input class="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-full text-sm focus:ring-2 focus:ring-primary w-64" placeholder="搜索提交记录..." type="text"/>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center border border-primary/50 overflow-hidden">
+<img alt="Admin Avatar" data-alt="Profile picture of the system administrator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEL52W5sxtCpSacUg5MlvvfR-0dVC9tuhLjTNuNWPLG0ktHbIP8z0j9PG611pjRVJcajK4rlP0QomJ9UOezFDXAwDqUb2LOXus_wwd9SxIGkdS6kjgFFP-Cp-OkyiEVtQftT-3fUE95HznOI_BHgD_rWC70iOnqoz3MtWAC5yTXCDB02cMzvx99yZhfJaI4YAgEIvA0QLNTXKzSStpq6DV6GMmzExgRUW9mKNIAdAnjhpyycjVI-QFV464qTSVB7CMAOmiQvBsxNY"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[1440px] mx-auto p-6">
+<!-- Progress Header -->
+<div class="mb-8 bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-500">提交ID: #H-992831</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary/20 text-slate-800 border border-primary/30 uppercase">审核中</span>
+</div>
+<h2 class="text-3xl font-black tracking-tight">Grand Plaza Resort &amp; Spa</h2>
+<p class="text-slate-500 text-sm flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-sm">location_on</span>
+                        122 Marina Drive, Mediterranean Coast, Cyprus
+                    </p>
+</div>
+<div class="flex-1 max-w-md">
+<div class="flex justify-between mb-2">
+<span class="text-xs font-bold text-slate-400">录入</span>
+<span class="text-xs font-bold text-primary">审核阶段</span>
+<span class="text-xs font-bold text-slate-400">已发布</span>
+</div>
+<div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 33%"></div>
+<div class="h-full bg-primary/40 animate-pulse" style="width: 33%"></div>
+<div class="h-full bg-slate-200 dark:bg-slate-700" style="width: 34%"></div>
+</div>
+<p class="text-[10px] text-center mt-2 text-slate-400 uppercase font-bold tracking-widest">当前步骤：数据校验</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row gap-8">
+<!-- Left Column: Content Review (Scrollable) -->
+<div class="flex-1 space-y-8">
+<!-- Hero Image & Gallery -->
+<section>
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-primary">image</span> 视觉资产</h3>
+<div class="grid grid-cols-4 grid-rows-2 gap-3 h-[400px]">
+<div class="col-span-3 row-span-2 rounded-xl overflow-hidden group relative">
+<img alt="Main Hotel View" class="w-full h-full object-cover" data-alt="Modern luxury hotel resort with large infinity pool at sunset" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6FVrZ3w10nLTFtO5NFfBcA-KKuuU5lPZc4d13xNp-vxfQcQ-eTKZl4fVo-fhlfMGBSKZe7xgdFbDenuWjcogxcXIgFXbNn4_Joi9qV5fmG5ZFoFrr3sN6UWuKwYhnhF8BZoW7HV3dexE0JZP3FejRxJ4cT-lH_PMQKikTw-C4V3eQeKWv-4g6JLvkQFWlE15eIi0y9V2gKcnEmTrc54ZBXgRtFGz-xTG7jIVAZmqV7RZ5OdvgBTfQ6oVo6N6ROgAU9pb4aPChCPg"/>
+<div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="bg-white/20 backdrop-blur-md p-3 rounded-full text-white">
+<span class="material-symbols-outlined">zoom_in</span>
+</button>
+</div>
+</div>
+<div class="rounded-xl overflow-hidden">
+<img alt="Room Preview" class="w-full h-full object-cover" data-alt="Interior of a luxury hotel suite with balcony view" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnxjw77lWc1toDiytVhLfkFGirdM7bksPBuwk2k-EubnhdmWjoFINgh372ogtxR8irdRvvfDrrIECb4zv_0kUVqnmUwb9UFCkI29nDhQQmU16VebgQc1QFZPWA6A11oyWrUTCqBZfihMJAh09SnkGfkBCQAl8cIhvyxGTXm7FSDC5Vozc8bzjc7xWhDIH1xu8XME1jdREB2PGJnAFK2uB9xnKfwbKm7MplCHa0ivdIibDFmBbkaH2Pw7pXr5mRWknhWOPHtYsxPq8"/>
+</div>
+<div class="rounded-xl overflow-hidden relative">
+<img alt="Pool Area" class="w-full h-full object-cover" data-alt="Close up of resort swimming pool with lounge chairs" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRuLGKEIVfqFN2EiMHyQ6VR4T_InyIJyVete9EYfzkJkK6A7AL2-MpkTq0QpavJcLK7Y4wXFcAmBvLZ8mkon2xBanDi0NmR_6WUcPBGTvNKWOFD4XTR2oKsaW9oV2Xorea2JMY85oCf39aPeYlrtaH7w_GQ2nmwGceqlBlDdJE3b1cukF-SmJLgkMtL58_3wewdCWF4Qoy87fh_QASnWLxIQ0ndz4Fb6-CIV9iLkuLEJ_h_JpFBZqZHJaPaYreSUEXWkECcThdXc4"/>
+<div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+<span class="text-white font-bold">+12</span>
+</div>
+</div>
+</div>
+</section>
+<!-- General Information -->
+<section class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800">
+<h3 class="text-lg font-bold mb-4 border-b pb-2 dark:border-slate-800">基本信息</h3>
+<div class="grid md:grid-cols-2 gap-6">
+<div>
+<p class="text-xs font-bold text-slate-400 uppercase tracking-tighter mb-1">酒店描述</p>
+<p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                                The Grand Plaza Resort &amp; Spa offers a seamless blend of Mediterranean charm and modern luxury. 
+                                Featuring 150 sea-view rooms, 3 specialty restaurants, and an award-winning spa facility. 
+                                Recently renovated in 2023 to include eco-friendly energy systems and smart-room technology.
+                            </p>
+</div>
+<div class="space-y-4">
+<div>
+<p class="text-xs font-bold text-slate-400 uppercase tracking-tighter mb-1">酒店描述</p>
+<div class="bg-slate-100 dark:bg-slate-800 rounded-lg p-3 flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">map</span>
+<div>
+<p class="text-sm font-medium">Cyprus, Limassol Region</p>
+<p class="text-xs text-slate-500">Latitude: 34.6751, Longitude: 33.0445</p>
+<button class="text-primary text-xs font-bold mt-1 underline">在地图上验证</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Room Types & Pricing -->
+<section class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800">
+<h3 class="text-lg font-bold mb-4 border-b pb-2 dark:border-slate-800">房型与价格</h3>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-xs font-bold text-slate-400 uppercase border-b dark:border-slate-800">
+<th class="py-3 px-2">房型</th>
+<th class="py-3 px-2">容纳人数</th>
+<th class="py-3 px-2">基础价格</th>
+<th class="py-3 px-2">设施</th>
+</tr>
+</thead>
+<tbody class="text-sm">
+<tr class="border-b dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="py-4 px-2 font-bold">豪华海景房</td>
+<td class="py-4 px-2">2成人, 1儿童</td>
+<td class="py-4 px-2 text-approve font-bold">$240 / 晚</td>
+<td class="py-4 px-2">
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-sm" title="WiFi">wifi</span>
+<span class="material-symbols-outlined text-sm" title="AC">ac_unit</span>
+<span class="material-symbols-outlined text-sm" title="TV">tv</span>
+</div>
+</td>
+</tr>
+<tr class="border-b dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="py-4 px-2 font-bold">行政套房</td>
+<td class="py-4 px-2">4成人</td>
+<td class="py-4 px-2 text-approve font-bold">$450 / 晚</td>
+<td class="py-4 px-2">
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-sm">wifi</span>
+<span class="material-symbols-outlined text-sm">king_bed</span>
+<span class="material-symbols-outlined text-sm">kitchen</span>
+<span class="material-symbols-outlined text-sm">local_bar</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="py-4 px-2 font-bold">家庭花园房</td>
+<td class="py-4 px-2">2成人, 2儿童</td>
+<td class="py-4 px-2 text-approve font-bold">$180 / 晚</td>
+<td class="py-4 px-2">
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-sm">wifi</span>
+<span class="material-symbols-outlined text-sm">child_care</span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Amenities Checklist -->
+<section class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 mb-12">
+<h3 class="text-lg font-bold mb-4 border-b pb-2 dark:border-slate-800">酒店设施</h3>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-approve text-lg">check_circle</span>
+<span>无边泳池</span>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-approve text-lg">check_circle</span>
+<span>私人海滩</span>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-approve text-lg">check_circle</span>
+<span>24小时送餐服务</span>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-approve text-lg">check_circle</span>
+<span>健身中心</span>
+</div>
+<div class="flex items-center gap-2 text-sm text-slate-400">
+<span class="material-symbols-outlined text-lg">cancel</span>
+<span class="line-through">机场接送</span>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-approve text-lg">check_circle</span>
+<span>免费早餐</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Audit Actions (Fixed-like behavior in layout) -->
+<aside class="lg:w-[400px]">
+<div class="lg:sticky lg:top-24 space-y-4">
+<div class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-xl border-t-4 border-t-primary">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">rate_review</span>
+<h3 class="text-lg font-bold">审核决策</h3>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block text-xs font-extrabold text-slate-500 uppercase tracking-widest mb-2">Internal Notes / Feedback</label>
+<textarea class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary text-sm p-4 placeholder:text-slate-400" placeholder="请输入给商户的反馈意见... 如果驳回请说明具体的缺失细节..." rows="6"></textarea>
+</div>
+<div class="pt-2">
+<label class="block text-xs font-extrabold text-slate-500 uppercase tracking-widest mb-3">Priority Level</label>
+<div class="flex gap-2">
+<button class="flex-1 py-2 rounded-lg border-2 border-primary bg-primary/10 text-xs font-bold text-slate-700">普通</button>
+<button class="flex-1 py-2 rounded-lg border-2 border-transparent bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-400">加急</button>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-3 pt-6">
+<button class="w-full flex items-center justify-center gap-2 bg-approve text-white font-bold py-4 rounded-xl shadow-lg shadow-approve/20 hover:scale-[1.02] active:scale-95 transition-all"><span class="material-symbols-outlined">task_alt</span> 批准通过</button>
+<button class="w-full flex items-center justify-center gap-2 bg-reject text-white font-bold py-4 rounded-xl shadow-lg shadow-reject/20 hover:scale-[1.02] active:scale-95 transition-all"><span class="material-symbols-outlined">cancel</span> 驳回申请</button>
+</div>
+</div>
+<div class="mt-8 border-t dark:border-slate-800 pt-4">
+<p class="text-[10px] text-center text-slate-400 font-medium">最后更新于 <span class="font-bold text-slate-600 dark:text-slate-300">Admin_SarahM</span> 2 小时前</p>
+</div>
+</div>
+<!-- Helpful Tips Card -->
+<div class="bg-primary/5 rounded-xl p-5 border border-primary/20">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">info</span>
+<div class="text-xs">
+<h4 class="font-bold text-slate-800 mb-1">审核指南</h4>
+<ul class="list-disc list-inside space-y-1 text-slate-600">
+<li>确保图片为高分辨率</li>
+<li>检查坐标是否与地址匹配</li>
+<li>验证客房容量是否真实合理</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Map Location Data -->
+<div class="hidden" data-location="Limassol, Cyprus" style=""></div>
+</body></html>

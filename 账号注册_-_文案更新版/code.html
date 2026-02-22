@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TripEase - 创建账号</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ffd83d",
+                        "navy": "#1a2b4b",
+                        "background-light": "#FAF8F5",
+                        "background-dark": "#231f0f",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "Noto Sans SC", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1.25rem", // 20px
+                        "xl": "1.5rem",
+                        "full": "9999px",
+                        "input": "0.75rem" // 12px
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', 'Noto Sans SC', sans-serif;
+        }
+        .custom-shadow {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen">
+<div class="flex min-h-screen w-full flex-col lg:flex-row">
+<!-- Left Side: Branding & Illustration -->
+<div class="hidden lg:flex lg:w-1/2 flex-col justify-center items-center p-12 bg-[#FAF8F5] relative overflow-hidden">
+<div class="absolute top-12 left-12 flex items-center gap-2">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-navy font-bold">apartment</span>
+</div>
+<span class="text-2xl font-bold text-navy tracking-tight">TripEase</span>
+</div>
+<div class="max-w-md z-10">
+<div class="mb-8 rounded-2xl overflow-hidden shadow-xl">
+<img alt="Luxury hotel lobby interior" class="w-full h-auto object-cover aspect-[4/3]" data-alt="Modern minimalist hotel lobby with warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuURIw4ZL5oBMhKBVy4vLlCivax1AzElMfn5eCW-FvduOkTZi7p4zFlZKBfUEjvN6KuLH59UgJRReAJEkNYqCGNqqtTtoQq64-crprt8_4dbo71-TLdY1qHjlPgZSNOa9p0kcNfHTyJ9i1cuYw7n1DGEC0ox0G67pQBFspoZ5pWUNLhoi7TzrdJBcJy9oT41_Pw2KHiw2AQFssZ2KAmbpDunQF_oE4196IZOCWmzgt9b-HKY4vjFqf7czvMOBY2fUHPbyfGAcuC8g"/>
+</div>
+<h1 class="text-4xl font-bold text-navy leading-tight mb-4">掌控酒店运营，从这里开始</h1>
+<p class="text-slate-600 text-lg leading-relaxed">专为独立业主与连锁品牌打造的智能管理中枢</p>
+<div class="mt-12 flex gap-8">
+<div class="flex flex-col">
+<span class="text-2xl font-bold text-navy">2.5k+</span>
+<span class="text-sm text-slate-500">活跃酒店</span>
+</div>
+<div class="flex flex-col">
+<span class="text-2xl font-bold text-navy">99.9%</span>
+<span class="text-sm text-slate-500">系统在线率</span>
+</div>
+<div class="flex flex-col">
+<span class="text-2xl font-bold text-navy">24/7</span>
+<span class="text-sm text-slate-500">专业支持</span>
+</div>
+</div>
+</div>
+<!-- Abstract background shapes -->
+<div class="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+<div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+</div>
+<!-- Right Side: Registration Form -->
+<div class="flex flex-1 flex-col justify-center items-center p-6 lg:p-12">
+<div class="w-full max-w-[520px] bg-white dark:bg-slate-900 rounded-lg custom-shadow p-8 lg:p-10">
+<div class="mb-8">
+<h2 class="text-2xl lg:text-3xl font-bold text-navy dark:text-slate-100">创建账号</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-2">加入 TripEase，开启您的管理之旅</p>
+</div>
+<form class="space-y-5">
+<!-- Role Selection -->
+<div class="space-y-3">
+<p class="text-sm font-semibold text-navy dark:text-slate-200">选择角色</p>
+<div class="flex p-1.5 bg-slate-100 dark:bg-slate-800 rounded-xl">
+<label class="flex-1 cursor-pointer group">
+<input checked="" class="peer hidden" name="role" type="radio" value="merchant"/>
+<div class="flex items-center justify-center py-3 rounded-lg transition-all peer-checked:bg-white peer-checked:text-navy peer-checked:shadow-sm text-slate-500 font-medium">
+<span class="material-symbols-outlined mr-2 text-[20px]">storefront</span>
+<span>商户</span>
+</div>
+</label>
+<label class="flex-1 cursor-pointer group">
+<input class="peer hidden" name="role" type="radio" value="admin"/>
+<div class="flex items-center justify-center py-3 rounded-lg transition-all peer-checked:bg-white peer-checked:text-navy peer-checked:shadow-sm text-slate-500 font-medium">
+<span class="material-symbols-outlined mr-2 text-[20px]">admin_panel_settings</span>
+<span>管理员</span>
+</div>
+</label>
+</div>
+</div>
+<!-- User Name -->
+<div class="space-y-2">
+<label class="text-sm font-semibold text-navy dark:text-slate-200">用户名</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">person</span>
+<input class="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 border-none rounded-input focus:ring-2 focus:ring-primary text-navy dark:text-slate-100 placeholder:text-slate-400" placeholder="请输入您的用户名" type="text"/>
+</div>
+</div>
+<!-- Email -->
+<div class="space-y-2">
+<label class="text-sm font-semibold text-navy dark:text-slate-200">邮箱地址</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">mail</span>
+<input class="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 border-none rounded-input focus:ring-2 focus:ring-primary text-navy dark:text-slate-100 placeholder:text-slate-400" placeholder="example@tripease.com" type="email"/>
+</div>
+</div>
+<!-- Password Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-navy dark:text-slate-200">设置密码</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">lock</span>
+<input class="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 border-none rounded-input focus:ring-2 focus:ring-primary text-navy dark:text-slate-100 placeholder:text-slate-400" placeholder="至少8位字符" type="password"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-navy dark:text-slate-200">确认密码</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">shield_lock</span>
+<input class="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 border-none rounded-input focus:ring-2 focus:ring-primary text-navy dark:text-slate-100 placeholder:text-slate-400" placeholder="请再次输入密码" type="password"/>
+</div>
+</div>
+</div>
+<!-- Agreement -->
+<div class="flex items-start gap-3 pt-2">
+<input class="mt-1 w-4 h-4 rounded border-slate-300 text-navy focus:ring-primary" id="agreement" type="checkbox"/>
+<label class="text-sm text-slate-500 dark:text-slate-400 leading-snug" for="agreement">
+                            我已阅读并同意 <a class="text-navy dark:text-primary font-medium hover:underline" href="#">服务协议</a> 和 <a class="text-navy dark:text-primary font-medium hover:underline" href="#">隐私政策</a>
+</label>
+</div>
+<!-- CTA Button -->
+<button class="w-full bg-navy hover:bg-navy/90 text-white font-bold py-4 rounded-input transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 mt-4" type="submit">
+                        立即注册
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<!-- Footer -->
+<div class="pt-6 text-center">
+<p class="text-slate-500 dark:text-slate-400">
+                            已有账号？ 
+                            <a class="text-navy dark:text-primary font-bold hover:underline ml-1" href="#">登录</a>
+</p>
+</div>
+</form>
+</div>
+<!-- Bottom Helper Links -->
+<div class="mt-8 flex gap-6 text-xs text-slate-400 font-medium">
+<a class="hover:text-navy transition-colors" href="#">帮助中心</a>
+<a class="hover:text-navy transition-colors" href="#">联系我们</a>
+<a class="hover:text-navy transition-colors" href="#">语言: 简体中文</a>
+</div>
+</div>
+</div>
+</body></html>
