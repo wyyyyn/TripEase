@@ -5,6 +5,7 @@ import pool from './config/db.js';
 import authRouter from './routes/auth.js';
 import hotelRouter from './routes/hotel.js';
 import reviewRouter from './routes/review.js';
+import publicRouter from './routes/public.js';
 
 const app = express();
 
@@ -38,5 +39,8 @@ app.use('/api/hotels', hotelRouter);
 
 // 审核路由：/api/admin/hotels（管理员审核）
 app.use('/api/admin', reviewRouter);
+
+// 公开路由：/api/public/*（C 端用户，无需登录）
+app.use('/api/public', publicRouter);
 
 export default app;
