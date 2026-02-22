@@ -1,16 +1,11 @@
 // ============================================================
-// 酒店 Store —— 酒店数据的"中转站"
+// 酒店 Store —— 商户端酒店数据的"中转站"
 // ============================================================
-// Step 5 改造：商户 CRUD 操作调用后端 API
-// Step 6 改造：管理员审核操作调用后端 API（本次）
-//
-// 注意：getPublishedHotels 暂时保留 localStorage 逻辑，
-// 等 Step 7（C 端公开接口）完成后再替换。
+// 商户 CRUD + 管理员审核都调用后端 API。
+// C 端（游客）的酒店查询已移至 api/public.ts（Step 7）。
 // ============================================================
 
 import type { ManagedHotel, HotelFormData, ReviewStatus } from '../types/admin';
-import type { Hotel } from '../types/hotel';
-import { hotels as seedHotels } from '../../mobile/data/mockData';
 import {
   createHotelAPI,
   getMyHotelsAPI,
@@ -20,39 +15,6 @@ import {
   type HotelListItem,
   type HotelDetailResponse,
 } from '../api/hotel';
-
-// ─── C 端用的 localStorage（Step 7 会替换）──────────
-
-const STORAGE_KEY = 'tripease_hotels';
-const SEED_FLAG = 'tripease_seeded';
-
-function seedIfNeeded(): void {
-  if (localStorage.getItem(SEED_FLAG)) return;
-  const managed: ManagedHotel[] = seedHotels.map((h) => ({
-    ...h,
-    ownerId: '__seed__',
-    status: 'published' as ReviewStatus,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  }));
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(managed));
-  localStorage.setItem(SEED_FLAG, '1');
-}
-
-/** C 端用：获取已发布的酒店（Step 7 会替换为 API） */
-export function getPublishedHotels(): Hotel[] {
-  seedIfNeeded();
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return [];
-  try {
-    const all: ManagedHotel[] = JSON.parse(raw);
-    return all
-      .filter((h) => h.status === 'published')
-      .map(({ ownerId: _, status: _s, rejectReason: _r, createdAt: _c, updatedAt: _u, ...hotel }) => hotel);
-  } catch {
-    return [];
-  }
-}
 
 // ─── 类型转换工具函数 ──────────────────────────────
 
