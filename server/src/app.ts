@@ -4,6 +4,7 @@ import { success, fail } from './utils/response.js';
 import pool from './config/db.js';
 import authRouter from './routes/auth.js';
 import hotelRouter from './routes/hotel.js';
+import reviewRouter from './routes/review.js';
 
 const app = express();
 
@@ -34,5 +35,8 @@ app.use('/api/auth', authRouter);
 
 // 酒店路由：/api/hotels（商户 CRUD）
 app.use('/api/hotels', hotelRouter);
+
+// 审核路由：/api/admin/hotels（管理员审核）
+app.use('/api/admin', reviewRouter);
 
 export default app;
