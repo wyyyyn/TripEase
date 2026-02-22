@@ -1,7 +1,8 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { defaultSearch } from '../data/mockData';
-import { usePublishedHotels } from '../../shared/store/useStore';
+import { getPublicHotelDetail, detailToHotel } from '../../shared/api/public';
+import type { Hotel } from '../../shared/types/hotel';
 import CalendarModal from '../components/CalendarModal';
 
 const WEEKDAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
@@ -60,7 +61,6 @@ const badgeStyles: Record<string, string> = {
 export default function HotelDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const hotels = usePublishedHotels();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentImage, setCurrentImage] = useState(0);
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -70,12 +70,58 @@ export default function HotelDetail() {
   const [checkInDate, setCheckInDate] = useState<Date | null>(null);
   const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
 
-  const hotel = hotels.find((h) => h.id === id);
+  // ── 从 API 加载酒店详情 ──
+  const [hotel, setHotel] = useState<Hotel | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!hotel) {
+  useEffect(() => {
+    if (!id) return;
+    let cancelled = false;
+
+    async function fetchHotel() {
+      setLoading(true);
+      setError(null);
+      try {
+        const detail = await getPublicHotelDetail(Number(id));
+        if (!cancelled) {
+          setHotel(detailToHotel(detail));
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : '加载失败');
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    fetchHotel();
+    return () => { cancelled = true; };
+  }, [id]);
+
+  // 加载中
+  if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-dvh">
-        <p className="text-icon-gray">酒店未找到</p>
+      <div className="flex flex-col items-center justify-center min-h-dvh gap-3">
+        <div className="w-10 h-10 border-4 border-gray-200 border-t-accent rounded-full animate-spin" />
+        <p className="text-icon-gray text-sm">加载中...</p>
+      </div>
+    );
+  }
+
+  // 加载出错
+  if (error || !hotel) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-dvh gap-3">
+        <span className="material-symbols-outlined text-5xl text-red-400">error_outline</span>
+        <p className="text-icon-gray">{error || '酒店未找到'}</p>
+        <button
+          onClick={() => navigate(-1)}
+          className="mt-2 px-5 py-2 bg-accent text-dark rounded-pill text-sm font-medium"
+        >
+          返回
+        </button>
       </div>
     );
   }
