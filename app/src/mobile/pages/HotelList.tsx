@@ -1,7 +1,12 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { defaultSearch } from '../data/mockData';
-import { usePublishedHotels } from '../../shared/store/useStore';
+import {
+  searchPublicHotels,
+  summaryToHotel,
+  type PublicHotelSummary,
+} from '../../shared/api/public';
+import type { Hotel } from '../../shared/types/hotel';
 
 type PriceSortDir = 'asc' | 'desc' | null;
 
@@ -14,9 +19,25 @@ interface ActiveFilters {
   distance: boolean;
 }
 
+/** 扩展 Hotel 类型，带上后端的 hasBreakfast / hasFreeCancel 标记 */
+interface HotelWithFlags extends Hotel {
+  hasBreakfast: boolean;
+  hasFreeCancel: boolean;
+}
+
+/** 把后端 summary 转成带标记的 Hotel */
+function summaryToHotelWithFlags(s: PublicHotelSummary): HotelWithFlags {
+  return {
+    ...summaryToHotel(s),
+    hasBreakfast: s.hasBreakfast,
+    hasFreeCancel: s.hasFreeCancel,
+  };
+}
+
+const PAGE_SIZE = 20;
+
 export default function HotelList() {
   const navigate = useNavigate();
-  const hotels = usePublishedHotels();
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
     smartSort: true,
@@ -27,6 +48,117 @@ export default function HotelList() {
     distance: false,
   });
 
+  // ── API 数据状态 ──
+  const [hotels, setHotels] = useState<HotelWithFlags[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  // 计算当前的排序参数（传给后端）
+  const sortParam = useMemo(() => {
+    if (activeFilters.priceSort === 'asc') return 'price_asc' as const;
+    if (activeFilters.priceSort === 'desc') return 'price_desc' as const;
+    return 'default' as const;
+  }, [activeFilters.priceSort]);
+
+  // ── 加载数据 ──
+  const fetchHotels = useCallback(
+    async (pageNum: number, reset: boolean) => {
+      if (loading) return;
+      setLoading(true);
+      setError(null);
+
+      try {
+        const result = await searchPublicHotels({
+          sort: sortParam,
+          page: pageNum,
+          limit: PAGE_SIZE,
+        });
+
+        const newHotels = result.items.map(summaryToHotelWithFlags);
+
+        if (reset) {
+          setHotels(newHotels);
+        } else {
+          setHotels((prev) => [...prev, ...newHotels]);
+        }
+
+        setPage(pageNum);
+        setHasMore(pageNum < result.totalPages);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : '加载失败');
+      } finally {
+        setLoading(false);
+        setInitialLoading(false);
+      }
+    },
+    [loading, sortParam],
+  );
+
+  // 初始加载 + 排序变化时重新加载
+  const prevSortRef = useRef(sortParam);
+  useEffect(() => {
+    // 排序变了，从第一页重新加载
+    if (prevSortRef.current !== sortParam) {
+      prevSortRef.current = sortParam;
+      setHotels([]);
+      setHasMore(true);
+      fetchHotels(1, true);
+      return;
+    }
+    // 首次加载
+    if (initialLoading) {
+      fetchHotels(1, true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortParam]);
+
+  // ── 客户端筛选 ──
+  // 评分、早餐、免费取消这些在已加载的数据上做本地筛选
+  const filteredHotels = useMemo(() => {
+    let result = [...hotels];
+
+    if (activeFilters.rating45) {
+      result = result.filter((h) => h.rating >= 4.5);
+    }
+    if (activeFilters.breakfast) {
+      result = result.filter((h) => h.hasBreakfast);
+    }
+    if (activeFilters.freeCancel) {
+      result = result.filter((h) => h.hasFreeCancel);
+    }
+
+    return result;
+  }, [activeFilters, hotels]);
+
+  // ── 无限滚动 ──
+  const loadMore = useCallback(() => {
+    if (loading || !hasMore) return;
+    fetchHotels(page + 1, false);
+  }, [loading, hasMore, page, fetchHotels]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1 },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [loadMore]);
+
+  const allLoaded = !hasMore && !loading;
+
+  // ── 交互逻辑 ──
   const toggleFavorite = (e: React.MouseEvent, hotelId: string) => {
     e.stopPropagation();
     setFavorites((prev) => {
@@ -59,7 +191,6 @@ export default function HotelList() {
     return color === 'accent' ? 'text-dark' : 'text-white';
   };
 
-  // Filter logic
   const handleFilterClick = (filter: keyof ActiveFilters) => {
     setActiveFilters((prev) => {
       if (filter === 'smartSort') {
@@ -80,78 +211,6 @@ export default function HotelList() {
       return { ...prev, smartSort: false, [filter]: !prev[filter] };
     });
   };
-
-  const filteredHotels = useMemo(() => {
-    let result = [...hotels];
-
-    if (activeFilters.rating45) {
-      result = result.filter((h) => h.rating >= 4.5);
-    }
-    if (activeFilters.breakfast) {
-      result = result.filter((h) =>
-        h.rooms.some(
-          (r) =>
-            r.badge?.includes('早餐') ||
-            r.features.some((f) => f.includes('早餐'))
-        )
-      );
-    }
-    if (activeFilters.freeCancel) {
-      result = result.filter((h) =>
-        h.tags.includes('免费取消') ||
-        h.rooms.some((r) => r.badge?.includes('免费取消'))
-      );
-    }
-
-    if (activeFilters.priceSort === 'asc') {
-      result.sort((a, b) => a.pricePerNight - b.pricePerNight);
-    } else if (activeFilters.priceSort === 'desc') {
-      result.sort((a, b) => b.pricePerNight - a.pricePerNight);
-    }
-
-    return result;
-  }, [activeFilters, hotels]);
-
-  // Infinite scroll
-  const [displayCount, setDisplayCount] = useState(3);
-  const [loading, setLoading] = useState(false);
-  const sentinelRef = useRef<HTMLDivElement>(null);
-  const [prevFilteredLength, setPrevFilteredLength] = useState(filteredHotels.length);
-
-  // Reset displayCount when filters change (React-approved render-time state adjustment)
-  if (filteredHotels.length !== prevFilteredLength) {
-    setPrevFilteredLength(filteredHotels.length);
-    setDisplayCount(Math.min(3, filteredHotels.length));
-  }
-
-  const allLoaded = displayCount >= filteredHotels.length;
-
-  const loadMore = useCallback(() => {
-    if (loading || allLoaded) return;
-    setLoading(true);
-    setTimeout(() => {
-      setDisplayCount((prev) => Math.min(prev + 2, filteredHotels.length));
-      setLoading(false);
-    }, 800);
-  }, [loading, allLoaded, filteredHotels.length]);
-
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          loadMore();
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, [loadMore]);
-
-  const displayedHotels = filteredHotels.slice(0, displayCount);
 
   // Filter pills config
   const filterPills = [
@@ -240,7 +299,33 @@ export default function HotelList() {
 
       {/* Hotel Cards */}
       <main className="px-4 py-4 space-y-5 pb-24">
-        {displayedHotels.length === 0 && (
+        {/* 初始加载状态 */}
+        {initialLoading && (
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="w-10 h-10 border-4 border-gray-200 border-t-accent rounded-full animate-spin" />
+            <p className="text-gray-500 text-sm mt-4">正在搜索酒店...</p>
+          </div>
+        )}
+
+        {/* 加载出错 */}
+        {error && !initialLoading && (
+          <div className="flex flex-col items-center justify-center py-20">
+            <span className="material-symbols-outlined text-5xl text-red-400 mb-3">
+              error_outline
+            </span>
+            <p className="text-gray-500 text-base font-medium">加载失败</p>
+            <p className="text-gray-400 text-sm mt-1">{error}</p>
+            <button
+              onClick={() => fetchHotels(1, true)}
+              className="mt-4 px-5 py-2 bg-accent text-dark rounded-pill text-sm font-medium"
+            >
+              重试
+            </button>
+          </div>
+        )}
+
+        {/* 无结果 */}
+        {!initialLoading && !error && filteredHotels.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20">
             <span className="material-symbols-outlined text-6xl text-gray-400 mb-4">
               search_off
@@ -250,7 +335,8 @@ export default function HotelList() {
           </div>
         )}
 
-        {displayedHotels.map((hotel) => (
+        {/* 酒店卡片列表 */}
+        {filteredHotels.map((hotel) => (
           <div
             key={hotel.id}
             className="bg-white rounded-card shadow-card overflow-hidden group cursor-pointer"
@@ -360,7 +446,7 @@ export default function HotelList() {
 
         {/* Sentinel / Loading / All loaded */}
         <div ref={sentinelRef} className="py-4 flex flex-col items-center justify-center gap-2">
-          {loading && (
+          {loading && !initialLoading && (
             <>
               <div className="w-8 h-8 border-4 border-gray-200 border-t-accent rounded-full animate-spin" />
               <p className="text-xs text-gray-500">正在加载更多酒店...</p>
