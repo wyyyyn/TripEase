@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getHotelById, createHotel, updateHotel } from '../../store/hotelStore';
-import { useAuth } from '../../store/useStore';
-import type { HotelFormData, RoomFormData } from '../../types/admin';
+import { getHotelById, createHotel, updateHotel } from '../../shared/store/hotelStore';
+import { useAuth } from '../../shared/store/useStore';
+import type { HotelFormData, RoomFormData } from '../../shared/types/admin';
 
 const ALL_TAGS = ['豪华', '精品', '亲子', '商务', '泳池', 'Spa', '免费WiFi', '免费取消', '公寓', '环保'];
 const ALL_AMENITIES = [

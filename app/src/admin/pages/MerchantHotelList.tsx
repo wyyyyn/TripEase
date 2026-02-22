@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { useHotels, useAuth } from '../../store/useStore';
-import StatusBadge from '../../components/admin/StatusBadge';
+import { useHotels, useAuth } from '../../shared/store/useStore';
+import StatusBadge from '../components/StatusBadge';
 
 export default function MerchantHotelList() {
   const navigate = useNavigate();

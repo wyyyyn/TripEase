@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useHotels } from '../../store/useStore';
-import { changeStatus } from '../../store/hotelStore';
-import StatusBadge from '../../components/admin/StatusBadge';
-import RejectModal from '../../components/admin/RejectModal';
-import type { ReviewStatus } from '../../types/admin';
+import { useHotels } from '../../shared/store/useStore';
+import { changeStatus } from '../../shared/store/hotelStore';
+import StatusBadge from '../components/StatusBadge';
+import RejectModal from '../components/RejectModal';
+import type { ReviewStatus } from '../../shared/types/admin';
 
 const TABS: { key: ReviewStatus | 'all'; label: string }[] = [
   { key: 'all', label: '全部' },

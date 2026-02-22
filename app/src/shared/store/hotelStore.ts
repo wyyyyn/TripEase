@@ -1,6 +1,6 @@
 import type { ManagedHotel, HotelFormData, ReviewStatus } from '../types/admin';
 import type { Hotel } from '../types/hotel';
-import { hotels as seedHotels } from '../data/mockData';
+import { hotels as seedHotels } from '../../mobile/data/mockData';
 
 const STORAGE_KEY = 'tripease_hotels';
 const SEED_FLAG = 'tripease_seeded';

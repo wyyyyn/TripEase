@@ -1,4 +1,4 @@
-import type { ReviewStatus } from '../../types/admin';
+import type { ReviewStatus } from '../../shared/types/admin';
 
 const config: Record<ReviewStatus, { label: string; className: string }> = {
   draft: { label: '草稿', className: 'bg-gray-100 text-gray-600' },

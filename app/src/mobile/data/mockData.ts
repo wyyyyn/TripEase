@@ -1,4 +1,4 @@
-import type { Hotel, SearchParams } from '../types/hotel';
+import type { Hotel, SearchParams } from '../../shared/types/hotel';
 
 export const defaultSearch: SearchParams = {
   city: '上海',

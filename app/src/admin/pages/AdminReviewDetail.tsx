@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getHotelById, changeStatus } from '../../store/hotelStore';
-import { useHotels } from '../../store/useStore';
-import StatusBadge from '../../components/admin/StatusBadge';
-import RejectModal from '../../components/admin/RejectModal';
+import { getHotelById, changeStatus } from '../../shared/store/hotelStore';
+import { useHotels } from '../../shared/store/useStore';
+import StatusBadge from '../components/StatusBadge';
+import RejectModal from '../components/RejectModal';
 
 export default function AdminReviewDetail() {
   const { id } = useParams<{ id: string }>();

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { defaultSearch } from '../data/mockData';
-import { usePublishedHotels } from '../store/useStore';
+import { usePublishedHotels } from '../../shared/store/useStore';
 
 type PriceSortDir = 'asc' | 'desc' | null;
 

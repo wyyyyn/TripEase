@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { register } from '../../store/authStore';
-import type { UserRole } from '../../types/admin';
+import { register } from '../../shared/store/authStore';
+import type { UserRole } from '../../shared/types/admin';
 
 export default function AdminRegister() {
   const navigate = useNavigate();

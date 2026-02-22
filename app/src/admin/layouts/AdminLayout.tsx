@@ -1,6 +1,6 @@
 import { NavLink, Outlet, Navigate, useNavigate } from 'react-router-dom';
-import { logout } from '../store/authStore';
-import { useAuth } from '../store/useStore';
+import { logout } from '../../shared/store/authStore';
+import { useAuth } from '../../shared/store/useStore';
 
 export default function AdminLayout() {
   const user = useAuth();

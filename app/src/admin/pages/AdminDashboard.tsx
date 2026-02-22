@@ -1,4 +1,4 @@
-import { useHotels, useAuth } from '../../store/useStore';
+import { useHotels, useAuth } from '../../shared/store/useStore';
 
 export default function AdminDashboard() {
   const user = useAuth();

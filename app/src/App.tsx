@@ -1,19 +1,19 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import MobileLayout from './layouts/MobileLayout';
-import HotelSearchHome from './pages/HotelSearchHome';
-import SearchPage from './pages/SearchPage';
-import HotelList from './pages/HotelList';
-import HotelDetail from './pages/HotelDetail';
+import MobileLayout from './mobile/layouts/MobileLayout';
+import HotelSearchHome from './mobile/pages/HotelSearchHome';
+import SearchPage from './mobile/pages/SearchPage';
+import HotelList from './mobile/pages/HotelList';
+import HotelDetail from './mobile/pages/HotelDetail';
 
-const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
-const AdminRegister = lazy(() => import('./pages/admin/AdminRegister'));
-const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
-const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
-const MerchantHotelList = lazy(() => import('./pages/admin/MerchantHotelList'));
-const MerchantHotelForm = lazy(() => import('./pages/admin/MerchantHotelForm'));
-const AdminReviewList = lazy(() => import('./pages/admin/AdminReviewList'));
-const AdminReviewDetail = lazy(() => import('./pages/admin/AdminReviewDetail'));
+const AdminLogin = lazy(() => import('./admin/pages/AdminLogin'));
+const AdminRegister = lazy(() => import('./admin/pages/AdminRegister'));
+const AdminLayout = lazy(() => import('./admin/layouts/AdminLayout'));
+const AdminDashboard = lazy(() => import('./admin/pages/AdminDashboard'));
+const MerchantHotelList = lazy(() => import('./admin/pages/MerchantHotelList'));
+const MerchantHotelForm = lazy(() => import('./admin/pages/MerchantHotelForm'));
+const AdminReviewList = lazy(() => import('./admin/pages/AdminReviewList'));
+const AdminReviewDetail = lazy(() => import('./admin/pages/AdminReviewDetail'));
 
 function Loading() {
   return (

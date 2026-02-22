@@ -1,7 +1,7 @@
 import { useRef, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { defaultSearch } from '../data/mockData';
-import { usePublishedHotels } from '../store/useStore';
+import { usePublishedHotels } from '../../shared/store/useStore';
 import CalendarModal from '../components/CalendarModal';
 
 const WEEKDAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
