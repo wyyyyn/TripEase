@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getHotelById, createHotel, updateHotel } from '../../shared/store/hotelStore';
+import { getHotelByIdFromAPI, createHotelFromAPI, updateHotelFromAPI } from '../../shared/store/hotelStore';
 import { useAuth } from '../../shared/store/useStore';
 import type { HotelFormData, RoomFormData } from '../../shared/types/admin';
 
@@ -27,45 +27,52 @@ export default function MerchantHotelForm() {
   const user = useAuth();
   const isEdit = !!id;
 
-  const [form, setForm] = useState<HotelFormData>(() => {
-    if (isEdit) {
-      const hotel = getHotelById(id);
-      if (hotel) {
-        return {
-          name: hotel.name,
-          englishName: '',
-          address: hotel.address,
-          starRating: hotel.starRating,
-          openDate: '',
-          images: hotel.images,
-          tags: hotel.tags,
-          amenities: hotel.amenities,
-          rooms: hotel.rooms.map((r) => ({
-            id: r.id,
-            name: r.name,
-            description: r.description,
-            pricePerNight: r.pricePerNight,
-            originalPrice: r.originalPrice,
-            image: r.image,
-            bedType: r.bedType,
-            size: r.size,
-            features: r.features,
-          })),
-        };
-      }
-    }
-    return {
-      name: '',
-      englishName: '',
-      address: '',
-      starRating: 5,
-      openDate: '',
-      images: [],
-      tags: [],
-      amenities: [],
-      rooms: [],
-    };
+  const [form, setForm] = useState<HotelFormData>({
+    name: '',
+    englishName: '',
+    address: '',
+    starRating: 5,
+    openDate: '',
+    images: [],
+    tags: [],
+    amenities: [],
+    rooms: [],
   });
+  const [loading, setLoading] = useState(isEdit);
+  const [saving, setSaving] = useState(false);
+
+  // 编辑模式：从 API 加载酒店数据
+  useEffect(() => {
+    if (!isEdit) return;
+    setLoading(true);
+    getHotelByIdFromAPI(Number(id))
+      .then((hotel) => {
+        if (hotel) {
+          setForm({
+            name: hotel.name,
+            englishName: '',
+            address: hotel.address,
+            starRating: hotel.starRating,
+            openDate: '',
+            images: hotel.images,
+            tags: hotel.tags,
+            amenities: hotel.amenities,
+            rooms: hotel.rooms.map((r) => ({
+              id: r.id,
+              name: r.name,
+              description: r.description,
+              pricePerNight: r.pricePerNight,
+              originalPrice: r.originalPrice,
+              image: r.image,
+              bedType: r.bedType,
+              size: r.size,
+              features: r.features,
+            })),
+          });
+        }
+      })
+      .finally(() => setLoading(false));
+  }, [id, isEdit]);
 
   const [imageUrl, setImageUrl] = useState('');
   const [editingRoom, setEditingRoom] = useState<RoomFormData | null>(null);
@@ -121,16 +128,31 @@ export default function MerchantHotelForm() {
     updateField('rooms', form.rooms.filter((_, i) => i !== idx));
   };
 
-  const handleSave = (submit: boolean) => {
+  const handleSave = async (submit: boolean) => {
     if (!user) return;
     if (!form.name.trim()) return;
-    if (isEdit) {
-      updateHotel(id, form, submit);
-    } else {
-      createHotel(String(user.id), form, submit);
+    setSaving(true);
+    try {
+      if (isEdit) {
+        await updateHotelFromAPI(Number(id), form, submit);
+      } else {
+        await createHotelFromAPI(form, submit);
+      }
+      navigate('/admin/hotels');
+    } catch (err: any) {
+      alert(err.message || '保存失败');
+    } finally {
+      setSaving(false);
     }
-    navigate('/admin/hotels');
   };
+
+  if (loading) {
+    return (
+      <div className="p-8 flex justify-center items-center min-h-[50vh]">
+        <div className="text-gray-400">加载中...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-8 max-w-4xl">
@@ -489,16 +511,18 @@ export default function MerchantHotelForm() {
           <button
             type="button"
             onClick={() => handleSave(false)}
-            className="border border-gray-200 text-dark font-bold py-3 px-6 rounded-2xl hover:bg-gray-50 transition-colors"
+            disabled={saving}
+            className="border border-gray-200 text-dark font-bold py-3 px-6 rounded-2xl hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
-            保存草稿
+            {saving ? '保存中...' : '保存草稿'}
           </button>
           <button
             type="button"
             onClick={() => handleSave(true)}
-            className="bg-dark hover:bg-dark-hover text-white font-bold py-3 px-6 rounded-2xl transition-colors"
+            disabled={saving}
+            className="bg-dark hover:bg-dark-hover text-white font-bold py-3 px-6 rounded-2xl transition-colors disabled:opacity-50"
           >
-            保存并提交审核
+            {saving ? '提交中...' : '保存并提交审核'}
           </button>
         </div>
       </div>

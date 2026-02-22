@@ -1,12 +1,43 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useHotels, useAuth } from '../../shared/store/useStore';
+import { useAuth } from '../../shared/store/useStore';
+import { getHotelsByOwnerAPI } from '../../shared/store/hotelStore';
+import type { ManagedHotel } from '../../shared/types/admin';
 import StatusBadge from '../components/StatusBadge';
 
 export default function MerchantHotelList() {
   const navigate = useNavigate();
   const user = useAuth();
-  const allHotels = useHotels();
-  const hotels = allHotels.filter((h) => h.ownerId === user?.id);
+
+  // 从后端 API 加载酒店列表
+  const [hotels, setHotels] = useState<ManagedHotel[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (!user) return;
+    setLoading(true);
+    getHotelsByOwnerAPI()
+      .then(setHotels)
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className="p-8 flex justify-center items-center min-h-[50vh]">
+        <div className="text-gray-400">加载中...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-8">
+        <div className="bg-red-50 text-red-600 p-4 rounded-xl">{error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-8">
@@ -55,61 +86,48 @@ export default function MerchantHotelList() {
                 <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   房型数
                 </th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  价格区间
-                </th>
                 <th className="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   操作
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {hotels.map((hotel) => {
-                const prices = hotel.rooms.map((r) => r.pricePerNight);
-                const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
-                const maxPrice = prices.length > 0 ? Math.max(...prices) : 0;
-                return (
-                  <tr key={hotel.id} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-4">
-                      <p className="font-medium text-dark text-sm">{hotel.name}</p>
-                      <p className="text-xs text-gray-500 mt-0.5">{hotel.address}</p>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-0.5">
-                        {Array.from({ length: hotel.starRating }).map((_, i) => (
-                          <span key={i} className="material-symbols-outlined text-accent text-sm">
-                            star_rate
-                          </span>
-                        ))}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <StatusBadge status={hotel.status} />
-                      {hotel.status === 'rejected' && hotel.rejectReason && (
-                        <p className="text-xs text-red-500 mt-1 max-w-[150px] truncate" title={hotel.rejectReason}>
-                          {hotel.rejectReason}
-                        </p>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
-                      {hotel.rooms.length} 种
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
-                      {prices.length > 0
-                        ? `¥${minPrice}${minPrice !== maxPrice ? ` - ¥${maxPrice}` : ''}`
-                        : '-'}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <button
-                        onClick={() => navigate(`/admin/hotels/${hotel.id}`)}
-                        className="text-sm text-accent font-medium hover:underline"
-                      >
-                        编辑
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
+              {hotels.map((hotel) => (
+                <tr key={hotel.id} className="hover:bg-gray-50/50 transition-colors">
+                  <td className="px-6 py-4">
+                    <p className="font-medium text-dark text-sm">{hotel.name}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{hotel.address}</p>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-0.5">
+                      {Array.from({ length: hotel.starRating }).map((_, i) => (
+                        <span key={i} className="material-symbols-outlined text-accent text-sm">
+                          star_rate
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <StatusBadge status={hotel.status} />
+                    {hotel.status === 'rejected' && hotel.rejectReason && (
+                      <p className="text-xs text-red-500 mt-1 max-w-[150px] truncate" title={hotel.rejectReason}>
+                        {hotel.rejectReason}
+                      </p>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-600">
+                    {hotel.rooms.length} 种
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <button
+                      onClick={() => navigate(`/admin/hotels/${hotel.id}`)}
+                      className="text-sm text-accent font-medium hover:underline"
+                    >
+                      编辑
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
