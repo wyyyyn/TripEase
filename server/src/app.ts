@@ -3,6 +3,7 @@ import cors from 'cors';
 import { success, fail } from './utils/response.js';
 import pool from './config/db.js';
 import authRouter from './routes/auth.js';
+import hotelRouter from './routes/hotel.js';
 
 const app = express();
 
@@ -30,5 +31,8 @@ app.get('/api/health/db', async (_req, res) => {
 
 // 认证路由：/api/auth/register, /api/auth/login, /api/auth/me
 app.use('/api/auth', authRouter);
+
+// 酒店路由：/api/hotels（商户 CRUD）
+app.use('/api/hotels', hotelRouter);
 
 export default app;
