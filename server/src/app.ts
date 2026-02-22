@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import { success } from './utils/response.js';
+import { success, fail } from './utils/response.js';
+import pool from './config/db.js';
 
 const app = express();
 
@@ -13,6 +14,17 @@ app.use(express.json());
 // 健康检查接口 —— 用来验证服务器是否在运行
 app.get('/api/health', (_req, res) => {
   success(res, { message: 'TripEase API is running' });
+});
+
+// 数据库健康检查 —— 验证数据库连接是否正常
+// SELECT 1 是最轻量的查询，只要数据库能响应就说明连接正常
+app.get('/api/health/db', async (_req, res) => {
+  try {
+    await pool.query('SELECT 1');
+    success(res, { message: 'Database connection is healthy' });
+  } catch (err) {
+    fail(res, 'Database connection failed', 500);
+  }
 });
 
 export default app;
