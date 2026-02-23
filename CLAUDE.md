@@ -23,7 +23,7 @@
 
 ### Step 2：连接 MySQL 数据库 ✅
 - 创建数据库连接池（mysql2）
-- 用已有的 `database/schema.sql` 建表
+- 用已有的 `server/database/schema.sql` 建表
 - 验证接口 `GET /api/health/db`
 
 ### Step 3：认证 API（注册/登录/JWT）✅
@@ -83,7 +83,7 @@
 
 | 文件 | 说明 |
 |---|---|
-| `database/schema.sql` | 数据库表结构 |
+| `server/database/schema.sql` | 数据库表结构 |
 | `server/src/` | 后端源代码 |
 | `app/src/shared/api/` | 前端 API 客户端 |
 | `app/src/shared/store/authStore.ts` | 前端认证逻辑 |
