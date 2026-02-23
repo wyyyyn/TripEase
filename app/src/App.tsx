@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import MobileLayout from './mobile/layouts/MobileLayout';
+import MobileAuth from './mobile/pages/MobileAuth';
 import HotelSearchHome from './mobile/pages/HotelSearchHome';
 import SearchPage from './mobile/pages/SearchPage';
 import HotelList from './mobile/pages/HotelList';
@@ -28,7 +29,10 @@ export default function App() {
     <BrowserRouter>
       <Suspense fallback={<Loading />}>
         <Routes>
-          {/* Mobile */}
+          {/* Mobile auth (full-screen, outside MobileLayout) */}
+          <Route path="/login" element={<MobileAuth />} />
+
+          {/* Mobile (with auth guard) */}
           <Route element={<MobileLayout />}>
             <Route path="/" element={<HotelSearchHome />} />
             <Route path="/search" element={<SearchPage />} />
