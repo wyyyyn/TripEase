@@ -38,7 +38,7 @@ export interface PublicSearchParams {
 /**
  * 酒店列表摘要（给列表页用，比完整详情轻量很多）
  *
- * 类比：你在携程搜索结果看到的"一张卡片"就是一个 Summary，
+ * 类比：你在 TripEase 搜索结果看到的"一张卡片"就是一个 Summary，
  * 只有首图、价格、评分等关键信息，不包含所有房型详情。
  */
 export interface PublicHotelSummary {

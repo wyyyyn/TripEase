@@ -29,7 +29,7 @@ import { getHotelById } from './hotelService.js';
  * 搜索已发布酒店，支持关键词、价格、评分、星级、标签筛选，
  * 以及价格/评分排序和分页。
  *
- * 类比：你在携程搜索框输入"上海"，设好价格区间，点"搜索"，
+ * 类比：你在 TripEase 搜索框输入"上海"，设好价格区间，点"搜索"，
  * 后端就执行这个函数，从数据库里找出所有匹配的已上架酒店。
  *
  * 为什么用子查询取 firstImage / lowestRoomPrice / roomCount？
@@ -259,7 +259,7 @@ export async function getPublishedHotelById(
 /**
  * 查询所有城市及其地标，供搜索页的城市选择器使用。
  *
- * 类比：打开携程的"选择目的地"弹窗，看到的城市列表 + 热门景点。
+ * 类比：打开 TripEase 的"选择目的地"弹窗，看到的城市列表 + 热门景点。
  */
 export async function getCities(): Promise<CityWithLandmarks[]> {
   const [rows] = await pool.query<RowDataPacket[]>(`

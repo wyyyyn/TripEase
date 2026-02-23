@@ -507,6 +507,7 @@ export const userRecommendations: {
   rating?: number;
   reviewCount?: number;
   author: string;
+  avatar: string;
   views: number;
 }[] = [
   {
@@ -514,8 +515,9 @@ export const userRecommendations: {
     image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&q=80',
     aspectRatio: '3/4',
     title: '安吉设计感酒店榜，出片率100%的美学天花板',
-    tag: '携程口碑榜',
-    author: '旅行达人小王',
+    tag: 'TripEase口碑榜',
+    author: '晚风旅人',
+    avatar: 'https://i.pravatar.cc/80?img=1',
     views: 28000,
   },
   {
@@ -523,7 +525,8 @@ export const userRecommendations: {
     image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=400&q=80',
     aspectRatio: '4/3',
     title: 'staycation 周末好去处！上海小众酒店合集',
-    author: '爱旅行HAO',
+    author: '漫游少女Lily',
+    avatar: 'https://i.pravatar.cc/80?img=5',
     views: 5249,
   },
   {
@@ -534,7 +537,8 @@ export const userRecommendations: {
     tag: '温州高档酒店榜 No.8',
     rating: 4.7,
     reviewCount: 1200,
-    author: '酒店探店官',
+    author: '住哪儿研究所',
+    avatar: 'https://i.pravatar.cc/80?img=12',
     views: 12000,
   },
   {
@@ -542,7 +546,8 @@ export const userRecommendations: {
     image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80',
     aspectRatio: '3/4',
     title: '住进外滩W酒店云端套房，才懂什么叫把上海踩在脚下',
-    author: '招财菲菲',
+    author: '橘子味的云',
+    avatar: 'https://i.pravatar.cc/80?img=9',
     views: 20000,
   },
   {
@@ -552,7 +557,8 @@ export const userRecommendations: {
     title: '南康路任性住一次LV酒店，绝美设计不踩雷',
     tag: '旅行热点',
     hotLabel: '54.3w人在看',
-    author: '马达欧尼',
+    author: '浪迹Marco',
+    avatar: 'https://i.pravatar.cc/80?img=33',
     views: 28000,
   },
   {
@@ -560,7 +566,8 @@ export const userRecommendations: {
     image: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=400&q=80',
     aspectRatio: '4/3',
     title: '杭州这家酒店也太绝了！无边泳池+湖景房推荐',
-    author: '旅行种草机',
+    author: '民宿猎人Mia',
+    avatar: 'https://i.pravatar.cc/80?img=16',
     views: 15600,
   },
 ];

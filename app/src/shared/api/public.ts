@@ -139,7 +139,7 @@ export interface SearchHotelsParams {
 /**
  * 搜索已发布酒店（分页）
  *
- * 类比：在携程搜索框输入条件，点"搜索"，
+ * 类比：在 TripEase 搜索框输入条件，点"搜索"，
  * 这个函数就帮你把搜索请求发给后端。
  */
 export async function searchPublicHotels(

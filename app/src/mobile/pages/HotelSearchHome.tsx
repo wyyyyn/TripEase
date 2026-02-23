@@ -328,7 +328,7 @@ export default function HotelSearchHome() {
                     )}
                     <div className="flex items-center justify-between mt-2">
                       <div className="flex items-center min-w-0">
-                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex-shrink-0" />
+                        <img src={rec.avatar} alt={rec.author} className="w-5 h-5 rounded-full object-cover flex-shrink-0" />
                         <span className="text-[11px] text-gray-500 ml-1.5 truncate">{rec.author}</span>
                       </div>
                       <div className="flex items-center text-[11px] text-gray-400 flex-shrink-0 ml-2">
@@ -371,7 +371,7 @@ export default function HotelSearchHome() {
                     )}
                     <div className="flex items-center justify-between mt-2">
                       <div className="flex items-center min-w-0">
-                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex-shrink-0" />
+                        <img src={rec.avatar} alt={rec.author} className="w-5 h-5 rounded-full object-cover flex-shrink-0" />
                         <span className="text-[11px] text-gray-500 ml-1.5 truncate">{rec.author}</span>
                       </div>
                       <div className="flex items-center text-[11px] text-gray-400 flex-shrink-0 ml-2">
