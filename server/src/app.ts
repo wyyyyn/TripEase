@@ -10,7 +10,12 @@ import publicRouter from './routes/public.js';
 const app = express();
 
 // 中间件：允许前端跨域访问
-app.use(cors({ origin: 'http://localhost:5173' }));
+// 开发时前端在 5173 端口，生产环境通过 Nginx 代理（同源），所以允许所有来源
+// 如果你有自己的域名，可以改成 origin: 'https://yourdomain.com'
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || '*',
+  credentials: true,
+}));
 
 // 中间件：解析 JSON 请求体
 app.use(express.json());
