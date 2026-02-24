@@ -1,0 +1,71 @@
+# ============================================================
+# Docker Compose 编排文件
+#
+# 类比：这是一份"施工总图"，告诉 Docker 要同时启动哪些服务，
+# 它们之间怎么连接。就像开一家酒店需要前台、后厨、仓库一起配合。
+#
+# 三个服务：
+#   db      → MySQL 数据库（仓库，存数据）
+#   server  → Node.js 后端（后厨，处理业务逻辑）
+#   web     → Nginx + React（前台，面向用户）
+# ============================================================
+
+services:
+
+  # -------------------- 数据库 --------------------
+  db:
+    image: mysql:8.0
+    container_name: tripease-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-tripease123}
+      MYSQL_DATABASE: ${DB_NAME:-tripease}
+    ports:
+      - "3306:3306"
+    volumes:
+      # 持久化数据：容器删了数据还在（类比：仓库的货物不会因为关门就消失）
+      - mysql_data:/var/lib/mysql
+      # 首次启动时自动执行建表脚本
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-tripease123}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # -------------------- 后端 API --------------------
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: tripease-server
+    restart: unless-stopped
+    environment:
+      PORT: 3001
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: ${DB_PASSWORD:-tripease123}
+      DB_NAME: ${DB_NAME:-tripease}
+      JWT_SECRET: ${JWT_SECRET:-please_change_this_secret}
+    ports:
+      - "3001:3001"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # -------------------- 前端 --------------------
+  web:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: tripease-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+
+# 数据卷：MySQL 数据持久化
+volumes:
+  mysql_data:
