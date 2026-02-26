@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>酒店全生命周期管理 - 审核工作台</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#2D5BFF",
+                        "brand-blue": "#2D5BFF",
+                        "background-light": "#FFFFFF",
+                        "background-page": "#F9FAFB",
+                        "navy-custom": "#1A1F2C",
+                        "accent-blue": "#2D5BFF",
+                        "gray-light": "#F3F4F6",
+                        "gray-border": "#F1F5F9",
+                        "soft-red": "#EF4444",
+                        "soft-green": "#10B981"
+                    },
+                    fontFamily: {
+                        display: "Inter",
+                        sans: ['Inter', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 8px rgba(0,0,0,0.04)',
+                    }
+                }
+            }
+        };
+    </script>
+<style type="text/tailwindcss">
+        body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 13px; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        .active-nav { background-color: rgba(45, 91, 255, 0.1); border-right: 4px solid #2D5BFF; }
+        .monospaced-date { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background-page text-slate-900 antialiased overflow-hidden">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-64 bg-navy-custom text-white flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary rounded-lg p-1.5">
+<span class="material-symbols-outlined text-white text-2xl">apartment</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">StayHub <span class="text-primary">Admin</span></h1>
+</div>
+<nav class="flex-1 px-4 py-4 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined opacity-70">dashboard</span>
+<span class="font-medium text-sm">仪表盘</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined opacity-70">bed</span>
+<span class="font-medium text-sm">酒店资源库</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined opacity-70">storefront</span>
+<span class="font-medium text-sm">商户管理</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg active-nav text-primary" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-medium text-sm">审核队列</span>
+<span class="ml-auto bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">23</span>
+</a>
+<div class="my-4 border-t border-white/10"></div>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined opacity-70">analytics</span>
+<span class="font-medium text-sm">市场洞察</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined opacity-70">settings</span>
+<span class="font-medium text-sm">设置</span>
+</a>
+</nav>
+<div class="p-4 border-t border-white/10">
+<div class="flex items-center gap-3 px-2">
+<div class="size-9 rounded-full bg-slate-700 flex items-center justify-center border border-white/20 overflow-hidden">
+<img alt="Admin" class="object-cover size-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnUBjAar1-L_dk1rrd5cr9suiwB7aa97BivFHc9uO5cZb88vxgA7bPIAo4yvpLkHFAEVg-XknolewMZPu_GejxSvhsAYEIpiVVTC6FtGi-gnlv_PmzUikqgVi73iaEMKxncAz5PUvkx_Hb38r92Da4eCLBX7-efhhYIytHUslWAGqWsjkHOdCWJ7WxduCUS-UkjTSB6gCe2Vw6Gi_cosWy_aR2oZMa0mqFGYqQBxYliTfBqgH-AaghQ7QJM_KRPxmh2hEoSZuHo5U"/>
+</div>
+<div class="flex flex-col">
+<p class="text-xs font-semibold text-white">Julian Ross</p>
+<p class="text-[10px] text-white/50">高级审核员</p>
+</div>
+<button class="ml-auto text-white/50 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col overflow-hidden">
+<header class="h-14 bg-white border-b border-gray-100 flex items-center justify-between px-8 shrink-0">
+<div class="flex items-center gap-4">
+<h2 class="text-base font-bold text-slate-800">审核管理</h2>
+<div class="h-4 w-[1px] bg-slate-200"></div>
+<div class="flex gap-1 items-center">
+<span class="text-[11px] text-slate-400 font-medium">资源库</span>
+<span class="material-symbols-outlined text-[14px] text-slate-300">chevron_right</span>
+<span class="text-[11px] text-slate-600 font-semibold">酒店信息审核</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-slate-400 hover:text-slate-600 transition-colors">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-2 right-2 size-1.5 bg-accent-blue rounded-full"></span>
+</button>
+<button class="flex items-center gap-2 bg-accent-blue text-white px-4 py-1.5 rounded-md font-bold text-xs hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-sm">add</span>新建房源
+                </button>
+</div>
+</header>
+<div class="flex-1 relative flex items-center justify-center p-6">
+<div class="bg-white w-full max-w-6xl h-full rounded-xl shadow-soft flex flex-col overflow-hidden">
+<div class="px-8 py-5 border-b border-gray-50 flex items-center justify-between shrink-0">
+<div class="flex items-center gap-3">
+<h3 class="text-lg font-semibold text-slate-800 tracking-tight">酒店信息审核详情</h3>
+<span class="px-2 py-0.5 bg-gray-100 text-gray-500 text-[10px] font-bold rounded uppercase tracking-wider">V1 REJECTED</span>
+</div>
+<button class="text-slate-400 hover:text-slate-600 transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex-1 flex overflow-hidden">
+<div class="w-[38%] overflow-y-auto custom-scrollbar p-8">
+<div class="flex items-center gap-2 mb-8">
+<h4 class="font-semibold text-slate-800 text-sm">酒店信息预览</h4>
+<span class="flex items-center gap-1 px-1.5 py-0.5 text-rose-500 text-[11px] font-medium">
+<span class="material-symbols-outlined text-[14px]">report</span>⚠️ 需修改
+                            </span>
+</div>
+<div class="space-y-10">
+<div class="space-y-4">
+<h5 class="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em]">基础信息</h5>
+<div class="grid grid-cols-2 gap-y-6 gap-x-4">
+<div class="col-span-2">
+<label class="text-[12px] text-slate-400 block mb-1">酒店名称</label>
+<div class="text-[14px] text-slate-800">悦来客栈 (Yuelai Inn)</div>
+</div>
+<div>
+<label class="text-[12px] text-slate-400 block mb-1">酒店星级</label>
+<div class="text-[13px] text-slate-800">2 Stars</div>
+</div>
+<div>
+<label class="text-[12px] text-slate-400 block mb-1">开业日期</label>
+<div class="text-[13px] text-slate-800">2018 年 6 月</div>
+</div>
+<div class="col-span-2">
+<label class="text-[12px] text-slate-400 block mb-1">详细地址</label>
+<div class="text-[13px] text-slate-800 leading-relaxed">XX 省 XX 市 XX 区古镇街道 88 号</div>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<h5 class="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em]">房型与价格</h5>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-[13px] text-slate-700">标准大床房 × 8 间</span>
+<span class="text-[13px] font-medium text-slate-900">¥268/晚</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-[13px] text-slate-700">豪华双床房 × 5 间</span>
+<span class="text-[13px] font-medium text-slate-900">¥388/晚</span>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<h5 class="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em]">图片预览</h5>
+<div class="grid grid-cols-2 gap-2">
+<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50">
+<img alt="Hotel 1" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJxbwOgBnL09jIcGJfhLKl0tU_IskBEAfceRyF5aXqtCpbOR6gMLQ5-tZjseVPjaS43JMNlLcd-EvnOJRGcDripBWuQ1K_X1dRwsFASj108uoBaIBITMAm4v1ViY4HYV3Cx0wZF8q_azK2j760NTrlKDLoFQUACqOg4rb0w94MOtjloNVb0tPvem06t3hQiFWtLHscBYD2hAl89tPrefcHctk1_CrLfwc0PdIim5OdoRE601nA3wzTy0hH3g6GWRTrg4ORdr8PkRQ"/>
+</div>
+<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50">
+<img alt="Hotel 2" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfHiwKuewfpP4oSxGM7Bnwgls0DBTrl1YeJBe2-9ULXIYyynomTueQTa1tiQR6YALfhW3tsCQz460mf0rY00hnnx5Kz49_z1u-sLbktIKFN091JDwjKe6Sbn00O5ECmcWYXRxypmxor2wdz_SY1hbX-JDdo21rLpA9oG8NOn9Gzx888CF4AAmnMT45tHxuq8xhg8mUkbzcRal7QZwD3V7bhjIo-3BMxnyhgVnHkOASfq7P2PdjkuHXBi5wHk0e-Q_dTHj1rgJ92sU"/>
+</div>
+<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50">
+<img alt="Hotel 3" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA42Q2S1VVS1RNXLIuGbM4JvExxCFpCANeodMhCVniPhHKaIOMXH83w-rJieJnaWCNb83ZKp5hBtGQ8MAClxiL80-I2--eU2Fm1gVQ8gzBfrXjnzqJVmrJMYZ_Cmu7w4yuotNUM2-zZYFnLIC6zmJFz5G1lPpSbwdCLrtnzm3DMuO_-Jx7aq5wQilAj4eq6lkKsN-bvOKfsykJ7gJ-7DiLbf3IHDJ4bMh0oTqnUe4WeweJbX-_HqxJ0Fdrr1-b7VM8rzNMduX5Ml0w"/>
+</div>
+<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50">
+<img alt="Hotel 4" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjAyw4ATjclJkKXWCpJlmdXG_Qh1ljS74RZisborYS5a6vsUXO82C6z1bOhwZEMARuSkPO_MopmErlR51C0ZHauihEM6IfXjNK74G8ZVVe5aZBd55iwHy7VCiI2rB_Md1paQsNojUTiNC_kNmDHxyW624YPboyDo6froG-deC9X30Qxb1yFMu0zw1PZKpHZUN09rgaZvczQVFfOFeSL79gfE1cFEQzKwFIgYPxHh0ZFbRoJ2EWKeofAwSumM-0I8rLK2IAOInViD0"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="w-[62%] overflow-y-auto custom-scrollbar p-8 bg-white flex flex-col gap-8">
+<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-1">
+<h4 class="text-xl font-bold text-slate-800">🔴 初审驳回 (First Round Rejected)</h4>
+<p class="text-sm text-slate-400">等待商户修改 (Waiting for Merchant Revision)</p>
+</div>
+<div class="space-y-4">
+<div class="relative flex items-center justify-between w-full max-w-sm">
+<div class="absolute top-1/2 left-0 w-full h-[1px] bg-gray-100 -translate-y-1/2 z-0"></div>
+<div class="relative z-10 flex items-center bg-white pr-3">
+<div class="size-2 rounded-full bg-soft-green"></div>
+</div>
+<div class="relative z-10 flex items-center bg-white px-3">
+<div class="size-2 rounded-full bg-soft-red"></div>
+</div>
+<div class="relative z-10 flex items-center bg-white pl-3">
+<div class="size-2 rounded-full bg-gray-200"></div>
+</div>
+</div>
+</div>
+<div class="bg-gray-light/50 rounded-lg px-4 py-3 flex items-center justify-between">
+<span class="text-[12px] font-medium text-slate-500 uppercase tracking-wider">Next Action:</span>
+<div class="flex items-center gap-2 bg-gray-light px-3 py-1.5 rounded text-slate-600 text-xs font-semibold select-none cursor-default border border-gray-200">
+<span class="material-symbols-outlined text-sm">hourglass_empty</span>
+                                    ⏳ 等待商户修改中 (Waiting for Revision)
+                                </div>
+</div>
+</div>
+<div class="space-y-4">
+<h5 class="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em]">驳回原因 Rejection Reasons</h5>
+<div class="space-y-4">
+<ul class="space-y-1.5 ml-1">
+<li class="text-[13px] text-soft-red">• 图片质量不清晰/数量不足</li>
+<li class="text-[13px] text-soft-red">• 描述存在夸大或虚假信息</li>
+</ul>
+<div class="p-5 bg-[#F9FAFB] rounded-lg">
+<p class="text-[13px] leading-relaxed text-slate-600">主图模糊，请重新拍摄清晰照片；酒店星级描述与实际设施不符，请核实并修改。当前设施无法满足所填写的星级标准。</p>
+<p class="text-[11px] text-slate-400 mt-4 pt-4 border-t border-gray-100/50">提交人：王建国 · 2026-02-24 10:15</p>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-1.5 group cursor-pointer">
+<h5 class="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em]">审核记录 Audit History</h5>
+<span class="material-symbols-outlined text-[14px] text-gray-300">expand_more</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-start gap-4">
+<div class="mt-0.5 flex items-center justify-center w-5">
+<span class="material-symbols-outlined text-soft-red text-[16px]">flag</span>
+</div>
+<div class="flex-1 flex justify-between items-baseline">
+<span class="text-[12px] font-bold text-slate-800">审核驳回 (Rejected by Admin A)</span>
+<span class="text-[11px] text-slate-400 monospaced-date">16:45</span>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="mt-1.5 w-5 flex justify-center">
+<div class="size-1 rounded-full bg-gray-300"></div>
+</div>
+<div class="flex-1 flex justify-between items-baseline">
+<span class="text-[12px] text-slate-400">分配给审核员</span>
+<span class="text-[11px] text-slate-400 monospaced-date">14:30</span>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="mt-1.5 w-5 flex justify-center">
+<div class="size-1 rounded-full bg-gray-300"></div>
+</div>
+<div class="flex-1 flex justify-between items-baseline">
+<span class="text-[12px] text-slate-400">提交申请</span>
+<span class="text-[11px] text-slate-400 monospaced-date">10:15</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="px-8 py-5 border-t border-gray-50 flex items-center justify-between bg-white shrink-0">
+<div class="flex items-center gap-2 text-slate-300">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span class="text-[10px] font-medium uppercase tracking-[0.1em]">StayHub Audit System v4.2</span>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-[13px] font-medium text-slate-400 hover:text-slate-600 transition-colors">关闭 Close</button>
+<div class="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-lg text-slate-500 text-[13px] font-semibold select-none cursor-default">
+<span class="material-symbols-outlined text-sm">hourglass_empty</span>
+                            等待商户修改中 (Waiting for Revision)
+                        </div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>新增酒店信息 - TripEase 商户端</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#1978e5",
+                        "navy-sidebar": "#1A1C1E",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111821"
+                    },
+                    fontFamily: {
+                        display: "Inter"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    }
+                }
+            }
+        };
+    </script>
+<style type="text/tailwindcss">
+        .custom-dashed {
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%231978e5FF' stroke-width='2' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            border-radius: 12px;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-hidden">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-[240px] bg-navy-sidebar text-white flex flex-col z-50 flex-shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined font-bold">apartment</span>
+</div>
+<h1 class="font-bold text-lg tracking-tight">TripEase 商户端</h1>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1 overflow-y-auto hide-scrollbar">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">dashboard</span>
+<span class="text-sm font-medium">控制台</span>
+</a>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/20 text-primary border-l-4 border-primary" href="#">
+<span class="material-symbols-outlined">bed</span>
+<span class="text-sm font-medium">酒店管理</span>
+</a>
+<div class="pl-10 space-y-1">
+<a class="block py-1.5 text-xs text-primary font-medium hover:text-white transition-colors" href="#">新增酒店</a>
+<a class="block py-1.5 text-xs text-slate-400 hover:text-white transition-colors" href="#">我的酒店</a>
+<a class="block py-1.5 text-xs text-slate-400 hover:text-white transition-colors" href="#">审核状态</a>
+</div>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">calendar_month</span>
+<span class="text-sm font-medium">预订管理</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">sell</span>
+<span class="text-sm font-medium">促销活动</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">account_balance_wallet</span>
+<span class="text-sm font-medium">财务结算</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">settings</span>
+<span class="text-sm font-medium">系统设置</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400">help</span>
+<span class="text-sm font-medium">帮助中心</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="bg-white/5 rounded-xl p-3 flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-700 bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBIF6hikKxCA_aweJWT6nZK8ck0kV785aSDq8Cmm5WRtynqwyXbwkKXKkJZDmHym8iS5sa5b0ubkBQTGmZ23meo-cJSr827P4-G5gQAZ2xUiZJHHC0xZU3giaLtlMVvotrXXu61iWU-23sR77uzdCiZBCDT-wAD_T51qWeBsqpF2xqoOEbzJtW-RMq11rG7FWIn-8Fqmmu7RzyjTiOHtpkXjWsSL104s5JdzsX_UcMpuHyWRWJsV84WRtRXPJKQ_qdhJO9GypeZ8iQ");'></div>
+<div class="overflow-hidden">
+<p class="text-xs font-bold truncate">Grand Palace Admin</p>
+<p class="text-[10px] text-slate-400">Managed Account</p>
+</div>
+</div>
+</div>
+</aside>
+<div class="flex-1 flex flex-col h-full relative">
+<header class="h-20 flex-shrink-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-8 flex items-center justify-between z-40">
+<div class="flex items-center gap-4">
+<h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">新增酒店信息</h2>
+<div class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded-full border border-green-200 dark:border-green-800 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                    已通过审核
+                </div>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">保存草稿</button>
+<button class="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">预览页面</button>
+<button class="px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold shadow-sm hover:brightness-105 transition-all">提交审核</button>
+</div>
+</header>
+<div class="flex-1 flex flex-col overflow-hidden relative">
+<nav class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-8 flex items-center gap-8 flex-shrink-0">
+<button class="py-4 border-b-2 border-transparent text-slate-400 text-sm font-medium flex items-center gap-2 cursor-not-allowed">
+<span class="material-symbols-outlined text-sm">info</span>
+                    步骤 1：基础信息
+                </button>
+<button class="py-4 border-b-2 border-primary text-primary text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">meeting_room</span>
+                    步骤 2：房型信息
+                </button>
+<button class="py-4 border-b-2 border-transparent text-slate-400 text-sm font-medium flex items-center gap-2 cursor-not-allowed">
+<span class="material-symbols-outlined text-sm">payments</span>
+                    步骤 3：价格信息
+                </button>
+<button class="py-4 border-b-2 border-transparent text-slate-400 text-sm font-medium flex items-center gap-2 cursor-not-allowed">
+<span class="material-symbols-outlined text-sm">pool</span>
+                    步骤 4：设施服务
+                </button>
+<button class="py-4 border-b-2 border-transparent text-slate-400 text-sm font-medium flex items-center gap-2 cursor-not-allowed">
+<span class="material-symbols-outlined text-sm">photo_library</span>
+                    步骤 5：媒体图库
+                </button>
+<button class="py-4 border-b-2 border-transparent text-slate-400 text-sm font-medium flex items-center gap-2 cursor-not-allowed">
+<span class="material-symbols-outlined text-sm">contact_phone</span>
+                    步骤 6：联系信息
+                </button>
+</nav>
+<div class="flex-1 overflow-y-auto p-8 hide-scrollbar bg-slate-50/50 dark:bg-slate-950/50">
+<div class="max-w-5xl mx-auto space-y-6">
+<div class="flex items-center justify-between mb-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">bed</span>
+<h3 class="font-bold text-xl">房型信息 <span class="text-slate-400 font-normal text-sm ml-2">Room Types</span></h3>
+</div>
+<p class="text-slate-500 text-sm mt-1">请添加至少一个房型，完善房间详细信息</p>
+</div>
+<button class="bg-primary text-white px-5 py-2.5 rounded-lg flex items-center gap-2 font-bold shadow-sm hover:brightness-105 transition-all text-sm">
+<span class="material-symbols-outlined text-lg">add</span>
+                            添加房型
+                        </button>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden ring-2 ring-primary ring-opacity-10">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/30">
+<div class="flex items-center gap-3">
+<h4 class="font-bold text-slate-800 dark:text-white">豪华大床房 Deluxe King Room</h4>
+<span class="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-[10px] font-bold rounded flex items-center gap-1">
+<span class="size-1.5 bg-yellow-500 rounded-full animate-pulse"></span>
+                                    编辑中
+                                </span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex bg-slate-100 dark:bg-slate-800 rounded-lg p-0.5">
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded-md transition-all text-slate-500 hover:text-primary">
+<span class="material-symbols-outlined text-lg">arrow_upward</span>
+</button>
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded-md transition-all text-slate-500 hover:text-primary">
+<span class="material-symbols-outlined text-lg">arrow_downward</span>
+</button>
+</div>
+<button class="p-2 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</div>
+<div class="p-8 space-y-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">房型名称 (CN) <span class="text-red-500">*</span></label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm px-4" type="text" value="豪华大床房"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">房型名称 (EN) <span class="text-red-500">*</span></label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm px-4" type="text" value="Deluxe King Room"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">床型 <span class="text-red-500">*</span></label>
+<select class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm px-4">
+<option selected="">大床 King Bed</option>
+<option>双床 Twin Bed</option>
+<option>单人床 Single Bed</option>
+</select>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">面积 <span class="text-red-500">*</span></label>
+<div class="relative">
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm pl-4 pr-10" type="number" value="45"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-medium">m²</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">楼层</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm px-4" type="text" value="3-5 层"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">最大入住人数 <span class="text-red-500">*</span></label>
+<div class="relative">
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm pl-4 pr-12" type="number" value="2"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-medium">人</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">房间数量 <span class="text-red-500">*</span></label>
+<div class="relative">
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm pl-4 pr-12" type="number" value="10"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-medium">间</span>
+</div>
+</div>
+</div>
+<div class="space-y-3">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">房型设施 (Facilities)</label>
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-2 bg-primary/10 border border-primary text-primary rounded-lg text-sm font-medium flex items-center gap-1.5 transition-all">
+<span class="material-symbols-outlined text-lg">check_circle</span> WiFi
+                                    </button>
+<button class="px-4 py-2 bg-primary/10 border border-primary text-primary rounded-lg text-sm font-medium flex items-center gap-1.5 transition-all">
+<span class="material-symbols-outlined text-lg">check_circle</span> 空调
+                                    </button>
+<button class="px-4 py-2 bg-primary/10 border border-primary text-primary rounded-lg text-sm font-medium flex items-center gap-1.5 transition-all">
+<span class="material-symbols-outlined text-lg">check_circle</span> 电视
+                                    </button>
+<button class="px-4 py-2 bg-primary/10 border border-primary text-primary rounded-lg text-sm font-medium flex items-center gap-1.5 transition-all">
+<span class="material-symbols-outlined text-lg">check_circle</span> 迷你吧
+                                    </button>
+<button class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 rounded-lg text-sm font-medium flex items-center gap-1.5 hover:border-slate-300 transition-all">
+<span class="material-symbols-outlined text-lg">circle</span> 浴缸
+                                    </button>
+<button class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 rounded-lg text-sm font-medium flex items-center gap-1.5 hover:border-slate-300 transition-all">
+<span class="material-symbols-outlined text-lg">add</span> 更多设施
+                                    </button>
+</div>
+</div>
+<div class="space-y-4">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">房型照片 (Photos)</label>
+<div class="flex flex-wrap gap-4">
+<div class="relative group size-32 rounded-xl overflow-hidden shadow-sm">
+<img alt="Room" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWJhMFFs0hqF2JH8ebNbMI7CM1Nd3B5g04OtCCRY6RVTcosfEES0gPrVajvKpmskUUtLEJXWiMlrnrKOR422Os9GSno8DpWakEiNxdwPxbF_W0obiTj0vqqnZykIFv6x_tLa405JCPZ1ycI7S_VLwYzZSyuLXZrrHjcx-LJeRJu7JlybommDrsLXEwAirecVke8OOtCKC_5wRnCSo1WsaN_JMTpTMlTIaPkquMN2nbakYsKlgyTdhGc5nVSDKYRhxHvtT2wMZCCJk"/>
+<button class="absolute top-1 right-1 size-6 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+</div>
+<div class="relative group size-32 rounded-xl overflow-hidden shadow-sm">
+<img alt="Room" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNZCGaTImEjCKoW8G0KL_wX4jmTd4NdXdjxI7inxAKu3rVKKmdKxa33_p45MCDFcmLhQerZSsHpXVj3vSjQnL-nq-BUF7LSbtlK8YefSesj2qDoKFgY-wtgz2irb3x6j6DG4RgrCD38qQIIYV6_RTpEPiiGzR55Q30Ynq6ctfNExrkzbqh3YBABK26cmb0M5OIPi2tCKQcCcZ90C4utmN8Lif9ENGiIoMcYY6K3s9VVhvWKw8dqN-Ydosu85qFYwEjUiv_QRwCwQA"/>
+<button class="absolute top-1 right-1 size-6 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+</div>
+<div class="flex-1 min-w-[300px] h-32 custom-dashed flex flex-col items-center justify-center cursor-pointer hover:bg-primary/5 transition-all space-y-2 py-6">
+<span class="material-symbols-outlined text-primary text-3xl">add_a_photo</span>
+<div class="text-center">
+<p class="text-sm font-bold text-primary">点击或拖拽上传</p>
+<p class="text-[10px] text-slate-400 mt-0.5">最多 5 张 (Max 5)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="px-8 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+<button class="px-6 py-2 bg-primary text-white text-sm font-bold rounded-lg shadow-sm hover:brightness-105 transition-all">保存房型 Save</button>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden hover:border-primary/40 transition-all group">
+<div class="p-5 flex items-center justify-between">
+<div class="flex items-center gap-6 flex-1">
+<div class="flex items-center gap-3 min-w-[240px]">
+<div class="size-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">king_bed</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-800 dark:text-white">商务双床房 Business Twin Room</h4>
+<span class="px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded inline-flex items-center gap-1 mt-1">
+<span class="size-1.5 bg-green-500 rounded-full"></span>
+                                            已完成
+                                        </span>
+</div>
+</div>
+<div class="flex-1 flex items-center gap-10 text-xs text-slate-500 dark:text-slate-400">
+<div class="flex flex-col gap-1">
+<span class="font-semibold text-slate-700 dark:text-slate-200">双床 (Twin) | 38m²</span>
+<span>2-4F | 2人 | 15间</span>
+</div>
+<div class="flex flex-col gap-1 flex-1">
+<span class="text-slate-700 dark:text-slate-200"><span class="font-bold text-slate-400 mr-1">设施:</span>WiFi, 空调, 电视</span>
+<div class="flex gap-1.5">
+<div class="size-2 rounded-full bg-slate-200"></div>
+<div class="size-2 rounded-full bg-slate-200"></div>
+<div class="size-2 rounded-full bg-slate-200"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex bg-slate-50 dark:bg-slate-800/50 rounded-lg p-0.5 border border-slate-100 dark:border-slate-800">
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded-md transition-all text-slate-500 hover:text-primary">
+<span class="material-symbols-outlined text-lg">arrow_upward</span>
+</button>
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded-md transition-all text-slate-500 hover:text-primary">
+<span class="material-symbols-outlined text-lg">arrow_downward</span>
+</button>
+</div>
+<div class="w-px h-8 bg-slate-100 dark:bg-slate-800 mx-1"></div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-primary hover:bg-primary/5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="h-16 flex-shrink-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-8 flex items-center justify-between z-40">
+<div class="flex items-center gap-2 text-green-600 dark:text-green-400 font-medium">
+<span class="material-symbols-outlined text-[18px]">cloud_done</span>
+<span class="text-xs font-medium">自动保存成功 14:25:10</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<button class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+                        上一步 Previous
+                    </button>
+<button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-bold shadow-sm hover:brightness-105 transition-all flex items-center gap-1">
+                        下一步 Next
+                        <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+<div class="w-px h-6 bg-slate-200 dark:bg-slate-800"></div>
+<button class="px-8 py-2 bg-slate-200 dark:bg-slate-800 text-slate-400 rounded-lg text-sm font-bold cursor-not-allowed">提交</button>
+</div>
+</footer>
+</div>
+</div>
+
+</body></html>
