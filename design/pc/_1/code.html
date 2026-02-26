@@ -269,28 +269,58 @@
 </div>
 </td>
 </tr>
-<tr class="hover:bg-slate-50/50 transition-colors h-[64px]">
-<td class="px-4"><input class="rounded border-slate-300 text-accent-blue focus:ring-0" type="checkbox"/></td>
-<td class="px-3">
-<div class="flex items-center gap-3">
-<img alt="Inn" class="size-10 rounded-[4px] object-cover shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJxbwOgBnL09jIcGJfhLKl0tU_IskBEAfceRyF5aXqtCpbOR6gMLQ5-tZjseVPjaS43JMNlLcd-EvnOJRGcDripBWuQ1K_X1dRwsFASj108uoBaIBITMAm4v1ViY4HYV3Cx0wZF8q_azK2j760NTrlKDLoFQUACqOg4rb0w94MOtjloNVb0tPvem06t3hQiFWtLHscBYD2hAl89tPrefcHctk1_CrLfwc0PdIim5OdoRE601nA3wzTy0hH3g6GWRTrg4ORdr8PkRQ"/>
-<span class="font-bold text-[#333] text-[13px]">悦来客栈</span>
-</div>
-</td>
-<td class="px-3 text-[13px] text-[#666]">王建国</td>
-<td class="px-3 text-amber-400 text-[10px]">★★</td>
-<td class="px-3">
-<span class="flex items-center"><span class="status-dot dot-rejected"></span><span class="status-text">未通过</span></span>
-</td>
-<td class="px-3 text-slate-300 text-[11px]">-</td>
-<td class="px-3 text-[11px] text-[#999] monospaced-date">2026-02-24</td>
-<td class="px-4 text-right">
-<div class="flex justify-end items-center gap-3">
-<button class="bg-accent-blue text-white px-3 py-1 rounded-[4px] text-[11px] font-medium hover:opacity-90">重新审核</button>
-<button class="text-slate-400 hover:text-accent-blue text-[11px] font-medium">查看原因</button>
-</div>
-</td>
-</tr>
+        <tr
+            class="hover:bg-slate-50/50 transition-colors h-[64px] cursor-pointer"
+            onClick={() => navigate('/_4')}
+        >
+            <td class="px-4">
+                <input
+                    class="rounded border-slate-300 text-accent-blue focus:ring-0"
+                    type="checkbox"
+                    onClick={(e) => e.stopPropagation()}
+                />
+            </td>
+            <td class="px-3">
+                <div class="flex items-center gap-3">
+                    <img
+                        alt="Inn"
+                        class="size-10 rounded-[4px] object-cover shrink-0"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJxbwOgBnL09jIcGJfhLKl0tU_IskBEAfceRyF5aXqtCpbOR6gMLQ5-tZjseVPjaS43JMNlLcd-EvnOJRGcDripBWuQ1K_X1dRwsFASj108uoBaIBITMAm4v1ViY4HYV3Cx0wZF8q_azK2j760NTrlKDLoFQUACqOg4rb0w94MOtjloNVb0tPvem06t3hQiFWtLHscBYD2hAl89tPrefcHctk1_CrLfwc0PdIim5OdoRE601nA3wzTy0hH3g6GWRTrg4ORdr8PkRQ"
+                    />
+                    <span class="font-bold text-[#333] text-[13px]">悦来客栈</span>
+                </div>
+            </td>
+            <td class="px-3 text-[13px] text-[#666]">王建国</td>
+            <td class="px-3 text-amber-400 text-[10px]">★★</td>
+            <td class="px-3">
+                <span class="flex items-center">
+                    <span class="status-dot dot-rejected"></span>
+                    <span class="status-text">未通过</span>
+                </span>
+            </td>
+            <td class="px-3 text-slate-300 text-[11px]">-</td>
+            <td class="px-3 text-[11px] text-[#999] monospaced-date">2026-02-24</td>
+            <td class="px-4 text-right">
+                <div class="flex justify-end items-center gap-3">
+                    <button
+                        class="bg-accent-blue text-white px-3 py-1 rounded-[4px] text-[11px] font-medium hover:opacity-90"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                        }}
+                    >
+                        重新审核
+                    </button>
+                    <button
+                        class="text-slate-400 hover:text-accent-blue text-[11px] font-medium"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                        }}
+                    >
+                        查看原因
+                    </button>
+                </div>
+            </td>
+        </tr>
 <tr class="hover:bg-slate-50/50 transition-colors h-[64px]">
 <td class="px-4"><input class="rounded border-slate-300 text-accent-blue focus:ring-0" type="checkbox"/></td>
 <td class="px-3">
