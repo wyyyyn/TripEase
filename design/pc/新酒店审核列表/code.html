@@ -12,11 +12,11 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#1978e5",
+                        primary: "#2D5BFF",
                         "background-light": "#ffffff",
                         "background-dark": "#111821",
-                        "navy-custom": "#0f172a",
-                        "accent-blue": "#1978e5",
+                        "navy-custom": "#1A1F2C",
+                        "accent-blue": "#2D5BFF",
                         "gray-light": "#f1f5f9",
                         "gray-border": "#e2e8f0"
                     },
@@ -31,15 +31,15 @@
     </script>
 <style type="text/tailwindcss">
         body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .active-nav { background-color: rgba(25, 120, 229, 0.1); border-right: 4px solid #1978e5; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        .active-nav { background-color: rgba(45, 91, 255, 0.1); border-right: 4px solid #2D5BFF; }
         .table-row-divider { border-bottom: 1px solid #F5F5F5; }
         .monospaced-date { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
         .dot-pending { background-color: #facc15; }
         .dot-approved { background-color: #22c55e; }
         .dot-rejected { background-color: #ef4444; }
-        .status-text { color: #666; font-size: 13px; font-weight: 400; }
+        .status-text { color: #666; font-size: 11px; font-weight: 400; }
     </style>
 </head>
 <body class="bg-background-light text-slate-900 antialiased overflow-hidden">
@@ -49,7 +49,7 @@
 <div class="bg-primary rounded-lg p-1.5">
 <span class="material-symbols-outlined text-white text-2xl">apartment</span>
 </div>
-<h1 class="text-xl font-bold tracking-tight">StayHub <span class="text-primary">Admin</span></h1>
+<h1 class="text-xl font-bold tracking-tight">TripEase <span class="text-primary">管理员</span></h1>
 </div>
 <nav class="flex-1 px-4 py-4 flex flex-col gap-1">
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" href="#">
@@ -85,7 +85,7 @@
 <img alt="Admin" class="object-cover size-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnUBjAar1-L_dk1rrd5cr9suiwB7aa97BivFHc9uO5cZb88vxgA7bPIAo4yvpLkHFAEVg-XknolewMZPu_GejxSvhsAYEIpiVVTC6FtGi-gnlv_PmzUikqgVi73iaEMKxncAz5PUvkx_Hb38r92Da4eCLBX7-efhhYIytHUslWAGqWsjkHOdCWJ7WxduCUS-UkjTSB6gCe2Vw6Gi_cosWy_aR2oZMa0mqFGYqQBxYliTfBqgH-AaghQ7QJM_KRPxmh2hEoSZuHo5U"/>
 </div>
 <div class="flex flex-col">
-<p class="text-xs font-semibold">Julian Ross</p>
+<p class="text-xs font-semibold text-white">Julian Ross</p>
 <p class="text-[10px] text-white/50">高级审核员</p>
 </div>
 <button class="ml-auto text-white/50 hover:text-white transition-colors">
@@ -94,25 +94,22 @@
 </div>
 </div>
 </aside>
-<main class="flex-1 flex flex-col overflow-hidden bg-white">
+<main id="app-main" class="flex-1 flex flex-col overflow-hidden bg-white">
 <header class="h-14 bg-white border-b border-gray-100 flex items-center justify-between px-8 shrink-0">
 <div class="flex items-center gap-4">
 <h2 class="text-base font-bold text-slate-800">审核管理</h2>
 <div class="h-4 w-[1px] bg-slate-200"></div>
-<div class="flex gap-1">
+<div class="flex gap-1 items-center">
 <span class="text-[11px] text-slate-400 font-medium">资源库</span>
-<span class="material-symbols-outlined text-[11px] text-slate-300">chevron_right</span>
+<span class="material-symbols-outlined text-[14px] text-slate-300">chevron_right</span>
 <span class="text-[11px] text-slate-600 font-semibold">酒店信息审核</span>
 </div>
 </div>
-<div class="flex items-center gap-4">
+<div class="flex items-center justify-end">
 <button class="relative p-2 text-slate-400 hover:text-slate-600 transition-colors">
 <span class="material-symbols-outlined text-xl">notifications</span>
-<span class="absolute top-2 right-2 size-1.5 bg-accent-blue rounded-full border border-white"></span>
+<span class="absolute top-2 right-2 size-1.5 bg-accent-blue rounded-full"></span>
 </button>
-<button class="flex items-center gap-2 bg-accent-blue text-white px-4 py-1.5 rounded-md font-bold text-xs hover:opacity-90 transition-all shadow-sm">
-<span class="material-symbols-outlined text-sm">add</span>新建房源
-                </button>
 </div>
 </header>
 <div class="flex-1 overflow-auto">
@@ -169,7 +166,7 @@
 </div>
 <select class="bg-white border-slate-200 rounded py-1 pl-2 pr-6 text-[11px] font-medium text-slate-600 focus:ring-0 focus:border-accent-blue min-w-[90px]">
 <option>审核状态</option>
-<option>审核中</option>
+<option>待审核</option>
 <option>已通过</option>
 <option>未通过</option>
 </select>
@@ -183,6 +180,7 @@
 <option>★★★★★</option>
 <option>★★★★</option>
 <option>★★★</option>
+<option>★★</option>
 </select>
 <select class="bg-white border-slate-200 rounded py-1 pl-2 pr-6 text-[11px] font-medium text-slate-600 focus:ring-0 focus:border-accent-blue min-w-[90px]">
 <option>所属区域</option>
@@ -218,7 +216,7 @@
 <th class="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-gray-100">审核状态</th>
 <th class="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-gray-100">上线状态</th>
 <th class="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-gray-100">提交时间</th>
-<th class="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right border-b border-gray-100">操作</th>
+<th class="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right border-b border-gray-100 min-w-[140px]">操作</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-[#F5F5F5]">
@@ -233,14 +231,14 @@
 <td class="px-3 text-[13px] text-[#666]">陈志强</td>
 <td class="px-3 text-amber-400 text-[10px]">★★★★★</td>
 <td class="px-3">
-<span class="flex items-center"><span class="status-dot dot-pending"></span><span class="status-text">审核中</span></span>
+<span class="status-text">待审核</span>
 </td>
 <td class="px-3 text-slate-300 text-[11px]">-</td>
 <td class="px-3 text-[11px] text-[#999] monospaced-date">2026-02-25</td>
-<td class="px-4 text-right">
-<div class="flex justify-end items-center gap-3">
-<button class="bg-accent-blue text-white px-3 py-1 rounded-[4px] text-[11px] font-medium hover:opacity-90">审核</button>
-<button class="text-slate-400 hover:text-accent-blue text-[11px] font-medium">查看</button>
+<td class="px-4 text-right min-w-[140px]">
+<div class="flex items-center justify-end gap-2">
+<button class="bg-accent-blue text-white px-2 py-1 rounded text-[11px] font-medium shadow-sm min-w-[72px]">审 核</button>
+<button class="text-slate-500 text-[11px] font-medium hover:text-accent-blue underline-offset-2 hover:underline">详情</button>
 </div>
 </td>
 </tr>
@@ -255,30 +253,22 @@
 <td class="px-3 text-[13px] text-[#666]">刘芳</td>
 <td class="px-3 text-amber-400 text-[10px]">★★★</td>
 <td class="px-3">
-<span class="flex items-center"><span class="status-dot dot-approved"></span><span class="status-text">已通过</span></span>
+<span class="status-text">已通过</span>
 </td>
 <td class="px-3">
-<span class="flex items-center gap-1.5 text-[11px] text-slate-600"><span class="size-1.5 bg-emerald-500 rounded-full"></span> 已上线</span>
+<span class="status-text">已上线</span>
 </td>
 <td class="px-3 text-[11px] text-[#999] monospaced-date">2026-02-22</td>
-<td class="px-4 text-right">
-<div class="flex justify-end items-center gap-3">
-<button class="text-slate-400 hover:text-rose-500 text-[11px] font-medium">下线</button>
-<button class="text-slate-400 hover:text-accent-blue text-[11px] font-medium">查看</button>
-<button class="text-slate-400 hover:text-accent-blue text-[11px] font-medium">编辑</button>
+<td class="px-4 text-right min-w-[140px]">
+<div class="flex items-center justify-end gap-2">
+<button class="bg-white border border-slate-300 text-slate-700 px-2 py-1 rounded text-[11px] font-medium hover:bg-slate-50 min-w-[72px]">下 线</button>
+<button class="text-slate-500 text-[11px] font-medium hover:text-accent-blue underline-offset-2 hover:underline">详情</button>
 </div>
 </td>
 </tr>
-        <tr
-            class="hover:bg-slate-50/50 transition-colors h-[64px] cursor-pointer"
-            onClick={() => navigate('/_4')}
-        >
+        <tr class="hover:bg-slate-50/50 transition-colors h-[64px]">
             <td class="px-4">
-                <input
-                    class="rounded border-slate-300 text-accent-blue focus:ring-0"
-                    type="checkbox"
-                    onClick={(e) => e.stopPropagation()}
-                />
+                <input class="rounded border-slate-300 text-accent-blue focus:ring-0" type="checkbox"/>
             </td>
             <td class="px-3">
                 <div class="flex items-center gap-3">
@@ -293,30 +283,20 @@
             <td class="px-3 text-[13px] text-[#666]">王建国</td>
             <td class="px-3 text-amber-400 text-[10px]">★★</td>
             <td class="px-3">
-                <span class="flex items-center">
-                    <span class="status-dot dot-rejected"></span>
-                    <span class="status-text">未通过</span>
-                </span>
+                <span class="status-text">未通过</span>
             </td>
             <td class="px-3 text-slate-300 text-[11px]">-</td>
             <td class="px-3 text-[11px] text-[#999] monospaced-date">2026-02-24</td>
-            <td class="px-4 text-right">
-                <div class="flex justify-end items-center gap-3">
+            <td class="px-4 text-right min-w-[140px]">
+                <div class="flex items-center justify-end gap-2">
                     <button
-                        class="bg-accent-blue text-white px-3 py-1 rounded-[4px] text-[11px] font-medium hover:opacity-90"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                        }}
-                    >
-                        重新审核
-                    </button>
-                    <button
-                        class="text-slate-400 hover:text-accent-blue text-[11px] font-medium"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                        }}
+                        class="bg-amber-50 text-amber-800 border border-amber-200 px-2 py-1 rounded text-[11px] font-medium min-w-[72px]"
+                        onclick="navigate('../新酒店审核详情/code.html')"
                     >
                         查看原因
+                    </button>
+                    <button class="text-slate-500 text-[11px] font-medium hover:text-accent-blue underline-offset-2 hover:underline">
+                        详情
                     </button>
                 </div>
             </td>
@@ -332,16 +312,16 @@
 <td class="px-3 text-[13px] text-[#666]">赵敏</td>
 <td class="px-3 text-amber-400 text-[10px]">★★★★</td>
 <td class="px-3">
-<span class="flex items-center"><span class="status-dot dot-approved"></span><span class="status-text">已通过</span></span>
+<span class="status-text">已通过</span>
 </td>
 <td class="px-3">
-<span class="flex items-center gap-1.5 text-[11px] text-slate-400"><span class="size-1.5 bg-slate-400 rounded-full"></span> 已下线</span>
+<span class="status-text">已下线</span>
 </td>
 <td class="px-3 text-[11px] text-[#999] monospaced-date">2026-02-20</td>
-<td class="px-4 text-right">
-<div class="flex justify-end items-center gap-3">
-<button class="bg-accent-blue text-white px-3 py-1 rounded-[4px] text-[11px] font-medium hover:opacity-90">恢复上线</button>
-<button class="text-slate-400 hover:text-accent-blue text-[11px] font-medium">查看</button>
+<td class="px-4 text-right min-w-[140px]">
+<div class="flex items-center justify-end gap-2">
+<button class="bg-white border border-slate-300 text-slate-700 px-2 py-1 rounded text-[11px] font-medium hover:bg-slate-50 min-w-[72px]">下 线</button>
+<button class="text-slate-500 text-[11px] font-medium hover:text-accent-blue underline-offset-2 hover:underline">详情</button>
 </div>
 </td>
 </tr>
@@ -356,14 +336,14 @@
 <td class="px-3 text-[13px] text-[#666]">孙伟</td>
 <td class="px-3 text-amber-400 text-[10px]">★★★★</td>
 <td class="px-3">
-<span class="flex items-center"><span class="status-dot dot-pending"></span><span class="status-text">审核中</span></span>
+<span class="status-text">待审核</span>
 </td>
 <td class="px-3 text-slate-300 text-[11px]">-</td>
 <td class="px-3 text-[11px] text-[#999] monospaced-date">2026-02-26</td>
-<td class="px-4 text-right">
-<div class="flex justify-end items-center gap-3">
-<button class="bg-accent-blue text-white px-3 py-1 rounded-[4px] text-[11px] font-medium hover:opacity-90">审核</button>
-<button class="text-slate-400 hover:text-accent-blue text-[11px] font-medium">查看</button>
+<td class="px-4 text-right min-w-[140px]">
+<div class="flex items-center justify-end gap-2">
+<button class="bg-accent-blue text-white px-2 py-1 rounded text-[11px] font-medium shadow-sm min-w-[72px]">审 核</button>
+<button class="text-slate-500 text-[11px] font-medium hover:text-accent-blue underline-offset-2 hover:underline">详情</button>
 </div>
 </td>
 </tr>
@@ -378,17 +358,16 @@
 <td class="px-3 text-[13px] text-[#666]">周婷</td>
 <td class="px-3 text-amber-400 text-[10px]">★★★★★</td>
 <td class="px-3">
-<span class="flex items-center"><span class="status-dot dot-approved"></span><span class="status-text">已通过</span></span>
+<span class="status-text">已通过</span>
 </td>
 <td class="px-3">
-<span class="flex items-center gap-1.5 text-[11px] text-slate-600"><span class="size-1.5 bg-emerald-500 rounded-full"></span> 已上线</span>
+<span class="status-text">已上线</span>
 </td>
 <td class="px-3 text-[11px] text-[#999] monospaced-date">2026-02-18</td>
-<td class="px-4 text-right">
-<div class="flex justify-end items-center gap-3">
-<button class="text-slate-400 hover:text-rose-500 text-[11px] font-medium">下线</button>
-<button class="text-slate-400 hover:text-accent-blue text-[11px] font-medium">查看</button>
-<button class="text-slate-400 hover:text-accent-blue text-[11px] font-medium">编辑</button>
+<td class="px-4 text-right min-w-[140px]">
+<div class="flex items-center justify-end gap-2">
+<button class="bg-white border border-slate-300 text-slate-700 px-2 py-1 rounded text-[11px] font-medium hover:bg-slate-50 min-w-[72px]">下 线</button>
+<button class="text-slate-500 text-[11px] font-medium hover:text-accent-blue underline-offset-2 hover:underline">详情</button>
 </div>
 </td>
 </tr>
@@ -403,14 +382,14 @@
 <td class="px-3 text-[13px] text-[#666]">吴强</td>
 <td class="px-3 text-amber-400 text-[10px]">★★</td>
 <td class="px-3">
-<span class="flex items-center"><span class="status-dot dot-rejected"></span><span class="status-text">未通过</span></span>
+<span class="status-text">未通过</span>
 </td>
 <td class="px-3 text-slate-300 text-[11px]">-</td>
 <td class="px-3 text-[11px] text-[#999] monospaced-date">2026-02-23</td>
-<td class="px-4 text-right">
-<div class="flex justify-end items-center gap-3">
-<button class="bg-accent-blue text-white px-3 py-1 rounded-[4px] text-[11px] font-medium hover:opacity-90">重新审核</button>
-<button class="text-slate-400 hover:text-accent-blue text-[11px] font-medium">查看原因</button>
+<td class="px-4 text-right min-w-[140px]">
+<div class="flex items-center justify-end gap-2">
+<button class="bg-amber-50 text-amber-800 border border-amber-200 px-2 py-1 rounded text-[11px] font-medium min-w-[72px]">查看原因</button>
+<button class="text-slate-500 text-[11px] font-medium hover:text-accent-blue underline-offset-2 hover:underline">详情</button>
 </div>
 </td>
 </tr>
@@ -425,17 +404,16 @@
 <td class="px-3 text-[13px] text-[#666]">郑丽</td>
 <td class="px-3 text-amber-400 text-[10px]">★★</td>
 <td class="px-3">
-<span class="flex items-center"><span class="status-dot dot-approved"></span><span class="status-text">已通过</span></span>
+<span class="status-text">已通过</span>
 </td>
 <td class="px-3">
-<span class="flex items-center gap-1.5 text-[11px] text-slate-600"><span class="size-1.5 bg-emerald-500 rounded-full"></span> 已上线</span>
+<span class="status-text">已上线</span>
 </td>
 <td class="px-3 text-[11px] text-[#999] monospaced-date">2026-02-21</td>
-<td class="px-4 text-right">
-<div class="flex justify-end items-center gap-3">
-<button class="text-slate-400 hover:text-rose-500 text-[11px] font-medium">下线</button>
-<button class="text-slate-400 hover:text-accent-blue text-[11px] font-medium">查看</button>
-<button class="text-slate-400 hover:text-accent-blue text-[11px] font-medium">编辑</button>
+<td class="px-4 text-right min-w-[140px]">
+<div class="flex items-center justify-end gap-2">
+<button class="bg-white border border-slate-300 text-slate-700 px-2 py-1 rounded text-[11px] font-medium hover:bg-slate-50 min-w-[72px]">下 线</button>
+<button class="text-slate-500 text-[11px] font-medium hover:text-accent-blue underline-offset-2 hover:underline">详情</button>
 </div>
 </td>
 </tr>
@@ -450,16 +428,16 @@
 <td class="px-3 text-[13px] text-[#666]">冯杰</td>
 <td class="px-3 text-amber-400 text-[10px]">★★★★</td>
 <td class="px-3">
-<span class="flex items-center"><span class="status-dot dot-approved"></span><span class="status-text">已通过</span></span>
+<span class="status-text">已通过</span>
 </td>
 <td class="px-3">
-<span class="flex items-center gap-1.5 text-[11px] text-slate-400"><span class="size-1.5 bg-slate-400 rounded-full"></span> 已下线</span>
+<span class="status-text">已下线</span>
 </td>
 <td class="px-3 text-[11px] text-[#999] monospaced-date">2026-02-19</td>
-<td class="px-4 text-right">
-<div class="flex justify-end items-center gap-3">
-<button class="bg-accent-blue text-white px-3 py-1 rounded-[4px] text-[11px] font-medium hover:opacity-90">恢复上线</button>
-<button class="text-slate-400 hover:text-accent-blue text-[11px] font-medium">查看</button>
+<td class="px-4 text-right min-w-[140px]">
+<div class="flex items-center justify-end gap-2">
+<button class="bg-white border border-slate-300 text-slate-700 px-2 py-1 rounded text-[11px] font-medium hover:bg-slate-50 min-w-[72px]">下 线</button>
+<button class="text-slate-500 text-[11px] font-medium hover:text-accent-blue underline-offset-2 hover:underline">详情</button>
 </div>
 </td>
 </tr>
@@ -474,14 +452,14 @@
 <td class="px-3 text-[13px] text-[#666]">褚兰</td>
 <td class="px-3 text-amber-400 text-[10px]">★★★</td>
 <td class="px-3">
-<span class="flex items-center"><span class="status-dot dot-pending"></span><span class="status-text">审核中</span></span>
+<span class="status-text">待审核</span>
 </td>
 <td class="px-3 text-slate-300 text-[11px]">-</td>
 <td class="px-3 text-[11px] text-[#999] monospaced-date">2026-02-26</td>
-<td class="px-4 text-right">
-<div class="flex justify-end items-center gap-3">
-<button class="bg-accent-blue text-white px-3 py-1 rounded-[4px] text-[11px] font-medium hover:opacity-90">审核</button>
-<button class="text-slate-400 hover:text-accent-blue text-[11px] font-medium">查看</button>
+<td class="px-4 text-right min-w-[140px]">
+<div class="flex items-center justify-end gap-2">
+<button class="bg-accent-blue text-white px-2 py-1 rounded text-[11px] font-medium shadow-sm min-w-[72px]">审 核</button>
+<button class="text-slate-500 text-[11px] font-medium hover:text-accent-blue underline-offset-2 hover:underline">详情</button>
 </div>
 </td>
 </tr>
@@ -526,5 +504,75 @@
 </footer>
 </main>
 </div>
+<script>
+(function () {
+    const MAIN_ID = 'app-main';
+    const LIST_PAGE = '新酒店审核列表/code.html';
+    const DETAIL_PAGE = '新酒店审核详情/code.html';
 
+    function getMain() { return document.getElementById(MAIN_ID); }
+
+    function isAppPage(path) {
+        const full = new URL(path, window.location.href).pathname;
+        return full.includes(LIST_PAGE) || full.includes(DETAIL_PAGE);
+    }
+
+    function loadPage(path, push) {
+        const main = getMain();
+        if (!main) { window.location.href = path; return; }
+        const url = new URL(path, window.location.href).href;
+        fetch(url)
+            .then(function (r) { return r.text(); })
+            .then(function (html) {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newMain = doc.querySelector('main');
+                const newTitle = doc.querySelector('title');
+                if (newMain) {
+                    if (push !== false) {
+                        history.pushState(
+                            { mainHtml: main.innerHTML, title: document.title },
+                            '',
+                            window.location.href
+                        );
+                    }
+                    main.innerHTML = newMain.innerHTML;
+                    if (newTitle) document.title = newTitle.textContent;
+                } else {
+                    window.location.href = path;
+                }
+            })
+            .catch(function () { window.location.href = path; });
+    }
+
+    window.navigate = function (path) {
+        if (!path || !isAppPage(path)) {
+            window.location.href = path || '#';
+            return;
+        }
+        loadPage(path, true);
+    };
+
+    window.addEventListener('popstate', function (e) {
+        if (e.state && e.state.mainHtml != null) {
+            var main = getMain();
+            if (main) {
+                main.innerHTML = e.state.mainHtml;
+                if (e.state.title) document.title = e.state.title;
+            }
+        }
+    });
+
+    if (history.state == null) {
+        var main = getMain();
+        if (main) {
+            history.replaceState(
+                { mainHtml: main.innerHTML, title: document.title },
+                '',
+                window.location.href
+            );
+        }
+    }
+})();
+</script>
 </body></html>

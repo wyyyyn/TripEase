@@ -61,7 +61,7 @@
 <div class="bg-primary rounded-lg p-1.5">
 <span class="material-symbols-outlined text-white text-2xl">apartment</span>
 </div>
-<h1 class="text-xl font-bold tracking-tight">StayHub <span class="text-primary">Admin</span></h1>
+<h1 class="text-xl font-bold tracking-tight">TripEase <span class="text-primary">管理员</span></h1>
 </div>
 <nav class="flex-1 px-4 py-4 flex flex-col gap-1">
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" href="#">
@@ -106,7 +106,7 @@
 </div>
 </div>
 </aside>
-<main class="flex-1 flex flex-col overflow-hidden">
+<main id="app-main" class="flex-1 flex flex-col overflow-hidden">
 <header class="h-14 bg-white border-b border-gray-100 flex items-center justify-between px-8 shrink-0">
 <div class="flex items-center gap-4">
 <h2 class="text-base font-bold text-slate-800">审核管理</h2>
@@ -117,29 +117,26 @@
 <span class="text-[11px] text-slate-600 font-semibold">酒店信息审核</span>
 </div>
 </div>
-<div class="flex items-center gap-4">
+<div class="flex items-center justify-end">
 <button class="relative p-2 text-slate-400 hover:text-slate-600 transition-colors">
 <span class="material-symbols-outlined text-xl">notifications</span>
 <span class="absolute top-2 right-2 size-1.5 bg-accent-blue rounded-full"></span>
 </button>
-<button class="flex items-center gap-2 bg-accent-blue text-white px-4 py-1.5 rounded-md font-bold text-xs hover:opacity-90 transition-all">
-<span class="material-symbols-outlined text-sm">add</span>新建房源
-                </button>
 </div>
 </header>
 <div class="flex-1 relative flex items-center justify-center p-6">
-<div class="bg-white w-full max-w-6xl h-full rounded-xl shadow-soft flex flex-col overflow-hidden">
+<div class="bg-white w-full max-w-6xl h-full max-h-[calc(100vh-80px)] rounded-xl shadow-soft flex flex-col overflow-hidden">
 <div class="px-8 py-5 border-b border-gray-50 flex items-center justify-between shrink-0">
 <div class="flex items-center gap-3">
 <h3 class="text-lg font-semibold text-slate-800 tracking-tight">酒店信息审核详情</h3>
 <span class="px-2 py-0.5 bg-gray-100 text-gray-500 text-[10px] font-bold rounded uppercase tracking-wider">V1 REJECTED</span>
 </div>
-<button class="text-slate-400 hover:text-slate-600 transition-colors">
+<button class="text-slate-400 hover:text-slate-600 transition-colors" onclick="navigate('../新酒店审核列表/code.html')">
 <span class="material-symbols-outlined">close</span>
 </button>
 </div>
-<div class="flex-1 flex overflow-hidden">
-<div class="w-[38%] overflow-y-auto custom-scrollbar p-8">
+<div class="flex-1 flex overflow-hidden min-h-0">
+<div class="w-[38%] h-full overflow-y-auto custom-scrollbar p-8">
 <div class="flex items-center gap-2 mb-8">
 <h4 class="font-semibold text-slate-800 text-sm">酒店信息预览</h4>
 <span class="flex items-center gap-1 px-1.5 py-0.5 text-rose-500 text-[11px] font-medium">
@@ -184,23 +181,23 @@
 <div class="space-y-4">
 <h5 class="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em]">图片预览</h5>
 <div class="grid grid-cols-2 gap-2">
-<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50">
+<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50 shrink-0">
 <img alt="Hotel 1" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJxbwOgBnL09jIcGJfhLKl0tU_IskBEAfceRyF5aXqtCpbOR6gMLQ5-tZjseVPjaS43JMNlLcd-EvnOJRGcDripBWuQ1K_X1dRwsFASj108uoBaIBITMAm4v1ViY4HYV3Cx0wZF8q_azK2j760NTrlKDLoFQUACqOg4rb0w94MOtjloNVb0tPvem06t3hQiFWtLHscBYD2hAl89tPrefcHctk1_CrLfwc0PdIim5OdoRE601nA3wzTy0hH3g6GWRTrg4ORdr8PkRQ"/>
 </div>
-<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50">
+<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50 shrink-0">
 <img alt="Hotel 2" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfHiwKuewfpP4oSxGM7Bnwgls0DBTrl1YeJBe2-9ULXIYyynomTueQTa1tiQR6YALfhW3tsCQz460mf0rY00hnnx5Kz49_z1u-sLbktIKFN091JDwjKe6Sbn00O5ECmcWYXRxypmxor2wdz_SY1hbX-JDdo21rLpA9oG8NOn9Gzx888CF4AAmnMT45tHxuq8xhg8mUkbzcRal7QZwD3V7bhjIo-3BMxnyhgVnHkOASfq7P2PdjkuHXBi5wHk0e-Q_dTHj1rgJ92sU"/>
 </div>
-<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50">
+<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50 shrink-0">
 <img alt="Hotel 3" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA42Q2S1VVS1RNXLIuGbM4JvExxCFpCANeodMhCVniPhHKaIOMXH83w-rJieJnaWCNb83ZKp5hBtGQ8MAClxiL80-I2--eU2Fm1gVQ8gzBfrXjnzqJVmrJMYZ_Cmu7w4yuotNUM2-zZYFnLIC6zmJFz5G1lPpSbwdCLrtnzm3DMuO_-Jx7aq5wQilAj4eq6lkKsN-bvOKfsykJ7gJ-7DiLbf3IHDJ4bMh0oTqnUe4WeweJbX-_HqxJ0Fdrr1-b7VM8rzNMduX5Ml0w"/>
 </div>
-<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50">
+<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50 shrink-0">
 <img alt="Hotel 4" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjAyw4ATjclJkKXWCpJlmdXG_Qh1ljS74RZisborYS5a6vsUXO82C6z1bOhwZEMARuSkPO_MopmErlR51C0ZHauihEM6IfXjNK74G8ZVVe5aZBd55iwHy7VCiI2rB_Md1paQsNojUTiNC_kNmDHxyW624YPboyDo6froG-deC9X30Qxb1yFMu0zw1PZKpHZUN09rgaZvczQVFfOFeSL79gfE1cFEQzKwFIgYPxHh0ZFbRoJ2EWKeofAwSumM-0I8rLK2IAOInViD0"/>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="w-[62%] overflow-y-auto custom-scrollbar p-8 bg-white flex flex-col gap-8">
+<div class="w-[62%] h-full overflow-y-auto custom-scrollbar p-8 bg-white flex flex-col gap-8">
 <div class="flex flex-col gap-6">
 <div class="flex flex-col gap-1">
 <h4 class="text-xl font-bold text-slate-800">🔴 初审驳回 (First Round Rejected)</h4>
@@ -281,7 +278,7 @@
 <div class="px-8 py-5 border-t border-gray-50 flex items-center justify-between bg-white shrink-0">
 <div class="flex items-center gap-2 text-slate-300">
 <span class="material-symbols-outlined text-sm">verified_user</span>
-<span class="text-[10px] font-medium uppercase tracking-[0.1em]">StayHub Audit System v4.2</span>
+<span class="text-[10px] font-medium uppercase tracking-[0.1em]">TripEase Audit System v4.2</span>
 </div>
 <div class="flex items-center gap-6">
 <button class="text-[13px] font-medium text-slate-400 hover:text-slate-600 transition-colors">关闭 Close</button>
@@ -295,5 +292,75 @@
 </div>
 </main>
 </div>
+<script>
+(function () {
+    const MAIN_ID = 'app-main';
+    const LIST_PAGE = '新酒店审核列表/code.html';
+    const DETAIL_PAGE = '新酒店审核详情/code.html';
 
+    function getMain() { return document.getElementById(MAIN_ID); }
+
+    function isAppPage(path) {
+        const full = new URL(path, window.location.href).pathname;
+        return full.includes(LIST_PAGE) || full.includes(DETAIL_PAGE);
+    }
+
+    function loadPage(path, push) {
+        const main = getMain();
+        if (!main) { window.location.href = path; return; }
+        const url = new URL(path, window.location.href).href;
+        fetch(url)
+            .then(function (r) { return r.text(); })
+            .then(function (html) {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newMain = doc.querySelector('main');
+                const newTitle = doc.querySelector('title');
+                if (newMain) {
+                    if (push !== false) {
+                        history.pushState(
+                            { mainHtml: main.innerHTML, title: document.title },
+                            '',
+                            window.location.href
+                        );
+                    }
+                    main.innerHTML = newMain.innerHTML;
+                    if (newTitle) document.title = newTitle.textContent;
+                } else {
+                    window.location.href = path;
+                }
+            })
+            .catch(function () { window.location.href = path; });
+    }
+
+    window.navigate = function (path) {
+        if (!path || !isAppPage(path)) {
+            window.location.href = path || '#';
+            return;
+        }
+        loadPage(path, true);
+    };
+
+    window.addEventListener('popstate', function (e) {
+        if (e.state && e.state.mainHtml != null) {
+            var main = getMain();
+            if (main) {
+                main.innerHTML = e.state.mainHtml;
+                if (e.state.title) document.title = e.state.title;
+            }
+        }
+    });
+
+    if (history.state == null) {
+        var main = getMain();
+        if (main) {
+            history.replaceState(
+                { mainHtml: main.innerHTML, title: document.title },
+                '',
+                window.location.href
+            );
+        }
+    }
+})();
+</script>
 </body></html>
