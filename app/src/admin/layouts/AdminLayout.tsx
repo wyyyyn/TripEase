@@ -48,11 +48,11 @@ export default function AdminLayout() {
   }
 
   // 验证完毕但没有用户 → 跳转登录页
-  if (!user) return <Navigate to="/admin/login" replace />;
+  if (!user) return <Navigate to="/login" replace />;
 
   const handleLogout = () => {
     logout();
-    navigate('/admin/login');
+    navigate('/login');
   };
 
   const isMerchant = user.role === 'merchant';

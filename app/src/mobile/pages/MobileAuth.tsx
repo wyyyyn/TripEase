@@ -240,16 +240,6 @@ export default function MobileAuth() {
 
         {/* ====== 卡片外底部区域 ====== */}
         <div className="flex flex-col items-center mt-6 gap-4">
-          {/* 商家入口 */}
-          <button
-            type="button"
-            onClick={() => navigate('/admin/login')}
-            className="inline-flex items-center gap-1.5 text-white/50 text-xs hover:text-white/80 transition"
-          >
-            <span className="material-symbols-outlined text-sm">storefront</span>
-            Business Portal
-          </button>
-
           {/* Terms & Privacy */}
           <p className="text-white/35 text-[11px] text-center leading-relaxed">
             By signing in, you agree to our{' '}

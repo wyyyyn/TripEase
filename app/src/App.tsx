@@ -7,8 +7,6 @@ import SearchPage from './mobile/pages/SearchPage';
 import HotelList from './mobile/pages/HotelList';
 import HotelDetail from './mobile/pages/HotelDetail';
 
-const AdminLogin = lazy(() => import('./admin/pages/AdminLogin'));
-const AdminRegister = lazy(() => import('./admin/pages/AdminRegister'));
 const AdminLayout = lazy(() => import('./admin/layouts/AdminLayout'));
 const AdminDashboard = lazy(() => import('./admin/pages/AdminDashboard'));
 const MerchantHotelList = lazy(() => import('./admin/pages/MerchantHotelList'));
@@ -39,10 +37,6 @@ export default function App() {
             <Route path="/list" element={<HotelList />} />
             <Route path="/hotel/:id" element={<HotelDetail />} />
           </Route>
-
-          {/* Admin auth (no sidebar) */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/register" element={<AdminRegister />} />
 
           {/* Admin (with sidebar) */}
           <Route path="/admin" element={<AdminLayout />}>
