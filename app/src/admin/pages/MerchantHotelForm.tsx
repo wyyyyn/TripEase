@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getHotelByIdFromAPI, createHotelFromAPI, updateHotelFromAPI } from '../../shared/store/hotelStore';
 import { useAuth } from '../../shared/store/useStore';
-import type { HotelFormData } from '../../shared/types/admin';
+import type { HotelFormData, ReviewStatus } from '../../shared/types/admin';
 import StepBasicInfo from '../components/hotel-form/StepBasicInfo';
 import StepRoomTypes from '../components/hotel-form/StepRoomTypes';
 import StepPricing from '../components/hotel-form/StepPricing';
@@ -30,6 +30,7 @@ export default function MerchantHotelForm() {
     name: '', englishName: '', address: '', starRating: 5, openDate: '',
     images: [], tags: [], amenities: [], rooms: [],
   });
+  const [hotelStatus, setHotelStatus] = useState<ReviewStatus>('draft');
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<string | null>(null);
@@ -41,6 +42,7 @@ export default function MerchantHotelForm() {
     getHotelByIdFromAPI(Number(id))
       .then((hotel) => {
         if (hotel) {
+          setHotelStatus(hotel.status);
           setForm({
             name: hotel.name, englishName: '', address: hotel.address,
             starRating: hotel.starRating, openDate: '',
@@ -151,8 +153,16 @@ export default function MerchantHotelForm() {
             <h1 className="text-xl font-bold text-slate-800">
               {isEdit ? '编辑酒店信息' : '新增酒店信息'}
             </h1>
-            <span className="text-xs bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full font-medium">
-              草稿
+            <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
+              hotelStatus === 'approved' || hotelStatus === 'published'
+                ? 'bg-emerald-100 text-emerald-700'
+                : hotelStatus === 'rejected'
+                  ? 'bg-red-100 text-red-700'
+                  : hotelStatus === 'pending'
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'bg-amber-100 text-amber-700'
+            }`}>
+              {{ draft: '草稿', pending: '审核中', approved: '已通过审核', rejected: '已驳回', published: '已发布', offline: '已下线' }[hotelStatus]}
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -160,22 +170,25 @@ export default function MerchantHotelForm() {
               type="button"
               onClick={handleSaveDraft}
               disabled={saving}
-              className="h-9 px-4 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-50"
+              className="h-9 px-4 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-50 flex items-center gap-1.5"
             >
+              <span className="material-symbols-outlined text-base">save</span>
               {saving ? '保存中...' : '保存草稿'}
             </button>
             <button
               type="button"
-              className="h-9 px-4 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors"
+              className="h-9 px-4 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-1.5"
             >
+              <span className="material-symbols-outlined text-base">visibility</span>
               预览页面
             </button>
             <button
               type="button"
               onClick={() => handleSave(true)}
               disabled={saving}
-              className="h-9 px-5 rounded-lg bg-admin-primary text-white text-sm font-medium hover:bg-admin-primary/90 transition-colors disabled:opacity-50"
+              className="h-9 px-5 rounded-lg bg-admin-primary text-white text-sm font-medium hover:bg-admin-primary/90 transition-colors disabled:opacity-50 flex items-center gap-1.5"
             >
+              <span className="material-symbols-outlined text-base">play_arrow</span>
               {saving ? '提交中...' : '提交审核'}
             </button>
           </div>
@@ -210,8 +223,13 @@ export default function MerchantHotelForm() {
 
       {/* Footer */}
       <div className="shrink-0 px-8 py-4 border-t border-slate-200 bg-white flex items-center justify-between">
-        <div className="text-xs text-slate-400">
-          {lastSaved ? `自动保存 ${lastSaved}` : '尚未保存'}
+        <div className="text-xs text-slate-400 flex items-center gap-1.5">
+          {lastSaved ? (
+            <>
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              自动保存成功 {lastSaved}
+            </>
+          ) : '尚未保存'}
         </div>
         <div className="flex items-center gap-3">
           {activeStep > 0 && (
@@ -224,7 +242,7 @@ export default function MerchantHotelForm() {
               上一步
             </button>
           )}
-          {activeStep < STEPS.length - 1 ? (
+          {activeStep < STEPS.length - 1 && (
             <button
               type="button"
               onClick={() => setActiveStep((s) => s + 1)}
@@ -233,13 +251,15 @@ export default function MerchantHotelForm() {
               下一步
               <span className="material-symbols-outlined text-base">chevron_right</span>
             </button>
-          ) : (
+          )}
+          {activeStep === STEPS.length - 1 && (
             <button
               type="button"
               onClick={() => handleSave(true)}
               disabled={saving}
-              className="h-9 px-5 rounded-lg bg-admin-primary text-white text-sm font-medium hover:bg-admin-primary/90 transition-colors disabled:opacity-50"
+              className="h-9 px-5 rounded-lg bg-admin-primary text-white text-sm font-medium hover:bg-admin-primary/90 transition-colors disabled:opacity-50 flex items-center gap-1.5"
             >
+              <span className="material-symbols-outlined text-base">play_arrow</span>
               {saving ? '提交中...' : '提交审核'}
             </button>
           )}
