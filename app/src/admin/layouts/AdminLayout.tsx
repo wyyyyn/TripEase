@@ -1,24 +1,44 @@
 import { useState, useEffect } from 'react';
-import { NavLink, Outlet, Navigate, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { logout, initAuth } from '../../shared/store/authStore';
 import { useAuth } from '../../shared/store/useStore';
+import { getDashboardStatsAPI } from '../../shared/api/admin';
 
 export default function AdminLayout() {
   const user = useAuth();
   const navigate = useNavigate();
-  const [authChecked, setAuthChecked] = useState(false); // token 验证是否完成
+  const location = useLocation();
+  const [authChecked, setAuthChecked] = useState(false);
+  const [hotelMenuOpen, setHotelMenuOpen] = useState(false);
+  const [pendingCount, setPendingCount] = useState(0);
 
   // 应用挂载时，用 token 向后端确认登录状态
   useEffect(() => {
     initAuth().finally(() => setAuthChecked(true));
   }, []);
 
+  // 如果当前路径是酒店相关，自动展开子菜单
+  useEffect(() => {
+    if (location.pathname.startsWith('/admin/hotels')) {
+      setHotelMenuOpen(true);
+    }
+  }, [location.pathname]);
+
+  // 管理员获取待审核数量
+  useEffect(() => {
+    if (user?.role === 'admin') {
+      getDashboardStatsAPI()
+        .then((stats) => setPendingCount(stats.pending))
+        .catch(() => {});
+    }
+  }, [user]);
+
   // token 验证中 → 显示加载状态，避免闪烁到登录页
   if (!authChecked) {
     return (
-      <div className="min-h-dvh bg-cream flex items-center justify-center">
+      <div className="min-h-dvh bg-admin-bg flex items-center justify-center">
         <div className="text-center">
-          <span className="material-symbols-outlined text-accent text-4xl animate-spin">
+          <span className="material-symbols-outlined text-admin-primary text-4xl animate-spin">
             progress_activity
           </span>
           <p className="text-gray-500 text-sm mt-3">验证登录状态...</p>
@@ -35,77 +55,166 @@ export default function AdminLayout() {
     navigate('/admin/login');
   };
 
-  const navItems = [
-    { to: '/admin', icon: 'dashboard', label: '控制台', end: true },
-    ...(user.role === 'merchant'
-      ? [{ to: '/admin/hotels', icon: 'hotel', label: '我的酒店', end: false }]
-      : []),
-    ...(user.role === 'admin'
-      ? [{ to: '/admin/review', icon: 'fact_check', label: '审核管理', end: false }]
-      : []),
-  ];
+  const isMerchant = user.role === 'merchant';
+  const sidebarBg = isMerchant ? 'bg-admin-sidebar' : 'bg-admin-sidebar-dark';
 
   return (
-    <div className="flex min-h-dvh bg-cream">
+    <div className="flex min-h-dvh">
       {/* Sidebar */}
-      <aside className="w-60 bg-white border-r border-gray-100 flex flex-col shrink-0">
+      <aside className={`w-60 ${sidebarBg} flex flex-col shrink-0`}>
         {/* Logo */}
-        <div className="p-6 border-b border-gray-100">
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-accent text-2xl">luggage</span>
-            <span className="text-xl font-bold text-dark">TripEase</span>
-          </div>
-          <p className="text-xs text-gray-500 mt-1">
-            {user.role === 'merchant' ? '商户管理' : '平台管理'}
-          </p>
-        </div>
-
-        {/* Nav */}
-        <nav className="flex-1 py-4">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.end}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-6 py-3 text-sm transition-colors ${
-                  isActive
-                    ? 'bg-accent/10 text-dark border-l-3 border-accent font-semibold'
-                    : 'text-gray-500 hover:bg-gray-50 hover:text-dark border-l-3 border-transparent'
-                }`
-              }
-            >
-              <span className="material-symbols-outlined text-xl">{item.icon}</span>
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
-
-        {/* User */}
-        <div className="p-4 border-t border-gray-100">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 bg-accent/20 rounded-full flex items-center justify-center">
-              <span className="material-symbols-outlined text-accent text-lg">person</span>
+        <div className="px-5 pt-6 pb-5">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-admin-primary rounded-lg flex items-center justify-center">
+              <span className="material-symbols-outlined text-white text-xl">apartment</span>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-dark truncate">{user.username}</p>
-              <p className="text-xs text-gray-500">
-                {user.role === 'merchant' ? '商户' : '管理员'}
+            <div>
+              <span className="text-base font-bold text-white">TripEase</span>
+              <p className="text-xs text-slate-400">
+                {isMerchant ? '商户端' : '管理员'}
               </p>
             </div>
           </div>
-          <button
-            onClick={handleLogout}
-            className="w-full text-sm text-gray-500 hover:text-red-500 transition-colors flex items-center gap-2 px-2 py-1.5"
-          >
-            <span className="material-symbols-outlined text-lg">logout</span>
-            退出登录
-          </button>
+        </div>
+
+        {/* Nav */}
+        <nav className="flex-1 px-3 py-2">
+          {isMerchant ? (
+            /* ---- Merchant Nav ---- */
+            <>
+              <NavLink
+                to="/admin"
+                end
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors mb-1 ${
+                    isActive
+                      ? 'bg-admin-primary/20 text-white border-l-4 border-admin-primary font-semibold'
+                      : 'text-slate-400 hover:bg-white/10 border-l-4 border-transparent'
+                  }`
+                }
+              >
+                <span className="material-symbols-outlined text-xl">dashboard</span>
+                控制台
+              </NavLink>
+
+              {/* Hotel parent menu */}
+              <button
+                onClick={() => setHotelMenuOpen(!hotelMenuOpen)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors mb-1 ${
+                  location.pathname.startsWith('/admin/hotels')
+                    ? 'bg-admin-primary/20 text-white border-l-4 border-admin-primary font-semibold'
+                    : 'text-slate-400 hover:bg-white/10 border-l-4 border-transparent'
+                }`}
+              >
+                <span className="material-symbols-outlined text-xl">hotel</span>
+                <span className="flex-1 text-left">酒店管理</span>
+                <span
+                  className={`material-symbols-outlined text-base transition-transform ${
+                    hotelMenuOpen ? 'rotate-180' : ''
+                  }`}
+                >
+                  expand_more
+                </span>
+              </button>
+
+              {/* Submenu */}
+              {hotelMenuOpen && (
+                <div className="ml-8 mb-1">
+                  <NavLink
+                    to="/admin/hotels/new"
+                    className={({ isActive }) =>
+                      `block px-3 py-2 rounded-lg text-sm transition-colors ${
+                        isActive
+                          ? 'text-white font-medium'
+                          : 'text-slate-500 hover:text-slate-300'
+                      }`
+                    }
+                  >
+                    新增酒店
+                  </NavLink>
+                  <NavLink
+                    to="/admin/hotels"
+                    end
+                    className={({ isActive }) =>
+                      `block px-3 py-2 rounded-lg text-sm transition-colors ${
+                        isActive
+                          ? 'text-white font-medium'
+                          : 'text-slate-500 hover:text-slate-300'
+                      }`
+                    }
+                  >
+                    我的酒店
+                  </NavLink>
+                </div>
+              )}
+            </>
+          ) : (
+            /* ---- Admin Nav ---- */
+            <>
+              <NavLink
+                to="/admin"
+                end
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors mb-1 ${
+                    isActive
+                      ? 'bg-admin-accent/10 text-admin-accent border-r-4 border-admin-accent font-semibold'
+                      : 'text-slate-400 hover:bg-white/10 border-r-4 border-transparent'
+                  }`
+                }
+              >
+                <span className="material-symbols-outlined text-xl">dashboard</span>
+                仪表盘
+              </NavLink>
+
+              <NavLink
+                to="/admin/review"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors mb-1 ${
+                    isActive
+                      ? 'bg-admin-accent/10 text-admin-accent border-r-4 border-admin-accent font-semibold'
+                      : 'text-slate-400 hover:bg-white/10 border-r-4 border-transparent'
+                  }`
+                }
+              >
+                <span className="material-symbols-outlined text-xl">fact_check</span>
+                <span className="flex-1 text-left">审核队列</span>
+                {pendingCount > 0 && (
+                  <span className="bg-red-500 text-white text-xs font-bold rounded-full min-w-[20px] h-5 flex items-center justify-center px-1.5">
+                    {pendingCount}
+                  </span>
+                )}
+              </NavLink>
+            </>
+          )}
+        </nav>
+
+        {/* Bottom user card */}
+        <div className="px-3 pb-4">
+          <div className="bg-white/5 rounded-xl p-3">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-9 h-9 bg-admin-primary/20 rounded-full flex items-center justify-center">
+                <span className="material-symbols-outlined text-admin-primary text-lg">person</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-white truncate">{user.username}</p>
+                <p className="text-xs text-slate-500">
+                  {isMerchant ? '商户' : '管理员'}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="w-full text-sm text-slate-500 hover:text-red-400 transition-colors flex items-center gap-2 px-1 py-1"
+            >
+              <span className="material-symbols-outlined text-lg">logout</span>
+              退出登录
+            </button>
+          </div>
         </div>
       </aside>
 
       {/* Content */}
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 overflow-auto bg-admin-bg">
         <Outlet />
       </main>
     </div>

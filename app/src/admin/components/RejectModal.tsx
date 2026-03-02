@@ -21,7 +21,7 @@ export default function RejectModal({ open, onClose, onConfirm }: RejectModalPro
           <textarea
             value={reason}
             onChange={(e) => setReason(e.target.value)}
-            className="w-full border border-gray-200 rounded-xl p-3 bg-gray-50/50 focus:border-accent focus:outline-none transition-colors"
+            className="w-full border border-gray-200 rounded-xl p-3 bg-gray-50/50 focus:border-admin-primary focus:outline-none transition-colors"
             rows={4}
             placeholder="请输入拒绝原因..."
           />

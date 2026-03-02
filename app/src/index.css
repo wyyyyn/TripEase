@@ -11,6 +11,12 @@
   --color-badge-success: #4ECDC4;
   --color-badge-success-bg: #4ECDC410;
   --color-icon-gray: #525252;
+  --color-admin-primary: #1978e5;
+  --color-admin-accent: #2D5BFF;
+  --color-admin-sidebar: #1A1C1E;
+  --color-admin-sidebar-dark: #1A1F2C;
+  --color-admin-navy: #1a2b4b;
+  --color-admin-bg: #f6f7f8;
 
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;

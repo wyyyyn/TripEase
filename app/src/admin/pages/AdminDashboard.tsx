@@ -67,7 +67,7 @@ export default function AdminDashboard() {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-dark">
+        <h1 className="text-2xl font-bold text-gray-900">
           欢迎回来，{user?.username}
         </h1>
         <p className="text-gray-500 text-sm mt-1">

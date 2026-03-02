@@ -48,7 +48,7 @@ export default function MerchantHotelList() {
         </div>
         <button
           onClick={() => navigate('/admin/hotels/new')}
-          className="bg-dark hover:bg-dark-hover text-white font-bold py-3 px-6 rounded-2xl transition-colors flex items-center gap-2"
+          className="bg-admin-primary hover:bg-admin-primary/90 text-white font-bold py-3 px-6 rounded-2xl transition-colors flex items-center gap-2"
         >
           <span className="material-symbols-outlined text-lg">add</span>
           新增酒店
@@ -64,7 +64,7 @@ export default function MerchantHotelList() {
           <p className="text-gray-400 text-sm mt-1 mb-6">点击上方按钮添加您的第一家酒店</p>
           <button
             onClick={() => navigate('/admin/hotels/new')}
-            className="bg-accent hover:bg-accent-hover text-dark font-bold py-3 px-6 rounded-2xl transition-colors"
+            className="bg-admin-primary hover:bg-admin-primary/90 text-white font-bold py-3 px-6 rounded-2xl transition-colors"
           >
             立即添加
           </button>
@@ -101,7 +101,7 @@ export default function MerchantHotelList() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-0.5">
                       {Array.from({ length: hotel.starRating }).map((_, i) => (
-                        <span key={i} className="material-symbols-outlined text-accent text-sm">
+                        <span key={i} className="material-symbols-outlined text-amber-400 text-sm">
                           star_rate
                         </span>
                       ))}
@@ -121,7 +121,7 @@ export default function MerchantHotelList() {
                   <td className="px-6 py-4 text-right">
                     <button
                       onClick={() => navigate(`/admin/hotels/${hotel.id}`)}
-                      className="text-sm text-accent font-medium hover:underline"
+                      className="text-sm text-admin-primary font-medium hover:underline"
                     >
                       编辑
                     </button>
