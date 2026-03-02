@@ -25,7 +25,9 @@ export default function AdminLogin() {
       setError(result.error);
       return;
     }
-    navigate('/admin');
+    // customer 不应在管理端，跳回首页；merchant/admin 进管理后台
+    const target = result.user.role === 'customer' ? '/' : '/admin';
+    navigate(target);
   };
 
   return (

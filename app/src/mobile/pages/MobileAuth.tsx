@@ -1,8 +1,15 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, register } from '../../shared/store/authStore';
+import type { UserRole } from '../../shared/types/admin';
 
 type Tab = 'login' | 'register';
+
+const ROLE_OPTIONS: { value: UserRole; label: string; icon: string }[] = [
+  { value: 'customer', label: '普通用户', icon: 'person' },
+  { value: 'merchant', label: '商户', icon: 'storefront' },
+  { value: 'admin', label: '管理员', icon: 'shield_person' },
+];
 
 export default function MobileAuth() {
   const navigate = useNavigate();
@@ -16,6 +23,7 @@ export default function MobileAuth() {
   const [showConfirmPwd, setShowConfirmPwd] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState<UserRole>('customer');
 
   // 切换 tab 时清空表单
   function switchTab(t: Tab) {
@@ -25,6 +33,7 @@ export default function MobileAuth() {
     setConfirmPwd('');
     setShowPwd(false);
     setShowConfirmPwd(false);
+    setRole('customer');
   }
 
   // 提交表单
@@ -46,10 +55,11 @@ export default function MobileAuth() {
       const result =
         tab === 'login'
           ? await login(username.trim(), password)
-          : await register(username.trim(), password, 'customer');
+          : await register(username.trim(), password, role);
 
       if (result.ok) {
-        navigate('/', { replace: true });
+        const target = result.user.role === 'customer' ? '/' : '/admin';
+        navigate(target, { replace: true });
       } else {
         setError(result.error);
       }
@@ -81,7 +91,7 @@ export default function MobileAuth() {
       <header className="flex flex-col items-center pt-16 pb-8 animate-fade-in">
         {/* 黄色圆形图标 */}
         <div className="w-16 h-16 rounded-full bg-accent flex items-center justify-center shadow-lg mb-3">
-          <span className="material-symbols-rounded text-dark text-3xl">travel_explore</span>
+          <span className="material-symbols-outlined text-dark text-3xl">travel_explore</span>
         </div>
         <h1 className="text-[28px] font-bold text-white tracking-wide">TripEase</h1>
         <p className="text-white/60 text-sm mt-1">Your journey begins here</p>
@@ -120,7 +130,7 @@ export default function MobileAuth() {
 
           {/* -- 用户名 -- */}
           <div className="relative">
-            <span className="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
+            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
               person
             </span>
             <input
@@ -135,7 +145,7 @@ export default function MobileAuth() {
 
           {/* -- 密码 -- */}
           <div className="relative">
-            <span className="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
+            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
               lock
             </span>
             <input
@@ -152,7 +162,7 @@ export default function MobileAuth() {
               className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"
               tabIndex={-1}
             >
-              <span className="material-symbols-rounded text-xl">
+              <span className="material-symbols-outlined text-xl">
                 {showPwd ? 'visibility' : 'visibility_off'}
               </span>
             </button>
@@ -161,7 +171,7 @@ export default function MobileAuth() {
           {/* -- 确认密码（仅注册） -- */}
           {tab === 'register' && (
             <div className="relative animate-fade-in">
-              <span className="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
                 lock
               </span>
               <input
@@ -178,10 +188,34 @@ export default function MobileAuth() {
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"
                 tabIndex={-1}
               >
-                <span className="material-symbols-rounded text-xl">
+                <span className="material-symbols-outlined text-xl">
                   {showConfirmPwd ? 'visibility' : 'visibility_off'}
                 </span>
               </button>
+            </div>
+          )}
+
+          {/* -- 角色选择（仅注册） -- */}
+          {tab === 'register' && (
+            <div className="animate-fade-in">
+              <p className="text-xs text-gray-500 mb-2 font-medium">选择角色</p>
+              <div className="grid grid-cols-3 gap-2">
+                {ROLE_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => setRole(opt.value)}
+                    className={`flex flex-col items-center gap-1 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 ${
+                      role === opt.value
+                        ? 'bg-accent/15 text-accent ring-1 ring-accent/40'
+                        : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-lg">{opt.icon}</span>
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
 
@@ -212,7 +246,7 @@ export default function MobileAuth() {
             onClick={() => navigate('/admin/login')}
             className="inline-flex items-center gap-1.5 text-white/50 text-xs hover:text-white/80 transition"
           >
-            <span className="material-symbols-rounded text-sm">storefront</span>
+            <span className="material-symbols-outlined text-sm">storefront</span>
             Business Portal
           </button>
 
