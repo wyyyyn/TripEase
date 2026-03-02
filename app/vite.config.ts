@@ -9,7 +9,7 @@ export default defineConfig({
     // 类比：前台（前端 5173）收到客人的请求后，转交给后厨（后端 3001）处理
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'http://localhost:3002',
         changeOrigin: true,
       },
     },

@@ -60,8 +60,13 @@ export async function apiClient<T>(
   // 3. 发送请求
   const res = await fetch(endpoint, { ...options, headers });
 
-  // 4. 解析响应体
-  const data = await res.json();
+  // 4. 解析响应体（如果后端挂了返回空内容，给出友好提示）
+  let data: any;
+  try {
+    data = await res.json();
+  } catch {
+    throw new Error('服务器无响应，请稍后重试');
+  }
 
   // 5. 如果服务器返回了错误状态码（如 400、401、500），抛出错误
   //    后端返回格式：{ error: "错误描述" }
