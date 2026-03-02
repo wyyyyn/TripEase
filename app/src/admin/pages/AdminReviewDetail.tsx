@@ -166,20 +166,23 @@ export default function AdminReviewDetail() {
               <div className="space-y-2.5">
                 <div>
                   <p className="text-xs text-gray-400 mb-0.5">酒店名称</p>
-                  <p className="text-sm font-medium text-gray-900">{hotel.name}</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {hotel.name}
+                    {(hotel as any).englishName && <span className="text-gray-400 font-normal ml-1">({(hotel as any).englishName})</span>}
+                  </p>
                 </div>
                 <div className="flex gap-6">
                   <div>
                     <p className="text-xs text-gray-400 mb-0.5">星级</p>
-                    <div className="flex items-center gap-0.5">
-                      {Array.from({ length: hotel.starRating }).map((_, i) => (
-                        <span key={i} className="material-symbols-outlined text-amber-300 text-sm">star</span>
-                      ))}
-                    </div>
+                    <p className="text-sm font-medium text-gray-900">{hotel.starRating} Stars</p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-400 mb-0.5">基础价格</p>
                     <p className="text-sm font-medium text-gray-900">&yen;{hotel.pricePerNight}/晚</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400 mb-0.5">开业日期</p>
+                    <p className="text-sm font-medium text-gray-900">{(hotel as any).openDate || '--'}</p>
                   </div>
                 </div>
                 <div>
@@ -198,9 +201,12 @@ export default function AdminReviewDetail() {
                     <div key={room.id} className="flex items-center justify-between py-1.5">
                       <div className="flex items-center gap-2 min-w-0">
                         <span className="w-1.5 h-1.5 rounded-full bg-admin-accent shrink-0" />
-                        <span className="text-sm text-gray-700 truncate">{room.name}</span>
+                        <span className="text-sm text-gray-700 truncate">
+                          {room.name}
+                          {(room as any).roomCount > 0 && <span className="text-gray-400 ml-1">&times; {(room as any).roomCount}间</span>}
+                        </span>
                       </div>
-                      <span className="text-sm font-semibold text-gray-900 shrink-0 ml-3">&yen;{room.pricePerNight}</span>
+                      <span className="text-sm font-semibold text-gray-900 shrink-0 ml-3">&yen;{room.pricePerNight}/晚</span>
                     </div>
                   ))}
                 </div>
@@ -297,7 +303,7 @@ export default function AdminReviewDetail() {
             {/* Rejection details (only when rejected) */}
             {hotel.status === 'rejected' && hotel.rejectReason && (
               <div className="mb-8">
-                <p className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em] mb-3">驳回原因</p>
+                <p className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em] mb-3">驳回原因 REJECTION REASONS</p>
                 <ul className="space-y-1.5 mb-4">
                   {hotel.rejectReason.split('\n').filter(Boolean).map((line, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-red-600">
@@ -308,6 +314,9 @@ export default function AdminReviewDetail() {
                 </ul>
                 <div className="bg-gray-50 border-l-2 border-gray-300 rounded-r-lg px-4 py-3">
                   <p className="text-xs text-gray-500 italic">{hotel.rejectReason}</p>
+                  <p className="text-[10px] text-gray-400 mt-2">
+                    提交人：{logs.length > 0 ? logs[logs.length - 1].operatorName : '管理员'} &middot; {logs.length > 0 ? new Date(logs[logs.length - 1].createdAt).toLocaleString('zh-CN', { hour12: false }) : ''}
+                  </p>
                 </div>
               </div>
             )}
@@ -315,7 +324,7 @@ export default function AdminReviewDetail() {
             {/* Audit History */}
             {logs.length > 0 && (
               <div>
-                <p className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em] mb-4">审核记录</p>
+                <p className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em] mb-4">审核记录 AUDIT HISTORY</p>
                 <div className="relative pl-6">
                   {/* Vertical line */}
                   <div className="absolute left-[7px] top-2 bottom-2 w-px bg-gray-200" />
@@ -349,7 +358,8 @@ export default function AdminReviewDetail() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
                             <span className={`text-sm ${isKey ? 'font-semibold text-gray-900' : 'text-gray-600'}`}>
-                              {log.operatorName}: {STATUS_LABEL[log.fromStatus] || log.fromStatus} &rarr; {STATUS_LABEL[log.toStatus] || log.toStatus}
+                              {log.toStatus === 'rejected' ? '审核驳回' : log.toStatus === 'approved' ? '审核通过' : log.toStatus === 'published' ? '发布上线' : `${STATUS_LABEL[log.fromStatus] || log.fromStatus} → ${STATUS_LABEL[log.toStatus] || log.toStatus}`}
+                              {isKey && <span className="text-gray-400 font-normal ml-1">({log.toStatus === 'rejected' ? `Rejected by ${log.operatorName}` : log.toStatus === 'approved' ? `Approved by ${log.operatorName}` : `Published by ${log.operatorName}`})</span>}
                             </span>
                             <span className="text-xs text-gray-400 shrink-0">{timeStr}</span>
                           </div>
@@ -376,7 +386,7 @@ export default function AdminReviewDetail() {
               onClick={() => navigate('/admin/review')}
               className="border border-gray-200 text-gray-600 font-medium py-2 px-5 rounded-lg hover:bg-gray-50 transition-colors text-sm"
             >
-              关闭
+              关闭 Close
             </button>
 
             {hotel.status === 'pending' && (
@@ -420,7 +430,12 @@ export default function AdminReviewDetail() {
               </button>
             )}
             {hotel.status === 'rejected' && (
-              <span className="text-sm text-gray-400 italic">等待商户修改中</span>
+              <button
+                disabled
+                className="bg-gray-100 text-gray-400 font-medium py-2 px-5 rounded-lg text-sm cursor-not-allowed"
+              >
+                等待商户修改中 (Waiting for Revision)
+              </button>
             )}
           </div>
         </div>
