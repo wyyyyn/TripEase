@@ -33,11 +33,13 @@ const STAT_CARDS: {
   key: keyof DashboardStatsResponse;
   label: string;
   dotColor: string;
+  trend: string;
+  trendColor: string;
 }[] = [
-  { key: 'pending', label: '待审核', dotColor: 'bg-amber-300' },
-  { key: 'approved', label: '已通过', dotColor: 'bg-emerald-400' },
-  { key: 'rejected', label: '已驳回', dotColor: 'bg-rose-400' },
-  { key: 'offline', label: '已下线', dotColor: 'bg-slate-900' },
+  { key: 'pending', label: '待审核', dotColor: 'bg-amber-300', trend: '较昨日 +5', trendColor: 'text-amber-500' },
+  { key: 'approved', label: '已通过', dotColor: 'bg-emerald-400', trend: '较昨日 +3', trendColor: 'text-emerald-500' },
+  { key: 'rejected', label: '已驳回', dotColor: 'bg-rose-400', trend: '较昨日 -2', trendColor: 'text-rose-500' },
+  { key: 'offline', label: '已下线', dotColor: 'bg-slate-900', trend: '较昨日 +0', trendColor: 'text-slate-400' },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -183,6 +185,27 @@ export default function AdminReviewList() {
   // ---------- render ----------
   return (
     <div>
+      {/* Top Header bar */}
+      <div className="flex items-center justify-between mb-5 pb-4 border-b border-slate-100">
+        <div className="flex items-center gap-2 text-xs text-slate-400">
+          <span>审核管理</span>
+          <span className="material-symbols-outlined text-sm">chevron_right</span>
+          <span>资源库</span>
+          <span className="material-symbols-outlined text-sm">chevron_right</span>
+          <span className="text-slate-700 font-medium">酒店信息审核</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <button className="relative p-2 text-slate-400 hover:text-slate-600 transition-colors">
+            <span className="material-symbols-outlined text-xl">notifications</span>
+            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+          </button>
+          <button className="h-9 px-4 rounded-lg bg-admin-accent text-white text-xs font-medium hover:bg-admin-accent/90 transition-colors flex items-center gap-1.5 cursor-not-allowed opacity-60">
+            <span className="material-symbols-outlined text-base">add</span>
+            新建房源
+          </button>
+        </div>
+      </div>
+
       {/* Page header */}
       <div className="mb-6">
         <h1 className="text-lg font-bold text-slate-800">酒店信息管理</h1>
@@ -196,16 +219,16 @@ export default function AdminReviewList() {
         {STAT_CARDS.map((card) => (
           <div
             key={card.key}
-            className="bg-white border border-slate-100 p-2.5 rounded shadow-sm"
+            className="bg-white border border-slate-100 p-3 rounded shadow-sm"
           >
-            <div className="flex items-center gap-1.5 mb-1">
+            <div className="flex items-center gap-1.5 mb-1.5">
               <span className={`size-1.5 rounded-full ${card.dotColor}`} />
               <span className="text-[11px] text-slate-500">{card.label}</span>
             </div>
-            <div className="text-[10px] text-slate-400 mb-0.5">--</div>
-            <div className="text-xl font-bold text-slate-800">
+            <div className="text-2xl font-bold text-slate-800 mb-1">
               {stats ? stats[card.key] : '--'}
             </div>
+            <div className={`text-[10px] ${card.trendColor}`}>{card.trend}</div>
           </div>
         ))}
       </div>
@@ -213,17 +236,22 @@ export default function AdminReviewList() {
       {/* Filter bar */}
       <div className="sticky top-0 z-10 bg-white border border-slate-100 rounded shadow-sm px-3 py-2 mb-4 flex items-center gap-2 flex-wrap">
         {/* Search */}
-        <div className="relative flex-1 min-w-[180px] max-w-[260px]">
-          <span className="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-base">
-            search
-          </span>
-          <input
-            type="text"
-            placeholder="搜索酒店名称"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-200 rounded focus:outline-none focus:border-admin-accent"
-          />
+        <div className="relative flex-1 min-w-[180px] max-w-[260px] flex">
+          <div className="relative flex-1">
+            <span className="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-base">
+              search
+            </span>
+            <input
+              type="text"
+              placeholder="搜索酒店、商户"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-200 rounded-l focus:outline-none focus:border-admin-accent"
+            />
+          </div>
+          <button className="px-3 py-1.5 text-xs bg-admin-accent text-white rounded-r hover:bg-admin-accent/90 transition-colors shrink-0">
+            搜索
+          </button>
         </div>
 
         {/* Status filter */}
@@ -239,6 +267,11 @@ export default function AdminReviewList() {
           ))}
         </select>
 
+        {/* Online status filter (placeholder) */}
+        <select className="text-xs border border-slate-200 rounded px-2 py-1.5 bg-white text-slate-400" disabled>
+          <option>上线状态</option>
+        </select>
+
         {/* Placeholder filters */}
         <select className="text-xs border border-slate-200 rounded px-2 py-1.5 bg-white text-slate-400" disabled>
           <option>酒店星级</option>
@@ -250,7 +283,17 @@ export default function AdminReviewList() {
           <option>提交时间</option>
         </select>
 
+        {/* More filters */}
+        <button className="flex items-center gap-1 text-xs text-slate-400 border border-slate-200 rounded px-2 py-1.5 cursor-not-allowed">
+          <span className="material-symbols-outlined text-sm">tune</span>
+          更多筛选
+        </button>
+
         <div className="ml-auto flex items-center gap-2">
+          <button className="flex items-center gap-1 text-xs text-slate-400 border border-slate-200 rounded px-2.5 py-1.5 cursor-not-allowed">
+            <span className="material-symbols-outlined text-sm">download</span>
+            导出
+          </button>
           <button
             onClick={() => {
               setSearchTerm('');
@@ -282,10 +325,16 @@ export default function AdminReviewList() {
                 酒店名称
               </th>
               <th className="text-left px-3 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                商户
+              </th>
+              <th className="text-left px-3 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                 星级
               </th>
               <th className="text-left px-3 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                 审核状态
+              </th>
+              <th className="text-left px-3 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                上线状态
               </th>
               <th className="text-left px-3 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                 提交时间
@@ -298,14 +347,14 @@ export default function AdminReviewList() {
           <tbody className="divide-y divide-slate-50">
             {loading && (
               <tr>
-                <td colSpan={6} className="px-3 py-16 text-center text-slate-400 text-xs">
+                <td colSpan={8} className="px-3 py-16 text-center text-slate-400 text-xs">
                   加载中...
                 </td>
               </tr>
             )}
             {!loading && paged.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-3 py-16 text-center text-slate-400 text-xs">
+                <td colSpan={8} className="px-3 py-16 text-center text-slate-400 text-xs">
                   暂无数据
                 </td>
               </tr>
@@ -327,12 +376,12 @@ export default function AdminReviewList() {
                     {/* Hotel name + thumbnail */}
                     <td className="px-3">
                       <div className="flex items-center gap-2.5">
-                        <div className="size-10 rounded-[4px] bg-slate-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        <div className="size-12 rounded-[4px] bg-slate-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
                           {hotel.images?.[0] ? (
                             <img
                               src={hotel.images[0]}
                               alt=""
-                              className="size-10 object-cover rounded-[4px]"
+                              className="size-12 object-cover rounded-[4px]"
                             />
                           ) : (
                             <span className="material-symbols-outlined text-slate-300 text-lg">
@@ -349,6 +398,13 @@ export default function AdminReviewList() {
                           </p>
                         </div>
                       </div>
+                    </td>
+
+                    {/* Merchant */}
+                    <td className="px-3">
+                      <span className="text-[11px] text-slate-600">
+                        商户{hotel.ownerId}
+                      </span>
                     </td>
 
                     {/* Star rating */}
@@ -376,6 +432,17 @@ export default function AdminReviewList() {
                           {statusText(status)}
                         </span>
                       </div>
+                    </td>
+
+                    {/* Online status */}
+                    <td className="px-3">
+                      {status === 'published' ? (
+                        <span className="text-[11px] text-emerald-600 font-medium">已上线</span>
+                      ) : status === 'offline' ? (
+                        <span className="text-[11px] text-slate-400">已下线</span>
+                      ) : (
+                        <span className="text-[11px] text-slate-300">--</span>
+                      )}
                     </td>
 
                     {/* Submit date */}
@@ -412,23 +479,31 @@ export default function AdminReviewList() {
                           </button>
                         )}
 
-                        {/* Rejected: 查看原因 button */}
+                        {/* Rejected: 重新审核 + 查看原因 */}
                         {status === 'rejected' && (
-                          <button
-                            onClick={() => navigate(`/admin/review/${hotel.id}`)}
-                            className="px-2.5 py-1 text-[11px] font-medium rounded bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 transition-colors"
-                          >
-                            查看原因
-                          </button>
+                          <>
+                            <button
+                              onClick={() => navigate(`/admin/review/${hotel.id}`)}
+                              className="px-2.5 py-1 text-[11px] font-medium rounded bg-admin-accent text-white hover:opacity-90 transition-opacity"
+                            >
+                              重新审核
+                            </button>
+                            <button
+                              onClick={() => navigate(`/admin/review/${hotel.id}`)}
+                              className="text-[11px] text-slate-400 hover:text-admin-accent transition-colors"
+                            >
+                              查看原因
+                            </button>
+                          </>
                         )}
 
-                        {/* Offline: 下线 button (already offline, visually consistent) */}
+                        {/* Offline: 恢复上线 (blue border) */}
                         {status === 'offline' && (
                           <button
                             onClick={() => handleAction(numericId, 'published')}
-                            className="px-2.5 py-1 text-[11px] font-medium rounded border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
+                            className="px-2.5 py-1 text-[11px] font-medium rounded border border-admin-accent text-admin-accent hover:bg-admin-accent/5 transition-colors"
                           >
-                            上 线
+                            恢复上线
                           </button>
                         )}
 
