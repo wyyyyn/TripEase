@@ -7,7 +7,7 @@ interface StepRoomTypesProps {
 }
 
 const EMPTY_ROOM: RoomFormData = {
-  name: '', description: '', pricePerNight: 0, image: '', bedType: '大床', size: '', features: [],
+  name: '', englishName: '', description: '', pricePerNight: 0, image: '', bedType: '大床', size: '', floor: '', maxGuests: 2, roomCount: 1, features: [],
 };
 
 const ROOM_FACILITIES = ['WiFi', '空调', '电视', '迷你吧', '浴缸', '淋浴', '保险箱', '吹风机', '热水壶', '拖鞋'];

@@ -46,9 +46,10 @@ export default function MerchantHotelForm() {
             starRating: hotel.starRating, openDate: '',
             images: hotel.images, tags: hotel.tags, amenities: hotel.amenities,
             rooms: hotel.rooms.map((r) => ({
-              id: r.id, name: r.name, description: r.description,
+              id: r.id, name: r.name, englishName: '', description: r.description,
               pricePerNight: r.pricePerNight, originalPrice: r.originalPrice,
-              image: r.image, bedType: r.bedType, size: r.size, features: r.features,
+              image: r.image, bedType: r.bedType, size: r.size,
+              floor: '', maxGuests: 2, roomCount: 1, features: r.features,
             })),
           });
         }

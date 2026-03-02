@@ -41,11 +41,15 @@ export interface HotelFormData {
 export interface RoomFormData {
   id?: string;
   name: string;
+  englishName: string;
   description: string;
   pricePerNight: number;
   originalPrice?: number;
   image: string;
   bedType: string;
   size: string;
+  floor: string;
+  maxGuests: number;
+  roomCount: number;
   features: string[];
 }

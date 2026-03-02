@@ -61,7 +61,7 @@ export default function AdminLayout() {
   return (
     <div className="flex min-h-dvh">
       {/* Sidebar */}
-      <aside className={`w-60 ${sidebarBg} flex flex-col shrink-0`}>
+      <aside className={`w-64 ${sidebarBg} flex flex-col shrink-0`}>
         {/* Logo */}
         <div className="px-5 pt-6 pb-5">
           <div className="flex items-center gap-3">
@@ -119,13 +119,13 @@ export default function AdminLayout() {
 
               {/* Submenu */}
               {hotelMenuOpen && (
-                <div className="ml-8 mb-1">
+                <div className="pl-10 mb-1">
                   <NavLink
                     to="/admin/hotels/new"
                     className={({ isActive }) =>
                       `block px-3 py-2 rounded-lg text-sm transition-colors ${
                         isActive
-                          ? 'text-white font-medium'
+                          ? 'text-[#4299E1] font-medium'
                           : 'text-slate-500 hover:text-slate-300'
                       }`
                     }
@@ -138,15 +138,35 @@ export default function AdminLayout() {
                     className={({ isActive }) =>
                       `block px-3 py-2 rounded-lg text-sm transition-colors ${
                         isActive
-                          ? 'text-white font-medium'
+                          ? 'text-[#4299E1] font-medium'
                           : 'text-slate-500 hover:text-slate-300'
                       }`
                     }
                   >
                     我的酒店
                   </NavLink>
+                  <span className="block px-3 py-2 text-sm text-slate-600 cursor-not-allowed">
+                    审核状态
+                  </span>
                 </div>
               )}
+
+              {/* Placeholder nav items (disabled) */}
+              {[
+                { icon: 'book_online', label: '预订管理' },
+                { icon: 'campaign', label: '促销活动' },
+                { icon: 'account_balance', label: '财务结算' },
+                { icon: 'settings', label: '系统设置' },
+                { icon: 'help', label: '帮助中心' },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-600 cursor-not-allowed mb-1 border-l-4 border-transparent"
+                >
+                  <span className="material-symbols-outlined text-xl text-slate-600">{item.icon}</span>
+                  {item.label}
+                </div>
+              ))}
             </>
           ) : (
             /* ---- Admin Nav ---- */
@@ -166,6 +186,18 @@ export default function AdminLayout() {
                 仪表盘
               </NavLink>
 
+              {/* Placeholder: 酒店资源库 */}
+              <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-600 cursor-not-allowed mb-1 border-r-4 border-transparent">
+                <span className="material-symbols-outlined text-xl text-slate-600">inventory_2</span>
+                酒店资源库
+              </div>
+
+              {/* Placeholder: 商户管理 */}
+              <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-600 cursor-not-allowed mb-1 border-r-4 border-transparent">
+                <span className="material-symbols-outlined text-xl text-slate-600">storefront</span>
+                商户管理
+              </div>
+
               <NavLink
                 to="/admin/review"
                 className={({ isActive }) =>
@@ -184,6 +216,21 @@ export default function AdminLayout() {
                   </span>
                 )}
               </NavLink>
+
+              {/* Divider after 审核队列 */}
+              <div className="border-t border-white/10 my-2 mx-3" />
+
+              {/* Placeholder: 市场洞察 */}
+              <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-600 cursor-not-allowed mb-1 border-r-4 border-transparent">
+                <span className="material-symbols-outlined text-xl text-slate-600">insights</span>
+                市场洞察
+              </div>
+
+              {/* Placeholder: 设置 */}
+              <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-600 cursor-not-allowed mb-1 border-r-4 border-transparent">
+                <span className="material-symbols-outlined text-xl text-slate-600">settings</span>
+                设置
+              </div>
             </>
           )}
         </nav>
