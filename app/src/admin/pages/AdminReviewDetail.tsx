@@ -173,7 +173,7 @@ export default function AdminReviewDetail() {
                     <p className="text-xs text-gray-400 mb-0.5">星级</p>
                     <div className="flex items-center gap-0.5">
                       {Array.from({ length: hotel.starRating }).map((_, i) => (
-                        <span key={i} className="material-symbols-outlined text-amber-400 text-sm">star</span>
+                        <span key={i} className="material-symbols-outlined text-amber-300 text-sm">star</span>
                       ))}
                     </div>
                   </div>
@@ -261,11 +261,11 @@ export default function AdminReviewDetail() {
                     <div
                       className={`w-3.5 h-3.5 rounded-full border-2 ${
                         state === 'done'
-                          ? 'bg-emerald-500 border-emerald-500'
+                          ? 'bg-emerald-400 border-emerald-400'
                           : state === 'active'
                             ? 'bg-admin-accent border-admin-accent'
                             : state === 'rejected'
-                              ? 'bg-red-500 border-red-500'
+                              ? 'bg-red-400 border-red-400'
                               : state === 'offline'
                                 ? 'bg-gray-500 border-gray-500'
                                 : 'bg-white border-gray-300'
@@ -277,7 +277,7 @@ export default function AdminReviewDetail() {
                   {i < progress.length - 1 && (
                     <div
                       className={`flex-1 h-0.5 mx-2 mt-[-14px] ${
-                        state === 'done' ? 'bg-emerald-400' : 'bg-gray-200'
+                        state === 'done' ? 'bg-emerald-300' : 'bg-gray-200'
                       }`}
                     />
                   )}
@@ -333,9 +333,9 @@ export default function AdminReviewDetail() {
                             <span
                               className={`material-symbols-outlined text-sm ${
                                 log.toStatus === 'rejected'
-                                  ? 'text-red-500'
+                                  ? 'text-red-400'
                                   : log.toStatus === 'approved'
-                                    ? 'text-emerald-500'
+                                    ? 'text-emerald-400'
                                     : 'text-admin-accent'
                               }`}
                             >

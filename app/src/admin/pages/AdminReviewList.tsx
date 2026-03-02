@@ -34,9 +34,9 @@ const STAT_CARDS: {
   label: string;
   dotColor: string;
 }[] = [
-  { key: 'pending', label: '待审核', dotColor: 'bg-amber-400' },
-  { key: 'approved', label: '已通过', dotColor: 'bg-emerald-500' },
-  { key: 'rejected', label: '已驳回', dotColor: 'bg-rose-500' },
+  { key: 'pending', label: '待审核', dotColor: 'bg-amber-300' },
+  { key: 'approved', label: '已通过', dotColor: 'bg-emerald-400' },
+  { key: 'rejected', label: '已驳回', dotColor: 'bg-rose-400' },
   { key: 'offline', label: '已下线', dotColor: 'bg-slate-900' },
 ];
 
@@ -59,10 +59,10 @@ function statusText(s: ReviewStatus): string {
 function statusDotColor(s: ReviewStatus): string {
   const map: Record<ReviewStatus, string> = {
     draft: 'bg-slate-400',
-    pending: 'bg-amber-400',
-    approved: 'bg-emerald-500',
-    rejected: 'bg-rose-500',
-    published: 'bg-blue-500',
+    pending: 'bg-amber-300',
+    approved: 'bg-emerald-400',
+    rejected: 'bg-rose-400',
+    published: 'bg-blue-400',
     offline: 'bg-slate-900',
   };
   return map[s] ?? 'bg-slate-400';
@@ -357,7 +357,7 @@ export default function AdminReviewList() {
                         {Array.from({ length: hotel.starRating }).map((_, i) => (
                           <span
                             key={i}
-                            className="material-symbols-outlined text-amber-400"
+                            className="material-symbols-outlined text-amber-300"
                             style={{ fontSize: '14px' }}
                           >
                             star_rate

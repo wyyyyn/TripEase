@@ -30,19 +30,19 @@ export default function AdminDashboard() {
       icon: 'hotel',
       label: '酒店总数',
       value: stats?.total ?? 0,
-      color: 'bg-blue-50 text-blue-600',
+      color: 'bg-blue-50 text-blue-500',
     },
     {
       icon: 'pending_actions',
       label: '待审核',
       value: stats?.pending ?? 0,
-      color: 'bg-amber-50 text-amber-600',
+      color: 'bg-amber-50 text-amber-500',
     },
     {
       icon: 'check_circle',
       label: '已发布',
       value: stats?.published ?? 0,
-      color: 'bg-emerald-50 text-emerald-600',
+      color: 'bg-emerald-50 text-emerald-500',
     },
     {
       icon: 'edit_note',
@@ -54,7 +54,7 @@ export default function AdminDashboard() {
       icon: 'cancel',
       label: '已拒绝',
       value: stats?.rejected ?? 0,
-      color: 'bg-red-50 text-red-600',
+      color: 'bg-red-50 text-red-500',
     },
     {
       icon: 'cloud_off',

@@ -101,7 +101,7 @@ export default function MerchantHotelList() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-0.5">
                       {Array.from({ length: hotel.starRating }).map((_, i) => (
-                        <span key={i} className="material-symbols-outlined text-amber-400 text-sm">
+                        <span key={i} className="material-symbols-outlined text-amber-300 text-sm">
                           star_rate
                         </span>
                       ))}
