@@ -133,31 +133,25 @@
 </div>
 </header>
 <div class="flex-1 flex flex-col overflow-hidden relative">
-<nav class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-8 flex items-center gap-8 flex-shrink-0 overflow-x-auto hide-scrollbar">
-<button class="py-4 border-b-2 border-primary text-primary text-sm font-bold flex items-center gap-2 flex-shrink-0">
-<span class="material-symbols-outlined text-sm">info</span>
-                    步骤1：基础信息
-                </button>
-<button class="py-4 border-b-2 border-transparent text-[#718096] hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 text-sm font-medium flex items-center gap-2 flex-shrink-0">
-<span class="material-symbols-outlined text-sm">bed</span>
-                    步骤2：房型信息
-                </button>
-<button class="py-4 border-b-2 border-transparent text-[#718096] hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 text-sm font-medium flex items-center gap-2 flex-shrink-0">
-<span class="material-symbols-outlined text-sm">sell</span>
-                    步骤3：价格信息
-                </button>
-<button class="py-4 border-b-2 border-transparent text-[#718096] hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 text-sm font-medium flex items-center gap-2 flex-shrink-0">
-<span class="material-symbols-outlined text-sm">pool</span>
-                    步骤4：设施服务
-                </button>
-<button class="py-4 border-b-2 border-transparent text-[#718096] hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 text-sm font-medium flex items-center gap-2 flex-shrink-0">
-<span class="material-symbols-outlined text-sm">image</span>
-                    步骤5：媒体图库
-                </button>
-<button class="py-4 border-b-2 border-transparent text-[#718096] hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 text-sm font-medium flex items-center gap-2 flex-shrink-0">
-<span class="material-symbols-outlined text-sm">contact_support</span>
-                    步骤6：联系信息
-                </button>
+<nav class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-8 flex items-center gap-8 flex-shrink-0 overflow-x-auto hide-scrollbar" id="step-nav">
+<button type="button" data-step="1" class="step-tab py-4 border-b-2 border-primary text-primary text-sm font-bold flex items-center gap-2 flex-shrink-0">
+<span class="material-symbols-outlined text-sm">info</span>步骤1：基础信息
+</button>
+<button type="button" data-step="2" class="step-tab py-4 border-b-2 border-transparent text-[#718096] hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 text-sm font-medium flex items-center gap-2 flex-shrink-0">
+<span class="material-symbols-outlined text-sm">bed</span>步骤2：房型信息
+</button>
+<button type="button" data-step="3" class="step-tab py-4 border-b-2 border-transparent text-[#718096] hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 text-sm font-medium flex items-center gap-2 flex-shrink-0">
+<span class="material-symbols-outlined text-sm">sell</span>步骤3：价格信息
+</button>
+<button type="button" data-step="4" class="step-tab py-4 border-b-2 border-transparent text-[#718096] hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 text-sm font-medium flex items-center gap-2 flex-shrink-0">
+<span class="material-symbols-outlined text-sm">pool</span>步骤4：设施服务
+</button>
+<button type="button" data-step="5" class="step-tab py-4 border-b-2 border-transparent text-[#718096] hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 text-sm font-medium flex items-center gap-2 flex-shrink-0">
+<span class="material-symbols-outlined text-sm">image</span>步骤5：媒体图库
+</button>
+<button type="button" data-step="6" class="step-tab py-4 border-b-2 border-transparent text-[#718096] hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 text-sm font-medium flex items-center gap-2 flex-shrink-0">
+<span class="material-symbols-outlined text-sm">contact_support</span>步骤6：联系信息
+</button>
 </nav>
 <div class="flex-1 overflow-y-auto p-8 hide-scrollbar bg-slate-50/50 dark:bg-slate-950/50">
 <div class="max-w-5xl mx-auto space-y-8">
@@ -169,103 +163,654 @@
 </div>
 </div>
 <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+<!-- 第1行：酒店中文名称 | 酒店英文名称 -->
 <div class="space-y-2">
 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">酒店中文名称 <span class="text-red-500">*</span></label>
 <div class="text-[10px] text-slate-400 -mt-1 mb-1">Hotel Name (Chinese)</div>
-<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm" maxlength="50" placeholder="请输入酒店中文名称" type="text"/>
+<input id="hotel-name-cn" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm" maxlength="50" placeholder="请输入酒店中文名称" type="text"/>
 </div>
 <div class="space-y-2">
 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">酒店英文名称 <span class="text-red-500">*</span></label>
 <div class="text-[10px] text-slate-400 -mt-1 mb-1">Hotel Name (English)</div>
-<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm" maxlength="100" placeholder="Please enter hotel name in English" type="text"/>
+<input id="hotel-name-en" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm" maxlength="100" placeholder="Please enter hotel name in English" type="text"/>
 </div>
+<!-- 第2行：统一社会信用代码（全宽） -->
+<div class="col-span-1 md:col-span-2 space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">统一社会信用代码 <span class="text-red-500">*</span></label>
+<div class="text-[10px] text-slate-400 -mt-1 mb-1">Unified Social Credit Code</div>
+<input id="credit-code" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm" placeholder="与营业执照一致" type="text"/>
+</div>
+<!-- 第3行：酒店类型 | 酒店总机电话 -->
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">酒店类型 <span class="text-red-500">*</span></label>
+<div class="text-[10px] text-slate-400 -mt-1 mb-1">Hotel Type</div>
+<select id="hotel-type" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm">
+<option value="">请选择</option>
+<option value="商务酒店">商务酒店</option>
+<option value="度假酒店">度假酒店</option>
+<option value="经济连锁">经济连锁</option>
+<option value="民宿客栈">民宿客栈</option>
+<option value="公寓式酒店">公寓式酒店</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">酒店总机电话 <span class="text-red-500">*</span></label>
+<div class="text-[10px] text-slate-400 -mt-1 mb-1">Front Desk Contact</div>
+<input id="hotel-phone" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm" placeholder="前台联系电话" type="text"/>
+</div>
+<!-- 第4行：酒店地址（全宽，地图按钮） -->
 <div class="col-span-1 md:col-span-2 space-y-2">
 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">酒店地址 <span class="text-red-500">*</span></label>
 <div class="text-[10px] text-slate-400 -mt-1 mb-1">Hotel Address</div>
-<div class="flex gap-2">
+<div class="flex flex-col md:flex-row gap-2">
 <div class="relative flex-1">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">location_on</span>
-<input class="w-full pl-10 rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm" placeholder="请输入酒店详细地址（建议包含省市区街道）" type="text"/>
+<input id="hotel-address" class="w-full pl-10 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm" placeholder="请输入酒店详细地址（建议包含省市区街道）" type="text"/>
 </div>
-<button class="px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-<span class="material-symbols-outlined text-sm">map</span>
-                                        在地图上选择位置
-                                    </button>
+<button type="button" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-medium flex items-center justify-center gap-2 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex-shrink-0">
+<span class="material-symbols-outlined text-sm">map</span>在地图上选择位置
+</button>
 </div>
+</div>
+<!-- 第5行：客房总数 | 酒店星级 -->
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">客房总数 <span class="text-red-500">*</span></label>
+<div class="text-[10px] text-slate-400 -mt-1 mb-1">Total Rooms</div>
+<input id="room-count" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm" placeholder="酒店总客房数" type="number" min="1"/>
 </div>
 <div class="space-y-2">
 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">酒店星级 <span class="text-red-500">*</span></label>
 <div class="text-[10px] text-slate-400 -mt-1 mb-1">Hotel Star Rating</div>
 <div class="flex items-center gap-2 flex-wrap">
 <label class="cursor-pointer border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg hover:border-primary transition-all has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
-<input checked="" class="hidden" name="star" type="radio"/>
-<span class="text-sm text-yellow-500">★★★★★</span>
+<input class="hidden" name="star" type="radio" value="5"/><span class="text-sm text-yellow-500">★★★★★</span>
 </label>
 <label class="cursor-pointer border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg hover:border-primary transition-all has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
-<input class="hidden" name="star" type="radio"/>
-<span class="text-sm text-yellow-500">★★★★</span>
+<input class="hidden" name="star" type="radio" value="4"/><span class="text-sm text-yellow-500">★★★★</span>
 </label>
 <label class="cursor-pointer border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg hover:border-primary transition-all has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
-<input class="hidden" name="star" type="radio"/>
-<span class="text-sm text-yellow-500">★★★</span>
+<input class="hidden" name="star" type="radio" value="3"/><span class="text-sm text-yellow-500">★★★</span>
 </label>
 <label class="cursor-pointer border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg hover:border-primary transition-all has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
-<input class="hidden" name="star" type="radio"/>
-<span class="text-sm text-yellow-500">★★</span>
+<input class="hidden" name="star" type="radio" value="2"/><span class="text-sm text-yellow-500">★★</span>
 </label>
 <label class="cursor-pointer border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg hover:border-primary transition-all has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
-<input class="hidden" name="star" type="radio"/>
-<span class="text-sm text-yellow-500">★</span>
+<input class="hidden" name="star" type="radio" value="1"/><span class="text-sm text-yellow-500">★</span>
 </label>
 <label class="cursor-pointer border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg hover:border-primary transition-all has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
-<input class="hidden" name="star" type="radio"/>
-<span class="text-xs font-semibold">未评级</span>
+<input class="hidden" name="star" type="radio" value="0"/><span class="text-xs font-semibold">未评级</span>
 </label>
 </div>
 </div>
-<div class="grid grid-cols-2 gap-4">
+<!-- 第6行：开业时间 | 装修时间 -->
 <div class="space-y-2">
 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">开业时间 <span class="text-red-500">*</span></label>
 <div class="text-[10px] text-slate-400 -mt-1 mb-1">Opening Date</div>
-<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm px-4" placeholder="请选择开业时间" type="month"/>
+<input id="open-date" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm px-4" placeholder="请选择开业时间" type="month"/>
 </div>
 <div class="space-y-2">
 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">装修时间</label>
 <div class="text-[10px] text-slate-400 -mt-1 mb-1">Last Renovation Date</div>
-<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm px-4" placeholder="请选择装修时间" type="month"/>
+<input id="renovate-date" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-11 text-sm px-4" placeholder="请选择装修时间" type="month"/>
 </div>
-</div>
+<!-- 第7行：酒店简介（全宽） -->
 <div class="col-span-1 md:col-span-2 space-y-2">
 <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">酒店简介</label>
 <div class="text-[10px] text-slate-400 -mt-1 mb-1">Hotel Description</div>
-<textarea class="w-full rounded-lg border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-32 text-sm p-4" maxlength="1000" placeholder="请简要描述酒店特色、优势等（建议200-500字）"></textarea>
-<div class="text-right text-[10px] text-slate-400">0/1000</div>
+<textarea id="hotel-desc" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:border-primary focus:ring-primary h-32 text-sm p-4" maxlength="1000" placeholder="请简要描述酒店特色、优势等（建议200-500字）"></textarea>
+<div class="text-right text-[10px] text-slate-400"><span id="desc-count">0</span>/1000</div>
 </div>
 </div>
 </section>
+
+<!-- 步骤2：房型信息 -->
+<section id="step2" class="hidden bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800">
+<h3 class="font-bold text-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">bed</span>
+房型信息 <span class="text-slate-400 font-normal text-sm">Room Types</span>
+</h3>
+</div>
+<div class="p-8 space-y-6">
+<div id="room-types-container" class="space-y-4">
+<div class="room-type-card border border-slate-200 dark:border-slate-700 rounded-xl p-6 space-y-4" data-room-index="1">
+<div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+<h4 class="font-semibold">房型 1</h4>
+<button type="button" class="room-type-remove text-red-500 text-sm flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-[16px]">delete</span>删除
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">房型名称 <span class="text-red-500">*</span></label>
+<input class="room-type-name w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary" placeholder="如：豪华大床房" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">英文名称</label>
+<input class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary" placeholder="Deluxe King Room" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">床型 <span class="text-red-500">*</span></label>
+<select class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary">
+<option>大床(1.8m+)</option>
+<option>双床(1.2m)</option>
+<option>单人床(1.0m)</option>
+<option>多床</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">房间面积(m²) <span class="text-red-500">*</span></label>
+<input class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary" placeholder="25" type="number" min="1"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">可住人数 <span class="text-red-500">*</span></label>
+<select class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary">
+<option>1人</option>
+<option selected>2人</option>
+<option>3人</option>
+<option>4人</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">窗户 <span class="text-red-500">*</span></label>
+<div class="flex gap-4 mt-2">
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="radio" name="window-1" checked class="text-primary focus:ring-primary" value="yes"/>
+<span class="text-sm">有窗</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="radio" name="window-1" class="text-primary focus:ring-primary" value="no"/>
+<span class="text-sm">无窗</span>
+</label>
+</div>
+</div>
+</div>
+<div class="space-y-2 pt-4 border-t border-slate-100 dark:border-slate-800">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">房型设施</label>
+<div class="flex flex-wrap gap-2">
+<label class="px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary">
+<input type="checkbox" class="hidden" checked/>WiFi
+</label>
+<label class="px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary">
+<input type="checkbox" class="hidden"/>空调
+</label>
+<label class="px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary">
+<input type="checkbox" class="hidden"/>吹风机
+</label>
+<label class="px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary">
+<input type="checkbox" class="hidden"/>迷你吧
+</label>
+</div>
+</div>
+</div>
+<button type="button" id="add-room-type" class="w-full py-3 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl text-slate-500 hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add</span>添加房型
+</button>
+</div>
+</section>
+
+<!-- 步骤3：价格信息 -->
+<section id="step3" class="hidden bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800">
+<h3 class="font-bold text-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">sell</span>
+价格信息 <span class="text-slate-400 font-normal text-sm">Pricing</span>
+</h3>
+</div>
+<div class="p-8 space-y-6">
+<div id="price-rows-container" class="space-y-4">
+<div class="border border-slate-200 dark:border-slate-700 rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">选择房型 <span class="text-red-500">*</span></label>
+<select class="price-room-select w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary">
+<option value="">请先完成步骤2添加房型</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">基础价格（平日价）<span class="text-red-500">*</span></label>
+<input class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary" placeholder="元/晚" type="number" min="0" step="0.01"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">周末价格（周五周六）</label>
+<input class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary" placeholder="元/晚，选填" type="number" min="0" step="0.01"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">节假日价格</label>
+<input class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary" placeholder="元/晚，选填" type="number" min="0" step="0.01"/>
+</div>
+<div class="space-y-2 md:col-span-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">早餐政策 <span class="text-red-500">*</span></label>
+<div class="flex flex-wrap gap-4 mt-2">
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="radio" name="breakfast" class="text-primary focus:ring-primary" value="double"/> <span class="text-sm">含双早</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="radio" name="breakfast" class="text-primary focus:ring-primary" value="single"/> <span class="text-sm">含单早</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="radio" name="breakfast" checked class="text-primary focus:ring-primary" value="none"/> <span class="text-sm">不含早</span>
+</label>
+</div>
+</div>
+<div class="space-y-2 md:col-span-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">取消政策 <span class="text-red-500">*</span></label>
+<div class="flex flex-wrap gap-4 mt-2">
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="radio" name="cancel-policy" class="text-primary focus:ring-primary" value="free"/> <span class="text-sm">免费取消</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="radio" name="cancel-policy" checked class="text-primary focus:ring-primary" value="limited"/> <span class="text-sm">限时取消</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="radio" name="cancel-policy" class="text-primary focus:ring-primary" value="no"/> <span class="text-sm">不可取消</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 步骤4：设施服务 -->
+<section id="step4" class="hidden bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800">
+<h3 class="font-bold text-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">pool</span>
+设施服务 <span class="text-slate-400 font-normal text-sm">Facilities &amp; Services</span>
+</h3>
+</div>
+<div class="p-8 space-y-8">
+<div>
+<h4 class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">交通类</h4>
+<div class="flex flex-wrap gap-2">
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="免费停车"/>免费停车</label>
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="收费停车"/>收费停车</label>
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="接机服务"/>接机服务</label>
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="接送站"/>接送站</label>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">餐饮类</h4>
+<div class="flex flex-wrap gap-2">
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="中餐厅"/>中餐厅</label>
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="西餐厅"/>西餐厅</label>
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="咖啡厅"/>咖啡厅</label>
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="酒吧"/>酒吧</label>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">休闲类</h4>
+<div class="flex flex-wrap gap-2">
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="健身房"/>健身房</label>
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="游泳池"/>游泳池</label>
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="SPA"/>SPA</label>
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="棋牌室"/>棋牌室</label>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">商务类</h4>
+<div class="flex flex-wrap gap-2">
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="会议室"/>会议室</label>
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="商务中心"/>商务中心</label>
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="行李寄存"/>行李寄存</label>
+<label class="facility-pill px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-full text-xs cursor-pointer hover:border-primary has-[:checked]:bg-primary/10 has-[:checked]:border-primary dark:has-[:checked]:border-primary"><input type="checkbox" class="hidden" name="facility" value="洗衣服务"/>洗衣服务</label>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 步骤5：媒体图库与证照 -->
+<section id="step5" class="hidden bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800">
+<h3 class="font-bold text-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">image</span>
+媒体图库与证照 <span class="text-slate-400 font-normal text-sm">Media &amp; Certificates</span>
+</h3>
+</div>
+<div class="p-8 space-y-6">
+<div class="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800 rounded-xl p-6 mb-6">
+<h4 class="font-semibold text-amber-800 dark:text-amber-200 flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined">verified</span>资质证照（审核必需）
+</h4>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-sm font-medium text-amber-900 dark:text-amber-100">营业执照 <span class="text-red-500">*</span></label>
+<div class="cert-upload min-h-[140px] flex flex-col items-center justify-center border-2 border-dashed border-amber-300 dark:border-amber-700 rounded-lg p-6 text-center hover:bg-amber-100/50 dark:hover:bg-amber-900/20 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-3xl text-amber-600 dark:text-amber-400 mb-2">upload</span>
+<p class="text-xs text-amber-700 dark:text-amber-300">点击上传或拖拽文件</p>
+<p class="text-[10px] text-amber-600/70 dark:text-amber-400/70 mt-1">支持jpg/png/pdf，需加盖公章</p>
+<input type="file" class="hidden" accept=".jpg,.jpeg,.png,.pdf"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-medium text-amber-900 dark:text-amber-100">特种行业许可证 <span class="text-red-500">*</span></label>
+<div class="cert-upload min-h-[140px] flex flex-col items-center justify-center border-2 border-dashed border-amber-300 dark:border-amber-700 rounded-lg p-6 text-center hover:bg-amber-100/50 dark:hover:bg-amber-900/20 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-3xl text-amber-600 dark:text-amber-400 mb-2">upload</span>
+<p class="text-xs text-amber-700 dark:text-amber-300">点击上传或拖拽文件</p>
+<p class="text-[10px] text-amber-600/70 dark:text-amber-400/70 mt-1">支持jpg/png/pdf，需加盖公章</p>
+<input type="file" class="hidden" accept=".jpg,.jpeg,.png,.pdf"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-medium text-amber-900 dark:text-amber-100">消防检查合格证 <span class="text-red-500">*</span></label>
+<div class="cert-upload min-h-[140px] flex flex-col items-center justify-center border-2 border-dashed border-amber-300 dark:border-amber-700 rounded-lg p-6 text-center hover:bg-amber-100/50 dark:hover:bg-amber-900/20 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-3xl text-amber-600 dark:text-amber-400 mb-2">upload</span>
+<p class="text-xs text-amber-700 dark:text-amber-300">点击上传或拖拽文件</p>
+<p class="text-[10px] text-amber-600/70 dark:text-amber-400/70 mt-1">支持jpg/png/pdf，需加盖公章</p>
+<input type="file" class="hidden" accept=".jpg,.jpeg,.png,.pdf"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-medium text-amber-900 dark:text-amber-100">卫生许可证 <span class="text-red-500">*</span></label>
+<div class="cert-upload min-h-[140px] flex flex-col items-center justify-center border-2 border-dashed border-amber-300 dark:border-amber-700 rounded-lg p-6 text-center hover:bg-amber-100/50 dark:hover:bg-amber-900/20 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-3xl text-amber-600 dark:text-amber-400 mb-2">upload</span>
+<p class="text-xs text-amber-700 dark:text-amber-300">点击上传或拖拽文件</p>
+<p class="text-[10px] text-amber-600/70 dark:text-amber-400/70 mt-1">支持jpg/png/pdf，需加盖公章</p>
+<input type="file" class="hidden" accept=".jpg,.jpeg,.png,.pdf"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-medium text-amber-900 dark:text-amber-100">法人身份证（正面）<span class="text-red-500">*</span></label>
+<div class="cert-upload min-h-[140px] flex flex-col items-center justify-center border-2 border-dashed border-amber-300 dark:border-amber-700 rounded-lg p-6 text-center hover:bg-amber-100/50 dark:hover:bg-amber-900/20 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-3xl text-amber-600 dark:text-amber-400 mb-2">upload</span>
+<p class="text-xs text-amber-700 dark:text-amber-300">点击上传或拖拽文件</p>
+<p class="text-[10px] text-amber-600/70 dark:text-amber-400/70 mt-1">支持jpg/png</p>
+<input type="file" class="hidden" accept=".jpg,.jpeg,.png"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-medium text-amber-900 dark:text-amber-100">法人身份证（反面）<span class="text-red-500">*</span></label>
+<div class="cert-upload min-h-[140px] flex flex-col items-center justify-center border-2 border-dashed border-amber-300 dark:border-amber-700 rounded-lg p-6 text-center hover:bg-amber-100/50 dark:hover:bg-amber-900/20 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-3xl text-amber-600 dark:text-amber-400 mb-2">upload</span>
+<p class="text-xs text-amber-700 dark:text-amber-300">点击上传或拖拽文件</p>
+<p class="text-[10px] text-amber-600/70 dark:text-amber-400/70 mt-1">支持jpg/png</p>
+<input type="file" class="hidden" accept=".jpg,.jpeg,.png"/>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h4 class="font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">photo_library</span>酒店实景（必传）
+</h4>
+<div class="space-y-4">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">酒店外观照（封面图）<span class="text-red-500">*</span></label>
+<p class="text-[10px] text-slate-400">建议尺寸 1200×800px</p>
+<div class="media-upload min-h-[120px] flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-6 text-center hover:border-primary hover:bg-primary/5 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-2xl text-slate-400 mb-2">add_photo_alternate</span>
+<p class="text-xs text-slate-500 dark:text-slate-400">点击上传或拖拽</p>
+<input type="file" class="hidden" accept="image/*"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">大堂/前台照 <span class="text-red-500">*</span></label>
+<p class="text-[10px] text-slate-400 min-h-[14px]">建议尺寸 1200×800px</p>
+<div class="media-upload min-h-[120px] flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-6 text-center hover:border-primary hover:bg-primary/5 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-2xl text-slate-400 mb-2">add_photo_alternate</span>
+<p class="text-xs text-slate-500 dark:text-slate-400">点击上传或拖拽</p>
+<input type="file" class="hidden" accept="image/*"/>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">客房实景照（至少3张不同房型）<span class="text-red-500">*</span></label>
+<div class="media-upload border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-6 text-center hover:border-primary hover:bg-primary/5 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-2xl text-slate-400 mb-2">add_photo_alternate</span>
+<p class="text-xs text-slate-500 dark:text-slate-400">点击上传，可多选</p>
+<input type="file" class="hidden" accept="image/*" multiple/>
+</div>
+<div id="room-photos-preview" class="flex flex-wrap gap-2 mt-2"></div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">餐厅/卫生间等其他公共区域（选填）</label>
+<div class="media-upload border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-6 text-center hover:border-primary hover:bg-primary/5 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-2xl text-slate-400 mb-2">add_photo_alternate</span>
+<p class="text-xs text-slate-500 dark:text-slate-400">点击上传，可多选</p>
+<input type="file" class="hidden" accept="image/*" multiple/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 步骤6：联系与结算 -->
+<section id="step6" class="hidden bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800">
+<h3 class="font-bold text-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">contact_support</span>
+联系与结算 <span class="text-slate-400 font-normal text-sm">Contact &amp; Settlement</span>
+</h3>
+</div>
+<div class="p-8 space-y-8">
+<div>
+<h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">联系人信息</h4>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">业务联系人姓名 <span class="text-red-500">*</span></label>
+<input id="contact-name" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary" placeholder="请输入姓名" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">联系人职位</label>
+<input class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary" placeholder="如：运营经理" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">联系人手机 <span class="text-red-500">*</span></label>
+<input id="contact-phone" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary" placeholder="11位手机号" type="tel"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">联系人邮箱 <span class="text-red-500">*</span></label>
+<input id="contact-email" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary" placeholder="用于接收审核通知" type="email"/>
+</div>
+</div>
+</div>
+<div class="bg-primary/5 dark:bg-primary/10 border border-primary/20 dark:border-primary/30 rounded-xl p-6">
+<h4 class="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">account_balance</span>结算信息
+</h4>
+<p class="text-xs text-slate-600 dark:text-slate-400 mb-4">开户名称需与营业执照一致，用于打款与开票。</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">开户名称 <span class="text-red-500">*</span></label>
+<input id="account-name" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary" placeholder="与营业执照一致" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">银行账号 <span class="text-red-500">*</span></label>
+<input id="account-number" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary" placeholder="对公或对私账号" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">开户行 <span class="text-red-500">*</span></label>
+<div class="flex gap-2">
+<select class="flex-1 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary">
+<option value="">选择银行</option>
+<option>中国工商银行</option>
+<option>中国农业银行</option>
+<option>中国银行</option>
+<option>中国建设银行</option>
+<option>交通银行</option>
+<option>招商银行</option>
+<option>其他</option>
+</select>
+<input class="flex-1 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary" placeholder="支行名称" type="text"/>
+</div>
+</div>
+<div class="col-span-1 md:col-span-2 space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">纳税人识别号</label>
+<div class="text-[10px] text-slate-400 -mt-1 mb-1">通常与统一社会信用代码一致</div>
+<input id="tax-id" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 h-11 text-sm focus:border-primary focus:ring-primary" placeholder="自动带入步骤1填写的统一社会信用代码" type="text"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+
 </div>
 </div>
 </div>
 <footer class="h-16 flex-shrink-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-8 flex items-center justify-between z-40">
 <div class="flex items-center gap-2 text-green-600 dark:text-green-400 font-medium">
 <span class="material-symbols-outlined text-[18px]">cloud_done</span>
-<span class="text-xs">自动保存成功 14:23:45</span>
+<span id="autosave-msg" class="text-xs">自动保存成功 <span id="autosave-time">14:23:45</span></span>
 </div>
 <div class="flex items-center gap-4">
 <div class="flex items-center gap-2">
-<button class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold text-slate-300 cursor-not-allowed flex items-center gap-1">
-<span class="material-symbols-outlined text-[18px]">chevron_left</span>
-                        上一步
-                    </button>
-                    <Link to="/_2" className="text-accent font-semibold">
-                        下一步
-                    </Link>
+<button type="button" id="btn-prev" class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>上一步
+</button>
+<button type="button" id="btn-next" class="px-4 py-2 rounded-lg text-sm font-semibold bg-primary text-white hover:brightness-105 transition-all flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed">
+下一步<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
 </div>
 <div class="w-px h-6 bg-slate-200 dark:bg-slate-800"></div>
-<button class="px-8 py-2 bg-primary text-white rounded-lg text-sm font-bold hover:brightness-105 transition-all">提交</button>
+<button type="button" class="px-8 py-2 bg-primary text-white rounded-lg text-sm font-bold hover:brightness-105 transition-all">提交</button>
 </div>
 </footer>
 </div>
 </div>
 
+<script>
+(function () {
+  var currentStep = 1;
+  var totalSteps = 6;
+
+  function showStep(step) {
+    currentStep = step;
+    if (step === 6) {
+      var taxId = document.getElementById('tax-id');
+      var creditCode = document.getElementById('credit-code');
+      if (taxId && creditCode && !taxId.value.trim()) taxId.value = creditCode.value;
+    }
+    if (step === 3) {
+      var roomSelect = document.querySelector('.price-room-select');
+      if (roomSelect) {
+        var names = [];
+        document.querySelectorAll('.room-type-name').forEach(function (input) {
+          if (input.value.trim()) names.push(input.value.trim());
+        });
+        roomSelect.innerHTML = '<option value="">请选择房型</option>' +
+          names.map(function (n, i) { return '<option value="' + (i + 1) + '">' + n + '</option>'; }).join('');
+      }
+    }
+    for (var i = 1; i <= totalSteps; i++) {
+      var section = document.getElementById('step' + i);
+      var tab = document.querySelector('[data-step="' + i + '"]');
+      if (section) section.classList.toggle('hidden', i !== step);
+      if (tab) {
+        tab.classList.toggle('border-primary', i === step);
+        tab.classList.toggle('text-primary', i === step);
+        tab.classList.toggle('font-bold', i === step);
+        tab.classList.toggle('border-transparent', i !== step);
+        tab.classList.toggle('text-[#718096]', i !== step);
+        tab.classList.toggle('font-medium', i !== step);
+      }
+    }
+    var btnPrev = document.getElementById('btn-prev');
+    var btnNext = document.getElementById('btn-next');
+    if (btnPrev) btnPrev.disabled = step === 1;
+    if (btnNext) {
+      btnNext.disabled = !isStepValid(step);
+      var textNode = btnNext.firstChild;
+      if (textNode && textNode.nodeType === 3) textNode.textContent = step === totalSteps ? '完成' : '下一步';
+      else if (btnNext.childNodes.length) btnNext.childNodes[0].textContent = step === totalSteps ? '完成' : '下一步';
+      var icon = btnNext.querySelector('.material-symbols-outlined');
+      if (icon) icon.textContent = step === totalSteps ? 'check' : 'chevron_right';
+    }
+  }
+
+  function isStepValid(step) {
+    if (step === 1) {
+      var cn = document.getElementById('hotel-name-cn');
+      var en = document.getElementById('hotel-name-en');
+      var code = document.getElementById('credit-code');
+      var type = document.getElementById('hotel-type');
+      var phone = document.getElementById('hotel-phone');
+      var addr = document.getElementById('hotel-address');
+      var rooms = document.getElementById('room-count');
+      var open = document.getElementById('open-date');
+      var star = document.querySelector('input[name="star"]:checked');
+      return !!(cn && cn.value.trim() && en && en.value.trim() && code && code.value.trim() &&
+        type && type.value && phone && phone.value.trim() && addr && addr.value.trim() &&
+        rooms && rooms.value && open && open.value && star);
+    }
+    return true;
+  }
+
+  function validateStep1() {
+    var btnNext = document.getElementById('btn-next');
+    if (btnNext && currentStep === 1) btnNext.disabled = !isStepValid(1);
+  }
+
+  document.getElementById('step-nav').addEventListener('click', function (e) {
+    var tab = e.target.closest('.step-tab');
+    if (tab && tab.dataset.step) showStep(parseInt(tab.dataset.step, 10));
+  });
+
+  document.getElementById('btn-prev').addEventListener('click', function () {
+    if (currentStep > 1) showStep(currentStep - 1);
+  });
+
+  document.getElementById('btn-next').addEventListener('click', function () {
+    if (currentStep < totalSteps) showStep(currentStep + 1);
+    else { /* 提交 */ }
+  });
+
+  var step1Inputs = ['hotel-name-cn', 'hotel-name-en', 'credit-code', 'hotel-type', 'hotel-phone', 'hotel-address', 'room-count', 'open-date'];
+  step1Inputs.forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', validateStep1);
+  });
+  document.querySelectorAll('input[name="star"]').forEach(function (r) {
+    r.addEventListener('change', validateStep1);
+  });
+
+  var descEl = document.getElementById('hotel-desc');
+  var countEl = document.getElementById('desc-count');
+  if (descEl && countEl) {
+    descEl.addEventListener('input', function () { countEl.textContent = descEl.value.length; });
+  }
+
+  var container = document.getElementById('room-types-container');
+  var roomIndex = 1;
+  document.getElementById('add-room-type').addEventListener('click', function () {
+    roomIndex++;
+    var first = container.querySelector('.room-type-card');
+    if (!first) return;
+    var clone = first.cloneNode(true);
+    clone.classList.remove('hidden');
+    clone.dataset.roomIndex = roomIndex;
+    clone.querySelector('h4').textContent = '房型 ' + roomIndex;
+    clone.querySelectorAll('input, select').forEach(function (el) { el.value = ''; });
+    var winName = 'window-' + roomIndex;
+    clone.querySelectorAll('input[type="radio"]').forEach(function (r) { r.name = winName; });
+    clone.querySelector('.room-type-remove').addEventListener('click', function () {
+      if (container.querySelectorAll('.room-type-card').length > 1) clone.remove();
+    });
+    container.appendChild(clone);
+  });
+
+  container.querySelectorAll('.room-type-remove').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var card = btn.closest('.room-type-card');
+      if (container.querySelectorAll('.room-type-card').length > 1 && card) card.remove();
+    });
+  });
+
+  setInterval(function () {
+    var t = new Date();
+    var el = document.getElementById('autosave-time');
+    if (el) el.textContent = t.toTimeString().slice(0, 8);
+  }, 5000);
+
+  document.querySelectorAll('.cert-upload, .media-upload').forEach(function (box) {
+    var input = box.querySelector('input[type="file"]');
+    if (!input) return;
+    box.addEventListener('click', function () { input.click(); });
+    input.addEventListener('change', function () {
+      if (input.files && input.files.length) box.classList.add('ring-2', 'ring-primary');
+    });
+  });
+})();
+</script>
 </body></html>
