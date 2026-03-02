@@ -21,9 +21,12 @@ export default function StepBasicInfo({ form, updateField }: StepBasicInfoProps)
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-8">
       {/* Section header */}
-      <div className="mb-6">
-        <h3 className="text-base font-bold text-slate-800">基础信息</h3>
-        <p className="text-xs text-slate-400 mt-0.5">Basic Information</p>
+      <div className="mb-6 pb-4 border-b border-slate-100">
+        <div className="flex items-center gap-2">
+          <span className="material-symbols-outlined text-admin-primary text-lg">info</span>
+          <h3 className="text-base font-bold text-slate-800">基础信息</h3>
+        </div>
+        <p className="text-xs text-slate-400 mt-0.5 ml-7">Basic Information</p>
       </div>
 
       <div className="grid grid-cols-2 gap-x-6 gap-y-5">
@@ -83,54 +86,52 @@ export default function StepBasicInfo({ form, updateField }: StepBasicInfoProps)
           </div>
         </div>
 
-        {/* 酒店星级 (full width) */}
-        <div className="col-span-2">
-          <label className="block text-sm font-medium text-slate-700 mb-1">
-            酒店星级 <span className="text-red-500">*</span>
-          </label>
-          <p className="text-xs text-slate-400 mb-2">Star Rating</p>
-          <div className="flex flex-wrap gap-2">
-            {STAR_OPTIONS.map((opt) => (
-              <button
-                key={opt.value}
-                type="button"
-                onClick={() => updateField('starRating', opt.value)}
-                className={`h-9 px-4 rounded-lg text-sm font-medium transition-colors border ${
-                  form.starRating === opt.value
-                    ? 'border-admin-primary bg-admin-primary/10 text-admin-primary'
-                    : 'border-slate-200 text-slate-500 hover:bg-slate-50'
-                }`}
-              >
-                {opt.label}
-              </button>
-            ))}
+        {/* 酒店星级 + 开业时间 + 装修时间 — 3 列同行 */}
+        <div className="col-span-2 grid grid-cols-3 gap-x-6">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              酒店星级 <span className="text-red-500">*</span>
+            </label>
+            <p className="text-xs text-slate-400 mb-2">Star Rating</p>
+            <div className="flex flex-wrap gap-2">
+              {STAR_OPTIONS.map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => updateField('starRating', opt.value)}
+                  className={`h-9 px-3 rounded-lg text-sm font-medium transition-colors border ${
+                    form.starRating === opt.value
+                      ? 'border-admin-primary bg-admin-primary/10 text-admin-primary'
+                      : 'border-slate-200 text-slate-500 hover:bg-slate-50'
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-
-        {/* 开业时间 */}
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">
-            开业时间 <span className="text-red-500">*</span>
-          </label>
-          <p className="text-xs text-slate-400 mb-1.5">Opening Date</p>
-          <input
-            type="month"
-            value={form.openDate}
-            onChange={(e) => updateField('openDate', e.target.value)}
-            className={inputClass}
-          />
-        </div>
-
-        {/* 装修时间 (placeholder field, not in HotelFormData yet) */}
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">装修时间</label>
-          <p className="text-xs text-slate-400 mb-1.5">Renovation Date</p>
-          <input
-            type="month"
-            disabled
-            className={`${inputClass} bg-slate-50 text-slate-400 cursor-not-allowed`}
-            placeholder="即将开放"
-          />
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              开业时间 <span className="text-red-500">*</span>
+            </label>
+            <p className="text-xs text-slate-400 mb-1.5">Opening Date</p>
+            <input
+              type="month"
+              value={form.openDate}
+              onChange={(e) => updateField('openDate', e.target.value)}
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">装修时间</label>
+            <p className="text-xs text-slate-400 mb-1.5">Renovation Date</p>
+            <input
+              type="month"
+              disabled
+              className={`${inputClass} bg-slate-50 text-slate-400 cursor-not-allowed`}
+              placeholder="即将开放"
+            />
+          </div>
         </div>
 
         {/* 酒店简介 (full width) */}
@@ -141,7 +142,7 @@ export default function StepBasicInfo({ form, updateField }: StepBasicInfoProps)
             className="w-full rounded-lg border border-slate-200 focus:border-admin-primary focus:ring-admin-primary text-sm px-4 py-3 outline-none transition-colors resize-none"
             rows={4}
             maxLength={1000}
-            placeholder="请输入酒店简介，不超过1000字"
+            placeholder="请简要描述酒店特色、优势等（建议200-500字）"
           />
           <p className="text-xs text-slate-400 mt-1 text-right">0/1000</p>
         </div>
