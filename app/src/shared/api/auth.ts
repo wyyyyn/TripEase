@@ -19,6 +19,7 @@ interface AuthResponse {
   user: {
     id: number;
     username: string;
+    displayName?: string;
     role: UserRole;
   };
 }
@@ -27,6 +28,7 @@ interface AuthResponse {
 interface MeResponse {
   id: number;
   username: string;
+  displayName?: string;
   role: UserRole;
   createdAt: string;
 }
