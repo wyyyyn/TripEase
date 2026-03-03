@@ -15,10 +15,10 @@ import type { ReviewStatus, ManagedHotel } from '../../shared/types/admin';
 /* ------------------------------------------------------------------ */
 
 const STATUS_OPTIONS: { value: ReviewStatus | 'all'; label: string }[] = [
-  { value: 'all', label: '全部状态' },
+  { value: 'all', label: '审核状态' },
   { value: 'pending', label: '待审核' },
   { value: 'approved', label: '已通过' },
-  { value: 'rejected', label: '已驳回' },
+  { value: 'rejected', label: '未通过' },
   { value: 'published', label: '已发布' },
   { value: 'offline', label: '已下线' },
 ];
@@ -26,7 +26,7 @@ const STATUS_OPTIONS: { value: ReviewStatus | 'all'; label: string }[] = [
 const PAGE_SIZE_OPTIONS = [10, 20, 50];
 
 /* ------------------------------------------------------------------ */
-/*  Stat card color mapping                                           */
+/*  Stat card config                                                  */
 /* ------------------------------------------------------------------ */
 
 const STAT_CARDS: {
@@ -36,38 +36,39 @@ const STAT_CARDS: {
   trend: string;
   trendColor: string;
 }[] = [
-  { key: 'pending', label: '待审核', dotColor: 'bg-amber-300', trend: '较昨日 +5', trendColor: 'text-amber-500' },
-  { key: 'approved', label: '已通过', dotColor: 'bg-emerald-400', trend: '较昨日 +3', trendColor: 'text-emerald-500' },
-  { key: 'rejected', label: '已驳回', dotColor: 'bg-rose-400', trend: '较昨日 -2', trendColor: 'text-rose-500' },
-  { key: 'offline', label: '已下线', dotColor: 'bg-slate-900', trend: '较昨日 +0', trendColor: 'text-slate-400' },
+  { key: 'pending', label: '待审核', dotColor: 'bg-amber-400', trend: '较昨日 +5', trendColor: 'text-emerald-500' },
+  { key: 'approved', label: '已通过', dotColor: 'bg-emerald-500', trend: '较昨日 +3', trendColor: 'text-emerald-500' },
+  { key: 'rejected', label: '已驳回', dotColor: 'bg-rose-500', trend: '较昨日 -2', trendColor: 'text-rose-500' },
+  { key: 'offline', label: '已下线', dotColor: 'bg-slate-900', trend: '无变化', trendColor: 'text-slate-400' },
 ];
 
 /* ------------------------------------------------------------------ */
-/*  Helper: status badge text + color                                 */
+/*  Helpers                                                           */
 /* ------------------------------------------------------------------ */
 
-function statusText(s: ReviewStatus): string {
+/** 审核状态 column text */
+function reviewStatusText(s: ReviewStatus): string {
   const map: Record<ReviewStatus, string> = {
     draft: '草稿',
     pending: '待审核',
     approved: '已通过',
-    rejected: '已驳回',
-    published: '已上线',
-    offline: '已下线',
+    rejected: '未通过',
+    published: '已通过',
+    offline: '已通过',
   };
   return map[s] ?? s;
 }
 
-function statusDotColor(s: ReviewStatus): string {
-  const map: Record<ReviewStatus, string> = {
-    draft: 'bg-slate-400',
-    pending: 'bg-amber-300',
-    approved: 'bg-emerald-400',
-    rejected: 'bg-rose-400',
-    published: 'bg-blue-400',
-    offline: 'bg-slate-900',
-  };
-  return map[s] ?? 'bg-slate-400';
+/** 上线状态 column text */
+function onlineStatusText(s: ReviewStatus): string | null {
+  if (s === 'published') return '已上线';
+  if (s === 'offline') return '已下线';
+  return null;
+}
+
+/** Star rating as ★ characters */
+function starString(n: number): string {
+  return '★'.repeat(n);
 }
 
 /* ------------------------------------------------------------------ */
@@ -128,7 +129,11 @@ export default function AdminReviewList() {
   const filtered = useMemo(() => {
     if (!searchTerm.trim()) return hotels;
     const term = searchTerm.trim().toLowerCase();
-    return hotels.filter((h) => h.name.toLowerCase().includes(term));
+    return hotels.filter(
+      (h) =>
+        h.name.toLowerCase().includes(term) ||
+        (h.ownerName && h.ownerName.toLowerCase().includes(term)),
+    );
   }, [hotels, searchTerm]);
 
   const totalCount = filtered.length;
@@ -184,405 +189,335 @@ export default function AdminReviewList() {
 
   // ---------- render ----------
   return (
-    <div>
-      {/* Top Header bar */}
-      <div className="flex items-center justify-between mb-5 pb-4 border-b border-slate-100">
-        <div className="flex items-center gap-2 text-xs text-slate-400">
-          <span>审核管理</span>
-          <span className="material-symbols-outlined text-sm">chevron_right</span>
-          <span>资源库</span>
-          <span className="material-symbols-outlined text-sm">chevron_right</span>
-          <span className="text-slate-700 font-medium">酒店信息审核</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <button className="relative p-2 text-slate-400 hover:text-slate-600 transition-colors">
-            <span className="material-symbols-outlined text-xl">notifications</span>
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
-          </button>
-          <button className="h-9 px-4 rounded-lg bg-admin-accent text-white text-xs font-medium hover:bg-admin-accent/90 transition-colors flex items-center gap-1.5 cursor-not-allowed opacity-60">
-            <span className="material-symbols-outlined text-base">add</span>
-            新建房源
-          </button>
-        </div>
-      </div>
-
-      {/* Page header */}
-      <div className="mb-6">
-        <h1 className="text-lg font-bold text-slate-800">酒店信息管理</h1>
-        <p className="text-xs text-slate-400 mt-1">
-          审核商户提交的酒店信息，管理酒店上线/下线状态
-        </p>
-      </div>
-
-      {/* Statistics cards */}
-      <div className="grid grid-cols-4 gap-3 mb-5">
-        {STAT_CARDS.map((card) => (
-          <div
-            key={card.key}
-            className="bg-white border border-slate-100 p-3 rounded shadow-sm"
-          >
-            <div className="flex items-center gap-1.5 mb-1.5">
-              <span className={`size-1.5 rounded-full ${card.dotColor}`} />
-              <span className="text-[11px] text-slate-500">{card.label}</span>
-            </div>
-            <div className="text-2xl font-bold text-slate-800 mb-1">
-              {stats ? stats[card.key] : '--'}
-            </div>
-            <div className={`text-[10px] ${card.trendColor}`}>{card.trend}</div>
+    <div className="flex flex-col min-h-full bg-white">
+      {/* ── Top Header Bar ── */}
+      <header className="h-14 bg-white border-b border-gray-100 flex items-center justify-between px-8 shrink-0">
+        <div className="flex items-center gap-4">
+          <h2 className="text-base font-bold text-slate-800">审核管理</h2>
+          <div className="h-4 w-[1px] bg-slate-200" />
+          <div className="flex gap-1 items-center">
+            <span className="text-[11px] text-slate-400 font-medium">资源库</span>
+            <span className="material-symbols-outlined text-[14px] text-slate-300">chevron_right</span>
+            <span className="text-[11px] text-slate-600 font-semibold">酒店信息审核</span>
           </div>
-        ))}
-      </div>
-
-      {/* Filter bar */}
-      <div className="sticky top-0 z-10 bg-white border border-slate-100 rounded shadow-sm px-3 py-2 mb-4 flex items-center gap-2 flex-wrap">
-        {/* Search */}
-        <div className="relative flex-1 min-w-[180px] max-w-[260px] flex">
-          <div className="relative flex-1">
-            <span className="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-base">
-              search
-            </span>
-            <input
-              type="text"
-              placeholder="搜索酒店、商户"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-200 rounded-l focus:outline-none focus:border-admin-accent"
-            />
-          </div>
-          <button className="px-3 py-1.5 text-xs bg-admin-accent text-white rounded-r hover:bg-admin-accent/90 transition-colors shrink-0">
-            搜索
-          </button>
         </div>
-
-        {/* Status filter */}
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value as ReviewStatus | 'all')}
-          className="text-xs border border-slate-200 rounded px-2 py-1.5 focus:outline-none focus:border-admin-accent bg-white"
-        >
-          {STATUS_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-
-        {/* Online status filter (placeholder) */}
-        <select className="text-xs border border-slate-200 rounded px-2 py-1.5 bg-white text-slate-400" disabled>
-          <option>上线状态</option>
-        </select>
-
-        {/* Placeholder filters */}
-        <select className="text-xs border border-slate-200 rounded px-2 py-1.5 bg-white text-slate-400" disabled>
-          <option>酒店星级</option>
-        </select>
-        <select className="text-xs border border-slate-200 rounded px-2 py-1.5 bg-white text-slate-400" disabled>
-          <option>所属区域</option>
-        </select>
-        <select className="text-xs border border-slate-200 rounded px-2 py-1.5 bg-white text-slate-400" disabled>
-          <option>提交时间</option>
-        </select>
-
-        {/* More filters */}
-        <button className="flex items-center gap-1 text-xs text-slate-400 border border-slate-200 rounded px-2 py-1.5 cursor-not-allowed">
-          <span className="material-symbols-outlined text-sm">tune</span>
-          更多筛选
+        <button className="relative p-2 text-slate-400 hover:text-slate-600 transition-colors">
+          <span className="material-symbols-outlined text-xl">notifications</span>
+          <span className="absolute top-2 right-2 size-1.5 bg-[#2D5BFF] rounded-full" />
         </button>
+      </header>
 
-        <div className="ml-auto flex items-center gap-2">
-          <button className="flex items-center gap-1 text-xs text-slate-400 border border-slate-200 rounded px-2.5 py-1.5 cursor-not-allowed">
-            <span className="material-symbols-outlined text-sm">download</span>
-            导出
-          </button>
-          <button
-            onClick={() => {
-              setSearchTerm('');
-              setStatusFilter('all');
-            }}
-            className="text-xs text-slate-500 hover:text-slate-700"
-          >
-            重置
-          </button>
+      {/* ── Scrollable Content ── */}
+      <div className="flex-1 overflow-auto">
+        {/* Page title + description */}
+        <div className="px-8 py-4">
+          <div className="mb-3">
+            <h1 className="text-xl font-bold text-slate-900">酒店信息管理</h1>
+            <p className="text-slate-400 text-[12px]">审核商户提交的酒店信息，管理酒店上线/下线状态</p>
+          </div>
+
+          {/* Statistics cards */}
+          <div className="grid grid-cols-4 gap-4 max-w-7xl">
+            {STAT_CARDS.map((card) => (
+              <div key={card.key} className="bg-white border border-slate-100 p-2.5 rounded shadow-sm">
+                <div className="flex justify-between items-center mb-0.5">
+                  <span className="text-slate-500 font-semibold text-[9px] flex items-center gap-1.5 uppercase tracking-wider">
+                    <span className={`size-1.5 rounded-full ${card.dotColor}`} /> {card.label}
+                  </span>
+                  <span className={`text-[9px] font-bold ${card.trendColor}`}>{card.trend}</span>
+                </div>
+                <div className="text-xl font-bold text-slate-900 leading-tight">
+                  {stats ? stats[card.key] : '--'}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Error */}
-      {error && (
-        <div className="bg-red-50 border border-red-200 rounded p-3 mb-4 text-xs text-red-600">
-          {error}
-        </div>
-      )}
+        {/* Filter bar */}
+        <div className="px-8 py-2.5 bg-white border-y border-gray-50 sticky top-0 z-10">
+          <div className="flex flex-wrap items-center gap-2 max-w-7xl">
+            {/* Search */}
+            <div className="relative w-48">
+              <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-300 text-base">
+                search
+              </span>
+              <input
+                type="text"
+                placeholder="搜索酒店、商户"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-8 pr-12 py-1.5 border border-slate-200 focus:border-[#2D5BFF] focus:ring-0 rounded text-[11px] placeholder:text-slate-400"
+              />
+              <button className="absolute right-1 top-1/2 -translate-y-1/2 bg-[#2D5BFF] text-white px-2 py-0.5 rounded text-[10px] font-bold">
+                搜索
+              </button>
+            </div>
 
-      {/* Data table */}
-      <div className="bg-white border border-slate-100 rounded shadow-sm overflow-hidden">
-        <table className="w-full">
-          <thead>
-            <tr className="bg-slate-50/50">
-              <th className="w-8 px-3 py-3">
-                <input type="checkbox" className="accent-admin-accent" disabled />
-              </th>
-              <th className="text-left px-3 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                酒店名称
-              </th>
-              <th className="text-left px-3 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                商户
-              </th>
-              <th className="text-left px-3 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                星级
-              </th>
-              <th className="text-left px-3 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                审核状态
-              </th>
-              <th className="text-left px-3 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                上线状态
-              </th>
-              <th className="text-left px-3 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                提交时间
-              </th>
-              <th className="text-right px-3 py-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                操作
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-50">
-            {loading && (
-              <tr>
-                <td colSpan={8} className="px-3 py-16 text-center text-slate-400 text-xs">
-                  加载中...
-                </td>
-              </tr>
-            )}
-            {!loading && paged.length === 0 && (
-              <tr>
-                <td colSpan={8} className="px-3 py-16 text-center text-slate-400 text-xs">
-                  暂无数据
-                </td>
-              </tr>
-            )}
-            {!loading &&
-              paged.map((hotel) => {
-                const numericId = Number(hotel.id);
-                const status = hotel.status;
-                return (
-                  <tr
-                    key={hotel.id}
-                    className="h-[64px] hover:bg-slate-50/50 transition-colors"
-                  >
-                    {/* Checkbox */}
-                    <td className="w-8 px-3">
-                      <input type="checkbox" className="accent-admin-accent" />
-                    </td>
-
-                    {/* Hotel name + thumbnail */}
-                    <td className="px-3">
-                      <div className="flex items-center gap-2.5">
-                        <div className="size-12 rounded-[4px] bg-slate-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                          {hotel.images?.[0] ? (
-                            <img
-                              src={hotel.images[0]}
-                              alt=""
-                              className="size-12 object-cover rounded-[4px]"
-                            />
-                          ) : (
-                            <span className="material-symbols-outlined text-slate-300 text-lg">
-                              apartment
-                            </span>
-                          )}
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-xs font-bold text-slate-800 truncate">
-                            {hotel.name}
-                          </p>
-                          <p className="text-[10px] text-slate-400 truncate mt-0.5">
-                            {hotel.address}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-
-                    {/* Merchant */}
-                    <td className="px-3">
-                      <span className="text-[11px] text-slate-600">
-                        商户{hotel.ownerId}
-                      </span>
-                    </td>
-
-                    {/* Star rating */}
-                    <td className="px-3">
-                      <div className="flex items-center gap-0.5">
-                        {Array.from({ length: hotel.starRating }).map((_, i) => (
-                          <span
-                            key={i}
-                            className="material-symbols-outlined text-amber-300"
-                            style={{ fontSize: '14px' }}
-                          >
-                            star_rate
-                          </span>
-                        ))}
-                      </div>
-                    </td>
-
-                    {/* Status */}
-                    <td className="px-3">
-                      <div className="flex items-center gap-1.5">
-                        <span
-                          className={`size-1.5 rounded-full flex-shrink-0 ${statusDotColor(status)}`}
-                        />
-                        <span className="text-[11px] text-[#666]">
-                          {statusText(status)}
-                        </span>
-                      </div>
-                    </td>
-
-                    {/* Online status */}
-                    <td className="px-3">
-                      {status === 'published' ? (
-                        <span className="text-[11px] text-emerald-600 font-medium">已上线</span>
-                      ) : status === 'offline' ? (
-                        <span className="text-[11px] text-slate-400">已下线</span>
-                      ) : (
-                        <span className="text-[11px] text-slate-300">--</span>
-                      )}
-                    </td>
-
-                    {/* Submit date */}
-                    <td className="px-3">
-                      <span className="text-[11px] text-[#999] font-mono">
-                        {new Date(hotel.createdAt).toLocaleDateString('zh-CN', {
-                          year: 'numeric',
-                          month: '2-digit',
-                          day: '2-digit',
-                        })}
-                      </span>
-                    </td>
-
-                    {/* Actions */}
-                    <td className="px-3 text-right">
-                      <div className="flex items-center justify-end gap-1.5">
-                        {/* Pending: 审核 button */}
-                        {status === 'pending' && (
-                          <button
-                            onClick={() => navigate(`/admin/review/${hotel.id}`)}
-                            className="px-2.5 py-1 text-[11px] font-medium rounded bg-admin-accent text-white hover:opacity-90 transition-opacity"
-                          >
-                            审 核
-                          </button>
-                        )}
-
-                        {/* Approved+Published: 下线 button */}
-                        {(status === 'approved' || status === 'published') && (
-                          <button
-                            onClick={() => handleAction(numericId, 'offline')}
-                            className="px-2.5 py-1 text-[11px] font-medium rounded border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
-                          >
-                            下 线
-                          </button>
-                        )}
-
-                        {/* Rejected: 重新审核 + 查看原因 */}
-                        {status === 'rejected' && (
-                          <>
-                            <button
-                              onClick={() => navigate(`/admin/review/${hotel.id}`)}
-                              className="px-2.5 py-1 text-[11px] font-medium rounded bg-admin-accent text-white hover:opacity-90 transition-opacity"
-                            >
-                              重新审核
-                            </button>
-                            <button
-                              onClick={() => navigate(`/admin/review/${hotel.id}`)}
-                              className="text-[11px] text-slate-400 hover:text-admin-accent transition-colors"
-                            >
-                              查看原因
-                            </button>
-                          </>
-                        )}
-
-                        {/* Offline: 恢复上线 (blue border) */}
-                        {status === 'offline' && (
-                          <button
-                            onClick={() => handleAction(numericId, 'published')}
-                            className="px-2.5 py-1 text-[11px] font-medium rounded border border-admin-accent text-admin-accent hover:bg-admin-accent/5 transition-colors"
-                          >
-                            恢复上线
-                          </button>
-                        )}
-
-                        {/* 详情 link */}
-                        <button
-                          onClick={() => navigate(`/admin/review/${hotel.id}`)}
-                          className="text-[11px] text-slate-400 hover:text-admin-accent transition-colors"
-                        >
-                          详情
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Pagination footer */}
-      {!loading && totalCount > 0 && (
-        <div className="flex items-center justify-between mt-3 text-xs text-slate-500">
-          <div className="flex items-center gap-2">
-            <span>共 {totalCount} 条</span>
-            <span>每页显示</span>
+            {/* Status filter */}
             <select
-              value={pageSize}
-              onChange={(e) => setPageSize(Number(e.target.value))}
-              className="border border-slate-200 rounded px-1.5 py-0.5 text-xs bg-white focus:outline-none"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as ReviewStatus | 'all')}
+              className="bg-white border-slate-200 rounded py-1 pl-2 pr-6 text-[11px] font-medium text-slate-600 focus:ring-0 focus:border-[#2D5BFF] min-w-[90px]"
             >
-              {PAGE_SIZE_OPTIONS.map((n) => (
-                <option key={n} value={n}>
-                  {n}
-                </option>
+              {STATUS_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
               ))}
             </select>
-            <span>条</span>
-          </div>
 
-          <div className="flex items-center gap-1">
-            {/* Prev */}
-            <button
-              disabled={safePage <= 1}
-              onClick={() => setPage(safePage - 1)}
-              className="size-7 flex items-center justify-center rounded border border-slate-200 disabled:opacity-30 hover:bg-slate-50"
-            >
-              <span className="material-symbols-outlined text-sm">chevron_left</span>
+            {/* Placeholder filters */}
+            <select className="bg-white border-slate-200 rounded py-1 pl-2 pr-6 text-[11px] font-medium text-slate-600 focus:ring-0 focus:border-[#2D5BFF] min-w-[90px]" disabled>
+              <option>上线状态</option>
+            </select>
+            <select className="bg-white border-slate-200 rounded py-1 pl-2 pr-6 text-[11px] font-medium text-slate-600 focus:ring-0 focus:border-[#2D5BFF] min-w-[90px]" disabled>
+              <option>酒店星级</option>
+            </select>
+            <select className="bg-white border-slate-200 rounded py-1 pl-2 pr-6 text-[11px] font-medium text-slate-600 focus:ring-0 focus:border-[#2D5BFF] min-w-[90px]" disabled>
+              <option>所属区域</option>
+            </select>
+            <select className="bg-white border-slate-200 rounded py-1 pl-2 pr-6 text-[11px] font-medium text-slate-600 focus:ring-0 focus:border-[#2D5BFF] min-w-[90px]" disabled>
+              <option>提交时间</option>
+            </select>
+
+            {/* More filters */}
+            <button className="flex items-center gap-1 px-2 py-1 border border-slate-200 hover:bg-slate-50 rounded text-[11px] font-bold transition-colors text-slate-600">
+              <span className="material-symbols-outlined text-sm">tune</span>更多筛选
             </button>
 
-            {buildPageNumbers().map((p, idx) =>
-              p === '...' ? (
-                <span key={`dot-${idx}`} className="px-1 text-slate-400">
-                  ...
-                </span>
-              ) : (
-                <button
-                  key={p}
-                  onClick={() => setPage(p)}
-                  className={`size-7 flex items-center justify-center rounded text-xs font-medium transition-colors ${
-                    p === safePage
-                      ? 'bg-admin-accent text-white'
-                      : 'border border-slate-200 hover:bg-slate-50 text-slate-600'
-                  }`}
-                >
-                  {p}
-                </button>
-              ),
-            )}
-
-            {/* Next */}
-            <button
-              disabled={safePage >= totalPages}
-              onClick={() => setPage(safePage + 1)}
-              className="size-7 flex items-center justify-center rounded border border-slate-200 disabled:opacity-30 hover:bg-slate-50"
-            >
-              <span className="material-symbols-outlined text-sm">chevron_right</span>
-            </button>
+            {/* Right side: reset + export */}
+            <div className="flex items-center gap-3 ml-auto">
+              <button
+                onClick={() => { setSearchTerm(''); setStatusFilter('all'); }}
+                className="text-[11px] font-bold text-slate-400 hover:text-slate-600"
+              >
+                重置
+              </button>
+              <button className="text-[11px] font-bold text-[#2D5BFF] flex items-center gap-1 hover:opacity-80">
+                <span className="material-symbols-outlined text-sm">download</span>导出
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* Error */}
+        {error && (
+          <div className="mx-8 mt-4 bg-red-50 border border-red-200 rounded p-3 text-xs text-red-600">
+            {error}
+          </div>
+        )}
+
+        {/* Data table */}
+        <div className="px-8 pb-10">
+          <div className="max-w-7xl mx-auto overflow-hidden">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50/50">
+                  <th className="w-10 px-4 py-2 border-b border-gray-100">
+                    <input type="checkbox" className="rounded border-slate-300 text-[#2D5BFF] focus:ring-0" disabled />
+                  </th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-gray-100">酒店名称</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-gray-100">商户</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-gray-100">星级</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-gray-100">审核状态</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-gray-100">上线状态</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-gray-100">提交时间</th>
+                  <th className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right border-b border-gray-100 min-w-[140px]">操作</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#F5F5F5]">
+                {loading && (
+                  <tr>
+                    <td colSpan={8} className="px-3 py-16 text-center text-slate-400 text-xs">
+                      加载中...
+                    </td>
+                  </tr>
+                )}
+                {!loading && paged.length === 0 && (
+                  <tr>
+                    <td colSpan={8} className="px-3 py-16 text-center text-slate-400 text-xs">
+                      暂无数据
+                    </td>
+                  </tr>
+                )}
+                {!loading &&
+                  paged.map((hotel) => {
+                    const numericId = Number(hotel.id);
+                    const status = hotel.status;
+                    return (
+                      <tr key={hotel.id} className="hover:bg-slate-50/50 transition-colors h-[64px]">
+                        {/* Checkbox */}
+                        <td className="px-4">
+                          <input type="checkbox" className="rounded border-slate-300 text-[#2D5BFF] focus:ring-0" />
+                        </td>
+
+                        {/* Hotel name + thumbnail */}
+                        <td className="px-3">
+                          <div className="flex items-center gap-3">
+                            <div className="size-10 rounded-[4px] bg-slate-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                              {hotel.images?.[0] ? (
+                                <img src={hotel.images[0]} alt="" className="size-10 object-cover rounded-[4px]" />
+                              ) : (
+                                <span className="material-symbols-outlined text-slate-300 text-lg">apartment</span>
+                              )}
+                            </div>
+                            <span className="font-bold text-[#333] text-[13px]">{hotel.name}</span>
+                          </div>
+                        </td>
+
+                        {/* Merchant name */}
+                        <td className="px-3 text-[13px] text-[#666]">
+                          {hotel.ownerName || `商户${hotel.ownerId}`}
+                        </td>
+
+                        {/* Star rating */}
+                        <td className="px-3 text-amber-400 text-[10px]">
+                          {starString(hotel.starRating)}
+                        </td>
+
+                        {/* 审核状态 */}
+                        <td className="px-3">
+                          <span className="text-[#666] text-[11px]">{reviewStatusText(status)}</span>
+                        </td>
+
+                        {/* 上线状态 */}
+                        <td className="px-3">
+                          {onlineStatusText(status) ? (
+                            <span className="text-[#666] text-[11px]">{onlineStatusText(status)}</span>
+                          ) : (
+                            <span className="text-slate-300 text-[11px]">-</span>
+                          )}
+                        </td>
+
+                        {/* Submit date */}
+                        <td className="px-3">
+                          <span className="text-[11px] text-[#999] font-mono">
+                            {new Date(hotel.createdAt).toLocaleDateString('sv-SE')}
+                          </span>
+                        </td>
+
+                        {/* Actions */}
+                        <td className="px-4 text-right min-w-[140px]">
+                          <div className="flex items-center justify-end gap-2">
+                            {/* Pending → 审核 */}
+                            {status === 'pending' && (
+                              <button
+                                onClick={() => navigate(`/admin/review/${hotel.id}`)}
+                                className="bg-[#2D5BFF] text-white px-2 py-1 rounded text-[11px] font-medium shadow-sm min-w-[72px]"
+                              >
+                                审 核
+                              </button>
+                            )}
+
+                            {/* Published → 下线 */}
+                            {(status === 'approved' || status === 'published') && (
+                              <button
+                                onClick={() => handleAction(numericId, 'offline')}
+                                className="bg-white border border-slate-300 text-slate-700 px-2 py-1 rounded text-[11px] font-medium hover:bg-slate-50 min-w-[72px]"
+                              >
+                                下 线
+                              </button>
+                            )}
+
+                            {/* Rejected → 查看原因 */}
+                            {status === 'rejected' && (
+                              <button
+                                onClick={() => navigate(`/admin/review/${hotel.id}`)}
+                                className="bg-amber-50 text-amber-800 border border-amber-200 px-2 py-1 rounded text-[11px] font-medium min-w-[72px]"
+                              >
+                                查看原因
+                              </button>
+                            )}
+
+                            {/* Offline → 恢复上线 */}
+                            {status === 'offline' && (
+                              <button
+                                onClick={() => handleAction(numericId, 'published')}
+                                className="bg-white border border-slate-300 text-slate-700 px-2 py-1 rounded text-[11px] font-medium hover:bg-slate-50 min-w-[72px]"
+                              >
+                                恢复上线
+                              </button>
+                            )}
+
+                            {/* 详情 link */}
+                            <button
+                              onClick={() => navigate(`/admin/review/${hotel.id}`)}
+                              className="text-slate-500 text-[11px] font-medium hover:text-[#2D5BFF] underline-offset-2 hover:underline"
+                            >
+                              详情
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Pagination Footer ── */}
+      {!loading && totalCount > 0 && (
+        <footer className="h-14 px-8 bg-white border-t border-gray-100 flex items-center shrink-0">
+          <div className="max-w-7xl w-full mx-auto flex items-center justify-between">
+            {/* Left: total + page size */}
+            <div className="flex items-center">
+              <p className="text-[12px] text-slate-500 mr-12">
+                共 <span className="font-bold text-slate-700">{totalCount}</span> 条
+              </p>
+              <div className="flex items-center gap-2">
+                <span className="text-[12px] text-slate-500">每页显示</span>
+                <select
+                  value={pageSize}
+                  onChange={(e) => setPageSize(Number(e.target.value))}
+                  className="text-[12px] font-bold bg-white border border-slate-200 rounded py-1 pl-2.5 pr-8 focus:ring-0 focus:border-[#2D5BFF]"
+                >
+                  {PAGE_SIZE_OPTIONS.map((n) => (
+                    <option key={n} value={n}>{n}</option>
+                  ))}
+                </select>
+                <span className="text-[12px] text-slate-500">条</span>
+              </div>
+            </div>
+
+            {/* Right: page buttons */}
+            <div className="flex items-center gap-1.5">
+              <button
+                disabled={safePage <= 1}
+                onClick={() => setPage(safePage - 1)}
+                className="p-1 text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-30"
+              >
+                <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+              </button>
+
+              {buildPageNumbers().map((p, idx) =>
+                p === '...' ? (
+                  <span key={`dot-${idx}`} className="px-1 text-slate-400 text-[12px]">...</span>
+                ) : (
+                  <button
+                    key={p}
+                    onClick={() => setPage(p)}
+                    className={`min-w-[28px] h-7 px-2 text-[12px] font-bold rounded transition-colors ${
+                      p === safePage
+                        ? 'text-white bg-[#2D5BFF]'
+                        : 'text-slate-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ),
+              )}
+
+              <button
+                disabled={safePage >= totalPages}
+                onClick={() => setPage(safePage + 1)}
+                className="p-1 text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-30"
+              >
+                <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+              </button>
+            </div>
+          </div>
+        </footer>
       )}
 
       {/* Reject modal */}
