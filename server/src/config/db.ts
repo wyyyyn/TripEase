@@ -16,6 +16,7 @@ const pool = mysql.createPool({
   user: env.DB_USER,
   password: env.DB_PASSWORD,
   database: env.DB_NAME,
+  charset: 'utf8mb4',
 
   // 连接池大小：最多同时保持 10 个数据库连接
   connectionLimit: 10,
