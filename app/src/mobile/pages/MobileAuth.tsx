@@ -328,7 +328,7 @@ export default function MobileAuth() {
 
   // ==================== 移动端布局 ====================
   return (
-    <div className="max-w-[430px] mx-auto min-h-dvh relative flex flex-col overflow-hidden">
+    <div className="max-w-[430px] mx-auto min-h-dvh relative flex flex-col overflow-x-hidden">
       {/* ====== 深色渐变背景 ====== */}
       <div
         className="absolute inset-0 -z-10"
