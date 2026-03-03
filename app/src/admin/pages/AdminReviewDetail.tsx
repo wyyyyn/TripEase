@@ -13,7 +13,7 @@ const STATUS_LABEL: Record<string, string> = {
   draft: '草稿',
   pending: '待审核',
   approved: '已通过',
-  rejected: '已拒绝',
+  rejected: 'REJECTED',
   published: '已发布',
   offline: '已下线',
 };
@@ -21,30 +21,30 @@ const STATUS_LABEL: Record<string, string> = {
 /** Right-panel title config per status */
 const STATUS_PANEL: Record<
   ReviewStatus,
-  { emoji: string; title: string; eng: string; nextAction: string }
+  { emoji: string; title: string; eng: string; subtitle: string; nextAction: string; nextIcon: string }
 > = {
-  draft: { emoji: '', title: '草稿', eng: 'Draft', nextAction: '请先提交审核' },
-  pending: { emoji: '\uD83D\uDFE1', title: '等待审核', eng: 'Pending Review', nextAction: '审核操作' },
-  approved: { emoji: '\uD83D\uDFE2', title: '审核通过', eng: 'Approved', nextAction: '等待发布上线' },
-  rejected: { emoji: '\uD83D\uDD34', title: '初审驳回', eng: 'First Round Rejected', nextAction: '等待商户修改中' },
-  published: { emoji: '\uD83D\uDFE2', title: '已发布', eng: 'Published', nextAction: '当前已上线' },
-  offline: { emoji: '\u26AB', title: '已下线', eng: 'Offline', nextAction: '可恢复上线' },
+  draft: { emoji: '', title: '草稿', eng: 'Draft', subtitle: '尚未提交', nextAction: '请先提交审核', nextIcon: 'edit_note' },
+  pending: { emoji: '\uD83D\uDFE1', title: '等待审核', eng: 'Pending Review', subtitle: '等待管理员审核', nextAction: '审核操作', nextIcon: 'rate_review' },
+  approved: { emoji: '\uD83D\uDFE2', title: '审核通过', eng: 'Approved', subtitle: '等待发布上线', nextAction: '等待发布上线', nextIcon: 'check_circle' },
+  rejected: { emoji: '\uD83D\uDD34', title: '初审驳回', eng: 'First Round Rejected', subtitle: '等待商户修改 (Waiting for Merchant Revision)', nextAction: '⏳ 等待商户修改中 (Waiting for Revision)', nextIcon: 'hourglass_empty' },
+  published: { emoji: '\uD83D\uDFE2', title: '已发布', eng: 'Published', subtitle: '当前已上线', nextAction: '当前已上线', nextIcon: 'public' },
+  offline: { emoji: '\u26AB', title: '已下线', eng: 'Offline', subtitle: '可恢复上线', nextAction: '可恢复上线', nextIcon: 'replay' },
 };
 
-/** Progress dots: submitted -> reviewing -> result */
-function getProgressState(status: ReviewStatus): [string, string, string] {
+/** Progress dots: [submitted, reviewing, result] — green/red/gray */
+function getProgressColors(status: ReviewStatus): [string, string, string] {
   switch (status) {
     case 'pending':
-      return ['done', 'active', 'pending'];
+      return ['bg-[#10B981]', 'bg-[#2D5BFF]', 'bg-gray-200'];
     case 'approved':
     case 'published':
-      return ['done', 'done', 'done'];
+      return ['bg-[#10B981]', 'bg-[#10B981]', 'bg-[#10B981]'];
     case 'rejected':
-      return ['done', 'done', 'rejected'];
+      return ['bg-[#10B981]', 'bg-[#EF4444]', 'bg-gray-200'];
     case 'offline':
-      return ['done', 'done', 'offline'];
+      return ['bg-[#10B981]', 'bg-[#10B981]', 'bg-gray-500'];
     default:
-      return ['pending', 'pending', 'pending'];
+      return ['bg-gray-200', 'bg-gray-200', 'bg-gray-200'];
   }
 }
 
@@ -108,7 +108,7 @@ export default function AdminReviewDetail() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-admin-accent border-t-transparent" />
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#2D5BFF] border-t-transparent" />
       </div>
     );
   }
@@ -122,321 +122,300 @@ export default function AdminReviewDetail() {
   }
 
   const panel = STATUS_PANEL[hotel.status] ?? STATUS_PANEL.pending;
-  const progress = getProgressState(hotel.status);
-  const progressLabels = ['提交申请', '审核中', '审核结果'];
+  const progressColors = getProgressColors(hotel.status);
 
   return (
-    <div className="flex items-center justify-center h-full p-6">
-      <div className="bg-white rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] w-full max-w-6xl flex flex-col" style={{ height: 'calc(100vh - 80px)' }}>
-
-        {/* ===== Header ===== */}
-        <div className="px-8 py-5 border-b border-gray-50 flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-3">
-            <h1 className="text-lg font-semibold text-gray-900">酒店信息审核详情</h1>
-            <span className="px-2 py-0.5 bg-gray-100 text-gray-500 text-[10px] font-bold rounded uppercase tracking-wide">
-              V{logs.length} {STATUS_LABEL[hotel.status]}
-            </span>
+    <div className="flex flex-col h-full bg-[#F9FAFB]">
+      {/* ── Top Header Bar ── */}
+      <header className="h-14 bg-white border-b border-gray-100 flex items-center justify-between px-8 shrink-0">
+        <div className="flex items-center gap-4">
+          <h2 className="text-base font-bold text-slate-800">审核管理</h2>
+          <div className="h-4 w-[1px] bg-slate-200" />
+          <div className="flex gap-1 items-center">
+            <span className="text-[11px] text-slate-400 font-medium">资源库</span>
+            <span className="material-symbols-outlined text-[14px] text-slate-300">chevron_right</span>
+            <span className="text-[11px] text-slate-600 font-semibold">酒店信息审核</span>
           </div>
-          <button
-            onClick={() => navigate('/admin/review')}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
-          >
-            <span className="material-symbols-outlined text-xl">close</span>
-          </button>
         </div>
+        <button className="relative p-2 text-slate-400 hover:text-slate-600 transition-colors">
+          <span className="material-symbols-outlined text-xl">notifications</span>
+          <span className="absolute top-2 right-2 size-1.5 bg-[#2D5BFF] rounded-full" />
+        </button>
+      </header>
 
-        {/* ===== Body: Left + Right ===== */}
-        <div className="flex flex-1 min-h-0">
+      {/* ── Main content area ── */}
+      <div className="flex-1 relative flex items-center justify-center p-6 min-h-0">
+        <div className="bg-white w-full max-w-6xl h-full max-h-[calc(100vh-80px)] rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden">
 
-          {/* ----- Left Panel (38%) ----- */}
-          <div className="w-[38%] overflow-y-auto p-8 border-r border-gray-50">
-            {/* Section title */}
-            <div className="flex items-center gap-2 mb-6">
-              <h2 className="text-base font-semibold text-gray-900">酒店信息预览</h2>
-              {hotel.status === 'rejected' && (
-                <span className="px-2 py-0.5 bg-red-50 text-red-500 text-[10px] font-bold rounded">
-                  需修改
-                </span>
-              )}
-            </div>
-
-            {/* -- 基础信息 -- */}
-            <div className="mb-6">
-              <p className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em] mb-3">基础信息</p>
-              <div className="space-y-2.5">
-                <div>
-                  <p className="text-xs text-gray-400 mb-0.5">酒店名称</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    {hotel.name}
-                    {(hotel as any).englishName && <span className="text-gray-400 font-normal ml-1">({(hotel as any).englishName})</span>}
-                  </p>
-                </div>
-                <div className="flex gap-6">
-                  <div>
-                    <p className="text-xs text-gray-400 mb-0.5">星级</p>
-                    <p className="text-sm font-medium text-gray-900">{hotel.starRating} Stars</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-400 mb-0.5">基础价格</p>
-                    <p className="text-sm font-medium text-gray-900">&yen;{hotel.pricePerNight}/晚</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-400 mb-0.5">开业日期</p>
-                    <p className="text-sm font-medium text-gray-900">{(hotel as any).openDate || '--'}</p>
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 mb-0.5">详细地址</p>
-                  <p className="text-sm text-gray-700">{hotel.address || '-'}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* -- 房型与价格 -- */}
-            {hotel.rooms.length > 0 && (
-              <div className="mb-6">
-                <p className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em] mb-3">房型与价格</p>
-                <div className="space-y-2">
-                  {hotel.rooms.map((room) => (
-                    <div key={room.id} className="flex items-center justify-between py-1.5">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span className="w-1.5 h-1.5 rounded-full bg-admin-accent shrink-0" />
-                        <span className="text-sm text-gray-700 truncate">
-                          {room.name}
-                          {(room as any).roomCount > 0 && <span className="text-gray-400 ml-1">&times; {(room as any).roomCount}间</span>}
-                        </span>
-                      </div>
-                      <span className="text-sm font-semibold text-gray-900 shrink-0 ml-3">&yen;{room.pricePerNight}/晚</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* -- Tags & Amenities -- */}
-            {(hotel.tags.length > 0 || hotel.amenities.length > 0) && (
-              <div className="mb-6">
-                <p className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em] mb-3">标签 & 设施</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {hotel.tags.map((tag) => (
-                    <span key={tag} className="px-2 py-0.5 bg-admin-accent/10 text-admin-accent text-xs rounded-full">{tag}</span>
-                  ))}
-                  {hotel.amenities.map((a) => (
-                    <span key={a} className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">{a}</span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* -- 图片预览 -- */}
-            {hotel.images.length > 0 && (
-              <div>
-                <p className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em] mb-3">图片预览</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {hotel.images.slice(0, 4).map((img, i) => (
-                    <div key={i} className="aspect-[4/3] rounded-lg overflow-hidden bg-gray-100">
-                      <img src={img} alt="" className="w-full h-full object-cover" />
-                    </div>
-                  ))}
-                </div>
-                {hotel.images.length > 4 && (
-                  <p className="text-xs text-gray-400 mt-2 text-center">+{hotel.images.length - 4} 更多图片</p>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* ----- Right Panel (62%) ----- */}
-          <div className="w-[62%] overflow-y-auto p-8 bg-white">
-            {/* Status title */}
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">
-                {panel.emoji} {panel.title} ({panel.eng})
-              </h2>
-              <p className="text-sm text-gray-500">
-                {hotel.status === 'rejected' ? '等待商户修改' : panel.nextAction}
-              </p>
-            </div>
-
-            {/* Progress dots */}
-            <div className="flex items-center gap-0 mb-8 px-4">
-              {progress.map((state, i) => (
-                <div key={i} className="flex items-center flex-1 last:flex-none">
-                  {/* Dot */}
-                  <div className="flex flex-col items-center">
-                    <div
-                      className={`w-3.5 h-3.5 rounded-full border-2 ${
-                        state === 'done'
-                          ? 'bg-emerald-400 border-emerald-400'
-                          : state === 'active'
-                            ? 'bg-admin-accent border-admin-accent'
-                            : state === 'rejected'
-                              ? 'bg-red-400 border-red-400'
-                              : state === 'offline'
-                                ? 'bg-gray-500 border-gray-500'
-                                : 'bg-white border-gray-300'
-                      }`}
-                    />
-                    <span className="text-[10px] text-gray-400 mt-1.5 whitespace-nowrap">{progressLabels[i]}</span>
-                  </div>
-                  {/* Line */}
-                  {i < progress.length - 1 && (
-                    <div
-                      className={`flex-1 h-0.5 mx-2 mt-[-14px] ${
-                        state === 'done' ? 'bg-emerald-300' : 'bg-gray-200'
-                      }`}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Next Action bar */}
-            <div className="bg-gray-50 rounded-lg px-4 py-3 mb-8 flex items-center gap-2">
-              <span className="text-sm text-gray-500">Next Action:</span>
-              <span className="text-sm font-medium text-gray-700">
-                {hotel.status === 'rejected' && '\u23F3 '}
-                {panel.nextAction}
+          {/* ===== Card Header ===== */}
+          <div className="px-8 py-5 border-b border-gray-50 flex items-center justify-between shrink-0">
+            <div className="flex items-center gap-3">
+              <h3 className="text-lg font-semibold text-slate-800 tracking-tight">酒店信息审核详情</h3>
+              <span className="px-2 py-0.5 bg-gray-100 text-gray-500 text-[10px] font-bold rounded uppercase tracking-wider">
+                V{logs.length} {STATUS_LABEL[hotel.status]}
               </span>
             </div>
-
-            {/* Rejection details (only when rejected) */}
-            {hotel.status === 'rejected' && hotel.rejectReason && (
-              <div className="mb-8">
-                <p className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em] mb-3">驳回原因 REJECTION REASONS</p>
-                <ul className="space-y-1.5 mb-4">
-                  {hotel.rejectReason.split('\n').filter(Boolean).map((line, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-red-600">
-                      <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0 mt-1.5" />
-                      {line}
-                    </li>
-                  ))}
-                </ul>
-                <div className="bg-gray-50 border-l-2 border-gray-300 rounded-r-lg px-4 py-3">
-                  <p className="text-xs text-gray-500 italic">{hotel.rejectReason}</p>
-                  <p className="text-[10px] text-gray-400 mt-2">
-                    提交人：{logs.length > 0 ? logs[logs.length - 1].operatorName : '管理员'} &middot; {logs.length > 0 ? new Date(logs[logs.length - 1].createdAt).toLocaleString('zh-CN', { hour12: false }) : ''}
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Audit History */}
-            {logs.length > 0 && (
-              <div>
-                <p className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em] mb-4">审核记录 AUDIT HISTORY</p>
-                <div className="relative pl-6">
-                  {/* Vertical line */}
-                  <div className="absolute left-[7px] top-2 bottom-2 w-px bg-gray-200" />
-
-                  {logs.map((log, i) => {
-                    const isKey = log.toStatus === 'rejected' || log.toStatus === 'approved' || log.toStatus === 'published';
-                    const time = new Date(log.createdAt);
-                    const timeStr = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
-
-                    return (
-                      <div key={log.id} className={`relative flex items-start gap-3 ${i < logs.length - 1 ? 'pb-4' : ''}`}>
-                        {/* Dot / Flag */}
-                        <div className="absolute -left-6 top-0.5 flex items-center justify-center w-4 h-4">
-                          {isKey ? (
-                            <span
-                              className={`material-symbols-outlined text-sm ${
-                                log.toStatus === 'rejected'
-                                  ? 'text-red-400'
-                                  : log.toStatus === 'approved'
-                                    ? 'text-emerald-400'
-                                    : 'text-admin-accent'
-                              }`}
-                            >
-                              flag
-                            </span>
-                          ) : (
-                            <span className="w-2 h-2 rounded-full bg-gray-300" />
-                          )}
-                        </div>
-                        {/* Content */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <span className={`text-sm ${isKey ? 'font-semibold text-gray-900' : 'text-gray-600'}`}>
-                              {log.toStatus === 'rejected' ? '审核驳回' : log.toStatus === 'approved' ? '审核通过' : log.toStatus === 'published' ? '发布上线' : `${STATUS_LABEL[log.fromStatus] || log.fromStatus} → ${STATUS_LABEL[log.toStatus] || log.toStatus}`}
-                              {isKey && <span className="text-gray-400 font-normal ml-1">({log.toStatus === 'rejected' ? `Rejected by ${log.operatorName}` : log.toStatus === 'approved' ? `Approved by ${log.operatorName}` : `Published by ${log.operatorName}`})</span>}
-                            </span>
-                            <span className="text-xs text-gray-400 shrink-0">{timeStr}</span>
-                          </div>
-                          {log.reason && (
-                            <p className="text-xs text-gray-500 mt-0.5">原因: {log.reason}</p>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* ===== Footer ===== */}
-        <div className="px-8 py-5 border-t border-gray-50 flex items-center justify-between shrink-0">
-          <span className="px-3 py-1 bg-gray-50 text-gray-400 text-[10px] font-bold rounded-full tracking-wide uppercase">
-            TripEase Audit System v4.2
-          </span>
-          <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/admin/review')}
-              className="border border-gray-200 text-gray-600 font-medium py-2 px-5 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+              className="text-slate-400 hover:text-slate-600 transition-colors"
             >
-              关闭 Close
+              <span className="material-symbols-outlined">close</span>
             </button>
+          </div>
 
-            {hotel.status === 'pending' && (
-              <>
+          {/* ===== Body: Left + Right ===== */}
+          <div className="flex-1 flex overflow-hidden min-h-0">
+
+            {/* ----- Left Panel (38%) ----- */}
+            <div className="w-[38%] h-full overflow-y-auto p-8 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-black/5 [&::-webkit-scrollbar-thumb]:rounded-full">
+              <div className="flex items-center gap-2 mb-8">
+                <h4 className="font-semibold text-slate-800 text-sm">酒店信息预览</h4>
+                {hotel.status === 'rejected' && (
+                  <span className="flex items-center gap-1 px-1.5 py-0.5 text-rose-500 text-[11px] font-medium">
+                    <span className="material-symbols-outlined text-[14px]">report</span>
+                    需修改
+                  </span>
+                )}
+              </div>
+
+              <div className="space-y-10">
+                {/* 基础信息 */}
+                <div className="space-y-4">
+                  <h5 className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em]">基础信息</h5>
+                  <div className="grid grid-cols-2 gap-y-6 gap-x-4">
+                    <div className="col-span-2">
+                      <label className="text-[12px] text-slate-400 block mb-1">酒店名称</label>
+                      <div className="text-[14px] text-slate-800">{hotel.name}</div>
+                    </div>
+                    <div>
+                      <label className="text-[12px] text-slate-400 block mb-1">酒店星级</label>
+                      <div className="text-[13px] text-slate-800">{hotel.starRating} Stars</div>
+                    </div>
+                    <div>
+                      <label className="text-[12px] text-slate-400 block mb-1">基础价格</label>
+                      <div className="text-[13px] text-slate-800">&yen;{hotel.pricePerNight}/晚</div>
+                    </div>
+                    <div className="col-span-2">
+                      <label className="text-[12px] text-slate-400 block mb-1">详细地址</label>
+                      <div className="text-[13px] text-slate-800 leading-relaxed">{hotel.address || '-'}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 房型与价格 */}
+                {hotel.rooms.length > 0 && (
+                  <div className="space-y-4">
+                    <h5 className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em]">房型与价格</h5>
+                    <div className="space-y-3">
+                      {hotel.rooms.map((room) => (
+                        <div key={room.id} className="flex justify-between items-center">
+                          <span className="text-[13px] text-slate-700">{room.name}</span>
+                          <span className="text-[13px] font-medium text-slate-900">&yen;{room.pricePerNight}/晚</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 图片预览 */}
+                {hotel.images.length > 0 && (
+                  <div className="space-y-4">
+                    <h5 className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em]">图片预览</h5>
+                    <div className="grid grid-cols-2 gap-2">
+                      {hotel.images.slice(0, 4).map((img, i) => (
+                        <div key={i} className="aspect-[4/3] rounded overflow-hidden bg-gray-50 shrink-0">
+                          <img
+                            src={img}
+                            alt=""
+                            className="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all cursor-zoom-in"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    {hotel.images.length > 4 && (
+                      <p className="text-xs text-gray-400 text-center">+{hotel.images.length - 4} 更多图片</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* ----- Right Panel (62%) ----- */}
+            <div className="w-[62%] h-full overflow-y-auto p-8 bg-white flex flex-col gap-8 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-black/5 [&::-webkit-scrollbar-thumb]:rounded-full">
+
+              {/* Status title */}
+              <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-1">
+                  <h4 className="text-xl font-bold text-slate-800">
+                    {panel.emoji} {panel.title} ({panel.eng})
+                  </h4>
+                  <p className="text-sm text-slate-400">{panel.subtitle}</p>
+                </div>
+
+                {/* Progress dots */}
+                <div className="relative flex items-center justify-between w-full max-w-sm">
+                  <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gray-100 -translate-y-1/2 z-0" />
+                  {progressColors.map((color, i) => (
+                    <div
+                      key={i}
+                      className={`relative z-10 flex items-center bg-white ${i === 0 ? 'pr-3' : i === 2 ? 'pl-3' : 'px-3'}`}
+                    >
+                      <div className={`size-2 rounded-full ${color}`} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Next Action bar */}
+              <div className="bg-[#F3F4F6]/50 rounded-lg px-4 py-3 flex items-center justify-between">
+                <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider">Next Action:</span>
+                <div className="flex items-center gap-2 bg-[#F3F4F6] px-3 py-1.5 rounded text-slate-600 text-xs font-semibold select-none cursor-default border border-gray-200">
+                  <span className="material-symbols-outlined text-sm">{panel.nextIcon}</span>
+                  {panel.nextAction}
+                </div>
+              </div>
+
+              {/* Rejection details (only when rejected) */}
+              {hotel.status === 'rejected' && hotel.rejectReason && (
+                <div className="space-y-4">
+                  <h5 className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em]">驳回原因 Rejection Reasons</h5>
+                  <div className="space-y-4">
+                    <ul className="space-y-1.5 ml-1">
+                      {hotel.rejectReason.split('\n').filter(Boolean).map((line, i) => (
+                        <li key={i} className="text-[13px] text-[#EF4444]">• {line}</li>
+                      ))}
+                    </ul>
+                    <div className="p-5 bg-[#F9FAFB] rounded-lg">
+                      <p className="text-[13px] leading-relaxed text-slate-600">{hotel.rejectReason}</p>
+                      <p className="text-[11px] text-slate-400 mt-4 pt-4 border-t border-gray-100/50">
+                        提交人：{logs.length > 0 ? logs[logs.length - 1].operatorName : '管理员'} &middot;{' '}
+                        {logs.length > 0
+                          ? new Date(logs[logs.length - 1].createdAt).toLocaleString('zh-CN', { hour12: false })
+                          : ''}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Audit History */}
+              {logs.length > 0 && (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-1.5">
+                    <h5 className="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em]">审核记录 Audit History</h5>
+                    <span className="material-symbols-outlined text-[14px] text-gray-300">expand_more</span>
+                  </div>
+                  <div className="space-y-4">
+                    {logs.map((log) => {
+                      const isKey = log.toStatus === 'rejected' || log.toStatus === 'approved' || log.toStatus === 'published';
+                      const time = new Date(log.createdAt);
+                      const timeStr = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
+
+                      return (
+                        <div key={log.id} className="flex items-start gap-4">
+                          <div className="mt-0.5 flex items-center justify-center w-5">
+                            {isKey ? (
+                              <span
+                                className={`material-symbols-outlined text-[16px] ${
+                                  log.toStatus === 'rejected'
+                                    ? 'text-[#EF4444]'
+                                    : log.toStatus === 'approved'
+                                      ? 'text-[#10B981]'
+                                      : 'text-[#2D5BFF]'
+                                }`}
+                              >
+                                flag
+                              </span>
+                            ) : (
+                              <div className="mt-1.5 w-5 flex justify-center">
+                                <div className="size-1 rounded-full bg-gray-300" />
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex-1 flex justify-between items-baseline">
+                            <span className={`text-[12px] ${isKey ? 'font-bold text-slate-800' : 'text-slate-400'}`}>
+                              {log.toStatus === 'rejected'
+                                ? `审核驳回 (Rejected by ${log.operatorName})`
+                                : log.toStatus === 'approved'
+                                  ? `审核通过 (Approved by ${log.operatorName})`
+                                  : log.toStatus === 'published'
+                                    ? `发布上线 (Published by ${log.operatorName})`
+                                    : log.toStatus === 'pending'
+                                      ? '提交申请'
+                                      : `${log.fromStatus} → ${log.toStatus}`}
+                            </span>
+                            <span className="text-[11px] text-slate-400 font-mono">{timeStr}</span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* ===== Footer ===== */}
+          <div className="px-8 py-5 border-t border-gray-50 flex items-center justify-between bg-white shrink-0">
+            <div className="flex items-center gap-2 text-slate-300">
+              <span className="material-symbols-outlined text-sm">verified_user</span>
+              <span className="text-[10px] font-medium uppercase tracking-[0.1em]">TripEase Audit System v4.2</span>
+            </div>
+            <div className="flex items-center gap-6">
+              <button
+                onClick={() => navigate('/admin/review')}
+                className="text-[13px] font-medium text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                关闭 Close
+              </button>
+
+              {hotel.status === 'pending' && (
+                <>
+                  <button
+                    onClick={openReject}
+                    className="bg-[#EF4444] hover:bg-red-600 text-white font-medium py-2 px-5 rounded-lg transition-colors text-[13px]"
+                  >
+                    拒绝
+                  </button>
+                  <button
+                    onClick={() => handleAction('approved')}
+                    className="bg-[#10B981] hover:bg-emerald-600 text-white font-medium py-2 px-5 rounded-lg transition-colors text-[13px]"
+                  >
+                    通过审核
+                  </button>
+                </>
+              )}
+              {hotel.status === 'approved' && (
                 <button
-                  onClick={openReject}
-                  className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-5 rounded-lg transition-colors text-sm"
+                  onClick={() => handleAction('published')}
+                  className="bg-[#2D5BFF] hover:bg-[#2D5BFF]/90 text-white font-medium py-2 px-5 rounded-lg transition-colors text-[13px]"
                 >
-                  拒绝
+                  发布上线
                 </button>
+              )}
+              {hotel.status === 'published' && (
                 <button
-                  onClick={() => handleAction('approved')}
-                  className="bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 px-5 rounded-lg transition-colors text-sm"
+                  onClick={() => handleAction('offline')}
+                  className="border border-gray-200 text-gray-700 font-medium py-2 px-5 rounded-lg hover:bg-gray-50 transition-colors text-[13px]"
                 >
-                  通过审核
+                  下线
                 </button>
-              </>
-            )}
-            {hotel.status === 'approved' && (
-              <button
-                onClick={() => handleAction('published')}
-                className="bg-admin-accent hover:bg-admin-accent/90 text-white font-medium py-2 px-5 rounded-lg transition-colors text-sm"
-              >
-                发布上线
-              </button>
-            )}
-            {hotel.status === 'published' && (
-              <button
-                onClick={() => handleAction('offline')}
-                className="border border-gray-200 text-gray-700 font-medium py-2 px-5 rounded-lg hover:bg-gray-50 transition-colors text-sm"
-              >
-                下线
-              </button>
-            )}
-            {hotel.status === 'offline' && (
-              <button
-                onClick={() => handleAction('published')}
-                className="bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 px-5 rounded-lg transition-colors text-sm"
-              >
-                恢复上线
-              </button>
-            )}
-            {hotel.status === 'rejected' && (
-              <button
-                disabled
-                className="bg-gray-100 text-gray-400 font-medium py-2 px-5 rounded-lg text-sm cursor-not-allowed"
-              >
-                等待商户修改中 (Waiting for Revision)
-              </button>
-            )}
+              )}
+              {hotel.status === 'offline' && (
+                <button
+                  onClick={() => handleAction('published')}
+                  className="bg-[#10B981] hover:bg-emerald-600 text-white font-medium py-2 px-5 rounded-lg transition-colors text-[13px]"
+                >
+                  恢复上线
+                </button>
+              )}
+              {hotel.status === 'rejected' && (
+                <div className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-lg text-slate-500 text-[13px] font-semibold select-none cursor-default">
+                  <span className="material-symbols-outlined text-sm">hourglass_empty</span>
+                  等待商户修改中 (Waiting for Revision)
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
