@@ -12,11 +12,11 @@ import StepContact from '../components/hotel-form/StepContact';
 
 const STEPS = [
   { key: 'basic', icon: 'info', label: '步骤1：基础信息' },
-  { key: 'rooms', icon: 'meeting_room', label: '步骤2：房型信息' },
-  { key: 'pricing', icon: 'payments', label: '步骤3：价格信息' },
+  { key: 'rooms', icon: 'bed', label: '步骤2：房型信息' },
+  { key: 'pricing', icon: 'sell', label: '步骤3：价格信息' },
   { key: 'facilities', icon: 'pool', label: '步骤4：设施服务' },
-  { key: 'media', icon: 'photo_library', label: '步骤5：媒体图库' },
-  { key: 'contact', icon: 'contact_phone', label: '步骤6：联系信息' },
+  { key: 'media', icon: 'image', label: '步骤5：媒体图库' },
+  { key: 'contact', icon: 'contact_support', label: '步骤6：联系信息' },
 ];
 
 export default function MerchantHotelForm() {
@@ -140,131 +140,135 @@ export default function MerchantHotelForm() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="shrink-0 px-8 pt-6 pb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate('/admin/hotels')}
-              className="flex items-center gap-1 text-slate-400 hover:text-slate-600 text-sm transition-colors"
-            >
-              <span className="material-symbols-outlined text-lg">arrow_back</span>
-              返回
-            </button>
-            <h1 className="text-xl font-bold text-slate-800">
-              {isEdit ? '编辑酒店信息' : '新增酒店信息'}
-            </h1>
-            <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
-              hotelStatus === 'approved' || hotelStatus === 'published'
-                ? 'bg-emerald-100 text-emerald-700'
-                : hotelStatus === 'rejected'
-                  ? 'bg-red-100 text-red-700'
-                  : hotelStatus === 'pending'
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'bg-amber-100 text-amber-700'
-            }`}>
-              {{ draft: '草稿', pending: '审核中', approved: '已通过审核', rejected: '已驳回', published: '已发布', offline: '已下线' }[hotelStatus]}
+      <header className="h-20 shrink-0 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <h2 className="text-xl font-bold tracking-tight text-slate-900">
+            {isEdit ? '编辑酒店信息' : '新增酒店信息'}
+          </h2>
+          <div className={`px-3 py-1 text-xs font-bold rounded-full border flex items-center gap-1 ${
+            hotelStatus === 'approved' || hotelStatus === 'published'
+              ? 'bg-green-50 text-green-600 border-green-200'
+              : hotelStatus === 'rejected'
+                ? 'bg-red-50 text-red-600 border-red-200'
+                : hotelStatus === 'pending'
+                  ? 'bg-blue-50 text-blue-600 border-blue-200'
+                  : 'bg-amber-50 text-amber-600 border-amber-200'
+          }`}>
+            <span className="material-symbols-outlined text-[16px]">
+              {hotelStatus === 'approved' || hotelStatus === 'published' ? 'check_circle'
+                : hotelStatus === 'rejected' ? 'cancel'
+                : hotelStatus === 'pending' ? 'schedule'
+                : 'edit_note'}
             </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={handleSaveDraft}
-              disabled={saving}
-              className="h-9 px-4 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-50 flex items-center gap-1.5"
-            >
-              <span className="material-symbols-outlined text-base">save</span>
-              {saving ? '保存中...' : '保存草稿'}
-            </button>
-            <button
-              type="button"
-              className="h-9 px-4 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-1.5"
-            >
-              <span className="material-symbols-outlined text-base">visibility</span>
-              预览页面
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSave(true)}
-              disabled={saving}
-              className="h-9 px-5 rounded-lg bg-admin-primary text-white text-sm font-medium hover:bg-admin-primary/90 transition-colors disabled:opacity-50 flex items-center gap-1.5"
-            >
-              <span className="material-symbols-outlined text-base">play_arrow</span>
-              {saving ? '提交中...' : '提交审核'}
-            </button>
+            {{ draft: '草稿', pending: '审核中', approved: '已通过审核', rejected: '已驳回', published: '已发布', offline: '已下线' }[hotelStatus]}
           </div>
         </div>
-      </div>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handleSaveDraft}
+            disabled={saving}
+            className="px-4 py-2 rounded-lg border border-slate-200 text-sm font-semibold hover:bg-slate-50 transition-colors disabled:opacity-50 flex items-center gap-2"
+          >
+            <span className="material-symbols-outlined text-[18px]">save</span>
+            {saving ? '保存中...' : '保存草稿'}
+          </button>
+          <button
+            type="button"
+            className="px-4 py-2 rounded-lg border border-slate-200 text-sm font-semibold hover:bg-slate-50 transition-colors flex items-center gap-2"
+          >
+            <span className="material-symbols-outlined text-[18px]">visibility</span>
+            预览页面
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSave(true)}
+            disabled={saving}
+            className="px-4 py-2 rounded-lg bg-[#1978e5] text-white text-sm font-bold shadow-sm hover:brightness-105 transition-all disabled:opacity-50 flex items-center gap-2"
+          >
+            <span className="material-symbols-outlined text-[18px]">send</span>
+            {saving ? '提交中...' : '提交审核'}
+          </button>
+        </div>
+      </header>
 
       {/* Tab navigation */}
-      <div className="shrink-0 px-8 border-b border-slate-200">
-        <nav className="flex gap-0">
-          {STEPS.map((step, idx) => (
-            <button
-              key={step.key}
-              type="button"
-              onClick={() => setActiveStep(idx)}
-              className={`flex items-center gap-2 px-5 py-3 text-sm transition-colors border-b-2 ${
-                activeStep === idx
-                  ? 'border-admin-primary text-admin-primary font-bold'
-                  : 'border-transparent text-slate-400 font-medium hover:text-slate-600'
-              }`}
-            >
-              <span className="material-symbols-outlined text-lg">{step.icon}</span>
-              {step.label}
-            </button>
-          ))}
-        </nav>
-      </div>
+      <nav className="shrink-0 bg-white border-b border-slate-200 px-8 flex items-center gap-8 overflow-x-auto">
+        {STEPS.map((step, idx) => (
+          <button
+            key={step.key}
+            type="button"
+            onClick={() => setActiveStep(idx)}
+            className={`py-4 border-b-2 text-sm flex items-center gap-2 shrink-0 transition-colors ${
+              activeStep === idx
+                ? 'border-[#1978e5] text-[#1978e5] font-bold'
+                : 'border-transparent text-[#718096] hover:text-slate-700 font-medium'
+            }`}
+          >
+            <span className="material-symbols-outlined text-sm">{step.icon}</span>
+            {step.label}
+          </button>
+        ))}
+      </nav>
 
       {/* Step content (scrollable) */}
-      <div className="flex-1 overflow-y-auto px-8 py-6">
-        {renderStep()}
+      <div className="flex-1 overflow-y-auto p-8 bg-slate-50/50">
+        <div className="max-w-5xl mx-auto">
+          {renderStep()}
+        </div>
       </div>
 
       {/* Footer */}
-      <div className="shrink-0 px-8 py-4 border-t border-slate-200 bg-white flex items-center justify-between">
-        <div className="text-xs text-slate-400 flex items-center gap-1.5">
+      <footer className="h-16 shrink-0 bg-white border-t border-slate-200 px-8 flex items-center justify-between">
+        <div className="flex items-center gap-2 text-green-600 font-medium">
           {lastSaved ? (
             <>
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              自动保存成功 {lastSaved}
+              <span className="material-symbols-outlined text-[18px]">cloud_done</span>
+              <span className="text-xs">自动保存成功 {lastSaved}</span>
             </>
-          ) : '尚未保存'}
+          ) : (
+            <span className="text-xs text-slate-400">尚未保存</span>
+          )}
         </div>
-        <div className="flex items-center gap-3">
-          {activeStep > 0 && (
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() => setActiveStep((s) => s - 1)}
-              className="h-9 px-5 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-1"
+              onClick={() => activeStep > 0 && setActiveStep((s) => s - 1)}
+              disabled={activeStep === 0}
+              className={`px-4 py-2 border border-slate-200 rounded-lg text-sm font-semibold flex items-center gap-1 transition-colors ${
+                activeStep === 0 ? 'text-slate-300 cursor-not-allowed' : 'text-slate-700 hover:bg-slate-50'
+              }`}
             >
-              <span className="material-symbols-outlined text-base">chevron_left</span>
+              <span className="material-symbols-outlined text-[18px]">chevron_left</span>
               上一步
             </button>
-          )}
-          {activeStep < STEPS.length - 1 && (
-            <button
-              type="button"
-              onClick={() => setActiveStep((s) => s + 1)}
-              className="h-9 px-5 rounded-lg bg-admin-primary text-white text-sm font-medium hover:bg-admin-primary/90 transition-colors flex items-center gap-1"
-            >
-              下一步
-              <span className="material-symbols-outlined text-base">chevron_right</span>
-            </button>
-          )}
-          {activeStep === STEPS.length - 1 && (
-            <button
-              type="button"
-              onClick={() => handleSave(true)}
-              disabled={saving}
-              className="h-9 px-5 rounded-lg bg-admin-primary text-white text-sm font-medium hover:bg-admin-primary/90 transition-colors disabled:opacity-50 flex items-center gap-1.5"
-            >
-              <span className="material-symbols-outlined text-base">play_arrow</span>
-              {saving ? '提交中...' : '提交审核'}
-            </button>
-          )}
+            {activeStep < STEPS.length - 1 ? (
+              <button
+                type="button"
+                onClick={() => setActiveStep((s) => s + 1)}
+                className="px-4 py-2 bg-[#1978e5] text-white rounded-lg text-sm font-bold shadow-sm hover:brightness-105 transition-all flex items-center gap-1"
+              >
+                下一步 Next
+                <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+              </button>
+            ) : null}
+          </div>
+          <div className="w-px h-6 bg-slate-200" />
+          <button
+            type="button"
+            onClick={() => handleSave(true)}
+            disabled={saving || activeStep < STEPS.length - 1}
+            className={`px-8 py-2 rounded-lg text-sm font-bold transition-all ${
+              activeStep === STEPS.length - 1
+                ? 'bg-[#1978e5] text-white hover:brightness-105'
+                : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+            }`}
+          >
+            {saving ? '提交中...' : '提交'}
+          </button>
         </div>
-      </div>
+      </footer>
     </div>
   );
 }

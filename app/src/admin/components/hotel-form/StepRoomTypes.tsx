@@ -10,10 +10,10 @@ const EMPTY_ROOM: RoomFormData = {
   name: '', englishName: '', description: '', pricePerNight: 0, image: '', bedType: '大床', size: '', floor: '', maxGuests: 2, roomCount: 1, features: [],
 };
 
-const ROOM_FACILITIES = ['WiFi', '空调', '电视', '迷你吧', '浴缸', '淋浴', '保险箱', '吹风机', '热水壶', '拖鞋'];
+const ROOM_FACILITIES = ['WiFi', '空调', '电视', '迷你吧', '浴缸'];
 
 const inputClass =
-  'w-full rounded-lg border border-slate-200 focus:border-admin-primary focus:ring-admin-primary h-11 text-sm px-4 outline-none transition-colors';
+  'w-full rounded-lg border border-slate-200 focus:border-[#1978e5] focus:ring-[#1978e5] h-11 text-sm px-4 outline-none transition-colors';
 
 export default function StepRoomTypes({ form, updateField }: StepRoomTypesProps) {
   const [editingRoom, setEditingRoom] = useState<RoomFormData | null>(null);
@@ -63,171 +63,196 @@ export default function StepRoomTypes({ form, updateField }: StepRoomTypesProps)
   };
 
   return (
-    <div className="space-y-4">
-      {/* Section header */}
-      <div className="bg-white rounded-xl border border-slate-200 p-8">
-        <div className="flex items-center justify-between mb-2">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-admin-primary text-lg">bed</span>
-              <h3 className="text-base font-bold text-slate-800">房型信息</h3>
-            </div>
-            <p className="text-xs text-slate-400 mt-0.5 ml-7">Room Types</p>
+    <div className="space-y-6">
+      {/* Section header (outside card) */}
+      <div className="flex items-center justify-between mb-2">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-[#1978e5]">bed</span>
+            <h3 className="font-bold text-xl">
+              房型信息 <span className="text-slate-400 font-normal text-sm ml-2">Room Types</span>
+            </h3>
           </div>
-          <button
-            type="button"
-            onClick={startAddRoom}
-            className="h-10 px-5 rounded-lg bg-admin-primary text-white text-sm font-medium hover:bg-admin-primary/90 transition-colors flex items-center gap-1.5"
-          >
-            <span className="material-symbols-outlined text-lg">add</span>
-            添加房型
-          </button>
+          <p className="text-slate-500 text-sm mt-1">请添加至少一个房型，完善房间详细信息</p>
         </div>
-        <p className="text-xs text-slate-400 mb-6 ml-7">请添加至少一个房型，完善房间详细信息</p>
+        <button
+          type="button"
+          onClick={startAddRoom}
+          className="bg-[#1978e5] text-white px-5 py-2.5 rounded-lg flex items-center gap-2 font-bold shadow-sm hover:brightness-105 transition-all text-sm"
+        >
+          <span className="material-symbols-outlined text-lg">add</span>
+          添加房型
+        </button>
+      </div>
 
-        {/* Room list */}
-        <div className="space-y-3">
-          {form.rooms.map((room, idx) => {
-            const isEditing = editingRoomIndex === idx && editingRoom !== null;
+      {/* Room list */}
+      {form.rooms.map((room, idx) => {
+        const isEditing = editingRoomIndex === idx && editingRoom !== null;
 
-            if (isEditing) {
-              return (
-                <div key={idx} className="border-2 border-admin-primary/30 rounded-xl p-6 bg-admin-primary/5 ring-1 ring-admin-primary/20">
-                  {/* Editing header */}
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-admin-primary">meeting_room</span>
-                      <span className="font-bold text-slate-800">
-                        {editingRoom!.name || '新房型'}
-                        {editingRoom!.englishName && <span className="text-slate-400 font-normal ml-1.5">{editingRoom!.englishName}</span>}
-                      </span>
-                      <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">
-                        编辑中
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <button type="button" onClick={() => moveRoom(idx, 'up')} disabled={idx === 0} className="p-1.5 text-slate-400 hover:text-admin-primary transition-colors disabled:opacity-30">
-                        <span className="material-symbols-outlined text-lg">arrow_upward</span>
-                      </button>
-                      <button type="button" onClick={() => moveRoom(idx, 'down')} disabled={idx === form.rooms.length - 1} className="p-1.5 text-slate-400 hover:text-admin-primary transition-colors disabled:opacity-30">
-                        <span className="material-symbols-outlined text-lg">arrow_downward</span>
-                      </button>
-                      <button type="button" onClick={() => removeRoom(idx)} className="p-1.5 text-slate-400 hover:text-red-500 transition-colors">
-                        <span className="material-symbols-outlined text-lg">delete</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  {renderRoomForm(editingRoom!, setEditingRoom, toggleFeature)}
-
-                  {/* Save / Cancel */}
-                  <div className="flex gap-3 mt-5 pt-5 border-t border-slate-200">
-                    <button
-                      type="button"
-                      onClick={saveRoom}
-                      className="h-10 px-6 rounded-lg bg-admin-primary text-white text-sm font-medium hover:bg-admin-primary/90 transition-colors"
-                    >
-                      保存房型 Save
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => { setEditingRoom(null); setEditingRoomIndex(null); }}
-                      className="h-10 px-6 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors"
-                    >
-                      取消
-                    </button>
-                  </div>
+        if (isEditing) {
+          return (
+            <div key={idx} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden ring-2 ring-[#1978e5] ring-opacity-10">
+              {/* Editing header */}
+              <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/30">
+                <div className="flex items-center gap-3">
+                  <h4 className="font-bold text-slate-800">
+                    {editingRoom!.name || '新房型'} {editingRoom!.englishName || ''}
+                  </h4>
+                  <span className="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-[10px] font-bold rounded flex items-center gap-1">
+                    <span className="size-1.5 bg-yellow-500 rounded-full animate-pulse" />
+                    编辑中
+                  </span>
                 </div>
-              );
-            }
+                <div className="flex items-center gap-2">
+                  <div className="flex bg-slate-100 rounded-lg p-0.5">
+                    <button type="button" onClick={() => moveRoom(idx, 'up')} disabled={idx === 0} className="p-1.5 hover:bg-white rounded-md transition-all text-slate-500 hover:text-[#1978e5] disabled:opacity-30">
+                      <span className="material-symbols-outlined text-lg">arrow_upward</span>
+                    </button>
+                    <button type="button" onClick={() => moveRoom(idx, 'down')} disabled={idx === form.rooms.length - 1} className="p-1.5 hover:bg-white rounded-md transition-all text-slate-500 hover:text-[#1978e5] disabled:opacity-30">
+                      <span className="material-symbols-outlined text-lg">arrow_downward</span>
+                    </button>
+                  </div>
+                  <button type="button" onClick={() => removeRoom(idx)} className="p-2 text-slate-400 hover:text-red-500 transition-colors">
+                    <span className="material-symbols-outlined text-xl">delete</span>
+                  </button>
+                </div>
+              </div>
 
-            /* Completed state */
-            return (
-              <div key={idx} className="border border-slate-200 rounded-xl p-5 hover:border-slate-300 transition-colors">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="material-symbols-outlined text-slate-400">meeting_room</span>
-                    <span className="font-medium text-slate-800">
-                      {room.name}
-                      {room.englishName && <span className="text-slate-400 font-normal ml-1.5">{room.englishName}</span>}
-                    </span>
-                    <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
+              {/* Form */}
+              <div className="p-8 space-y-8">
+                {renderRoomForm(editingRoom!, setEditingRoom, toggleFeature)}
+              </div>
+
+              {/* Save footer */}
+              <div className="px-8 py-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => { setEditingRoom(null); setEditingRoomIndex(null); }}
+                    className="px-6 py-2 border border-slate-200 text-sm text-slate-600 rounded-lg hover:bg-slate-50 transition-colors"
+                  >
+                    取消
+                  </button>
+                  <button
+                    type="button"
+                    onClick={saveRoom}
+                    className="px-6 py-2 bg-[#1978e5] text-white text-sm font-bold rounded-lg shadow-sm hover:brightness-105 transition-all"
+                  >
+                    保存房型 Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        /* Completed state */
+        return (
+          <div key={idx} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:border-[#1978e5]/40 transition-all group">
+            <div className="p-5 flex items-center justify-between">
+              <div className="flex items-center gap-6 flex-1">
+                <div className="flex items-center gap-3 min-w-[240px]">
+                  <div className="size-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-[#1978e5]/10 group-hover:text-[#1978e5] transition-colors">
+                    <span className="material-symbols-outlined">king_bed</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-800">
+                      {room.name} {room.englishName || ''}
+                    </h4>
+                    <span className="px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded inline-flex items-center gap-1 mt-1">
+                      <span className="size-1.5 bg-green-500 rounded-full" />
                       已完成
                     </span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <button type="button" onClick={() => moveRoom(idx, 'up')} disabled={idx === 0} className="p-1.5 text-slate-400 hover:text-admin-primary transition-colors disabled:opacity-30">
-                      <span className="material-symbols-outlined text-lg">arrow_upward</span>
-                    </button>
-                    <button type="button" onClick={() => moveRoom(idx, 'down')} disabled={idx === form.rooms.length - 1} className="p-1.5 text-slate-400 hover:text-admin-primary transition-colors disabled:opacity-30">
-                      <span className="material-symbols-outlined text-lg">arrow_downward</span>
-                    </button>
-                    <button type="button" onClick={() => startEditRoom(idx)} className="p-1.5 text-slate-400 hover:text-admin-primary transition-colors">
-                      <span className="material-symbols-outlined text-lg">edit</span>
-                    </button>
-                    <button type="button" onClick={() => removeRoom(idx)} className="p-1.5 text-slate-400 hover:text-red-500 transition-colors">
-                      <span className="material-symbols-outlined text-lg">delete</span>
-                    </button>
-                  </div>
                 </div>
-                <p className="text-sm text-slate-500 mt-2 ml-9">
-                  {room.bedType} | {room.size || '-'} | ¥{room.pricePerNight}/晚
-                  {room.roomCount > 0 && ` | ${room.roomCount}间`}
-                </p>
-                {room.features.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 mt-2 ml-9">
-                    {room.features.map((f) => (
-                      <span key={f} className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded">
-                        {f}
-                      </span>
-                    ))}
+                <div className="flex-1 flex items-center gap-10 text-xs text-slate-500">
+                  <div className="flex flex-col gap-1">
+                    <span className="font-semibold text-slate-700">
+                      {room.bedType} | {room.size || '-'}m²
+                    </span>
+                    <span>
+                      {room.floor || '-'} | {room.maxGuests}人 | {room.roomCount}间
+                    </span>
                   </div>
-                )}
+                  {room.features.length > 0 && (
+                    <div className="flex flex-col gap-1 flex-1">
+                      <span className="text-slate-700">
+                        <span className="font-bold text-slate-400 mr-1">设施:</span>
+                        {room.features.join(', ')}
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
-            );
-          })}
-
-          {/* New room form (when adding, not editing existing) */}
-          {editingRoom && editingRoomIndex === null && (
-            <div className="border-2 border-admin-primary/30 rounded-xl p-6 bg-admin-primary/5 ring-1 ring-admin-primary/20">
-              <div className="flex items-center gap-3 mb-5">
-                <span className="material-symbols-outlined text-admin-primary">meeting_room</span>
-                <span className="font-bold text-slate-800">新房型</span>
-                <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">
-                  编辑中
-                </span>
-              </div>
-
-              {renderRoomForm(editingRoom, setEditingRoom, toggleFeature)}
-
-              <div className="flex gap-3 mt-5 pt-5 border-t border-slate-200">
-                <button
-                  type="button"
-                  onClick={saveRoom}
-                  className="h-10 px-6 rounded-lg bg-admin-primary text-white text-sm font-medium hover:bg-admin-primary/90 transition-colors"
-                >
-                  保存房型 Save
-                </button>
-                <button
-                  type="button"
-                  onClick={() => { setEditingRoom(null); setEditingRoomIndex(null); }}
-                  className="h-10 px-6 rounded-lg border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors"
-                >
-                  取消
-                </button>
+              <div className="flex items-center gap-4">
+                <div className="flex bg-slate-50 rounded-lg p-0.5 border border-slate-100">
+                  <button type="button" onClick={() => moveRoom(idx, 'up')} disabled={idx === 0} className="p-1.5 hover:bg-white rounded-md transition-all text-slate-500 hover:text-[#1978e5] disabled:opacity-30">
+                    <span className="material-symbols-outlined text-lg">arrow_upward</span>
+                  </button>
+                  <button type="button" onClick={() => moveRoom(idx, 'down')} disabled={idx === form.rooms.length - 1} className="p-1.5 hover:bg-white rounded-md transition-all text-slate-500 hover:text-[#1978e5] disabled:opacity-30">
+                    <span className="material-symbols-outlined text-lg">arrow_downward</span>
+                  </button>
+                </div>
+                <div className="w-px h-8 bg-slate-100 mx-1" />
+                <div className="flex items-center gap-2">
+                  <button type="button" onClick={() => startEditRoom(idx)} className="p-2 text-[#1978e5] hover:bg-[#1978e5]/5 rounded-lg transition-colors">
+                    <span className="material-symbols-outlined text-xl">edit</span>
+                  </button>
+                  <button type="button" onClick={() => removeRoom(idx)} className="p-2 text-slate-400 hover:text-red-500 transition-colors">
+                    <span className="material-symbols-outlined text-xl">delete</span>
+                  </button>
+                </div>
               </div>
             </div>
-          )}
+          </div>
+        );
+      })}
 
-          {/* Empty state */}
-          {form.rooms.length === 0 && !editingRoom && (
-            <div className="text-center py-12">
-              <span className="material-symbols-outlined text-5xl text-slate-300 mb-3 block">meeting_room</span>
-              <p className="text-slate-400 text-sm">暂无房型，点击上方按钮添加</p>
+      {/* New room form (when adding, not editing existing) */}
+      {editingRoom && editingRoomIndex === null && (
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden ring-2 ring-[#1978e5] ring-opacity-10">
+          <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/30">
+            <div className="flex items-center gap-3">
+              <h4 className="font-bold text-slate-800">新房型</h4>
+              <span className="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-[10px] font-bold rounded flex items-center gap-1">
+                <span className="size-1.5 bg-yellow-500 rounded-full animate-pulse" />
+                编辑中
+              </span>
             </div>
-          )}
+          </div>
+
+          <div className="p-8 space-y-8">
+            {renderRoomForm(editingRoom, setEditingRoom, toggleFeature)}
+          </div>
+
+          <div className="px-8 py-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => { setEditingRoom(null); setEditingRoomIndex(null); }}
+                className="px-6 py-2 border border-slate-200 text-sm text-slate-600 rounded-lg hover:bg-slate-50 transition-colors"
+              >
+                取消
+              </button>
+              <button
+                type="button"
+                onClick={saveRoom}
+                className="px-6 py-2 bg-[#1978e5] text-white text-sm font-bold rounded-lg shadow-sm hover:brightness-105 transition-all"
+              >
+                保存房型 Save
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Empty state */}
+      {form.rooms.length === 0 && !editingRoom && (
+        <div className="text-center py-12">
+          <span className="material-symbols-outlined text-5xl text-slate-300 mb-3 block">meeting_room</span>
+          <p className="text-slate-400 text-sm">暂无房型，点击上方按钮添加</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -240,9 +265,9 @@ function renderRoomForm(
   return (
     <>
       {/* Row 1: CN name + EN name */}
-      <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-        <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">房型名称 (CN) *</label>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+        <div className="space-y-2">
+          <label className="text-sm font-semibold text-slate-700">房型名称 (CN) <span className="text-red-500">*</span></label>
           <input
             value={room.name}
             onChange={(e) => setRoom({ ...room, name: e.target.value })}
@@ -250,8 +275,8 @@ function renderRoomForm(
             placeholder="如：豪华大床房"
           />
         </div>
-        <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">房型名称 (EN) *</label>
+        <div className="space-y-2">
+          <label className="text-sm font-semibold text-slate-700">房型名称 (EN) <span className="text-red-500">*</span></label>
           <input
             value={room.englishName}
             onChange={(e) => setRoom({ ...room, englishName: e.target.value })}
@@ -259,154 +284,143 @@ function renderRoomForm(
             placeholder="e.g. Deluxe King Room"
           />
         </div>
-      </div>
 
-      {/* Row 2: Bed type + Area + Floor (3 cols) */}
-      <div className="grid grid-cols-3 gap-x-6 gap-y-4 mt-4">
-        <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">床型</label>
+        {/* Bed type */}
+        <div className="space-y-2">
+          <label className="text-sm font-semibold text-slate-700">床型 <span className="text-red-500">*</span></label>
           <select
             value={room.bedType}
             onChange={(e) => setRoom({ ...room, bedType: e.target.value })}
             className={inputClass}
           >
             <option value="大床">大床 King Bed</option>
-            <option value="双床">双床 Twin Beds</option>
-            <option value="单床">单床 Single Bed</option>
+            <option value="双床">双床 Twin Bed</option>
+            <option value="单床">单人床 Single Bed</option>
           </select>
         </div>
-        <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">面积</label>
-          <div className="relative">
+
+        {/* Area + Floor (2 cols in one cell) */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-slate-700">面积 <span className="text-red-500">*</span></label>
+            <div className="relative">
+              <input
+                value={room.size}
+                onChange={(e) => setRoom({ ...room, size: e.target.value })}
+                className={`${inputClass} pr-10`}
+                placeholder="45"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-medium">m²</span>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-slate-700">楼层</label>
             <input
-              value={room.size}
-              onChange={(e) => setRoom({ ...room, size: e.target.value })}
+              value={room.floor}
+              onChange={(e) => setRoom({ ...room, floor: e.target.value })}
               className={inputClass}
-              placeholder="32"
+              placeholder="如：3-5层"
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">m²</span>
           </div>
         </div>
-        <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">楼层</label>
-          <input
-            value={room.floor}
-            onChange={(e) => setRoom({ ...room, floor: e.target.value })}
-            className={inputClass}
-            placeholder="如：3-5层"
-          />
-        </div>
-      </div>
 
-      {/* Row 3: Max guests + Room count + Price (3 cols) */}
-      <div className="grid grid-cols-3 gap-x-6 gap-y-4 mt-4">
-        <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">最大入住人数</label>
+        {/* Max guests */}
+        <div className="space-y-2">
+          <label className="text-sm font-semibold text-slate-700">最大入住人数 <span className="text-red-500">*</span></label>
           <div className="relative">
             <input
               type="number"
               min={1}
               value={room.maxGuests || ''}
               onChange={(e) => setRoom({ ...room, maxGuests: Number(e.target.value) })}
-              className={inputClass}
+              className={`${inputClass} pr-12`}
               placeholder="2"
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">人</span>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-medium">人</span>
           </div>
         </div>
-        <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">房间数量</label>
+
+        {/* Room count */}
+        <div className="space-y-2">
+          <label className="text-sm font-semibold text-slate-700">房间数量 <span className="text-red-500">*</span></label>
           <div className="relative">
             <input
               type="number"
               min={1}
               value={room.roomCount || ''}
               onChange={(e) => setRoom({ ...room, roomCount: Number(e.target.value) })}
-              className={inputClass}
+              className={`${inputClass} pr-12`}
               placeholder="10"
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">间</span>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-medium">间</span>
           </div>
         </div>
-        <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1">价格 (¥/晚) *</label>
-          <input
-            type="number"
-            value={room.pricePerNight || ''}
-            onChange={(e) => setRoom({ ...room, pricePerNight: Number(e.target.value) })}
-            className={inputClass}
-            placeholder="658"
-          />
-        </div>
-      </div>
-
-      {/* Row 4: Description */}
-      <div className="mt-4">
-        <label className="block text-xs font-medium text-slate-600 mb-1">描述</label>
-        <textarea
-          value={room.description}
-          onChange={(e) => setRoom({ ...room, description: e.target.value })}
-          className="w-full rounded-lg border border-slate-200 focus:border-admin-primary focus:ring-admin-primary text-sm px-4 py-3 outline-none transition-colors resize-none"
-          rows={2}
-          placeholder="房型描述..."
-        />
       </div>
 
       {/* Room facilities toggles */}
-      <div className="mt-4">
-        <label className="block text-xs font-medium text-slate-600 mb-2">房间设施</label>
+      <div className="space-y-3">
+        <label className="text-sm font-semibold text-slate-700">房型设施 (Facilities)</label>
         <div className="flex flex-wrap gap-2">
           {ROOM_FACILITIES.map((f) => (
             <button
               key={f}
               type="button"
               onClick={() => toggleFeature(f)}
-              className={`h-8 px-3 rounded-lg text-xs font-medium transition-colors border flex items-center gap-1 ${
+              className={`px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-1.5 transition-all border ${
                 room.features.includes(f)
-                  ? 'border-admin-primary bg-admin-primary/10 text-admin-primary'
-                  : 'border-slate-200 text-slate-500 hover:bg-slate-50'
+                  ? 'bg-[#1978e5]/10 border-[#1978e5] text-[#1978e5]'
+                  : 'bg-white border-slate-200 text-slate-500 hover:border-slate-300'
               }`}
             >
-              {room.features.includes(f) && (
-                <span className="material-symbols-outlined text-sm">check</span>
-              )}
+              <span className="material-symbols-outlined text-lg">
+                {room.features.includes(f) ? 'check_circle' : 'circle'}
+              </span>
               {f}
             </button>
           ))}
           <button
             type="button"
-            className="h-8 px-3 rounded-lg text-xs font-medium border border-dashed border-slate-300 text-slate-400 hover:border-admin-primary hover:text-admin-primary transition-colors"
+            className="px-4 py-2 rounded-lg text-sm font-medium border border-slate-200 text-slate-500 flex items-center gap-1.5 hover:border-slate-300 transition-all bg-white"
           >
-            + 更多设施
+            <span className="material-symbols-outlined text-lg">add</span>
+            更多设施
           </button>
         </div>
       </div>
 
       {/* Room photos upload area */}
-      <div className="mt-4">
-        <label className="block text-xs font-medium text-slate-600 mb-2">房型照片</label>
-        <div className="flex gap-3 items-start">
+      <div className="space-y-4">
+        <label className="text-sm font-semibold text-slate-700">房型照片 (Photos)</label>
+        <div className="flex flex-wrap gap-4">
           {/* Existing image preview */}
           {room.image && (
-            <div className="w-24 h-24 rounded-lg overflow-hidden bg-slate-100 shrink-0">
+            <div className="relative group size-32 rounded-xl overflow-hidden shadow-sm">
               <img src={room.image} alt="" className="w-full h-full object-cover" />
+              <button
+                type="button"
+                onClick={() => setRoom({ ...room, image: '' })}
+                className="absolute top-1 right-1 size-6 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <span className="material-symbols-outlined text-xs">close</span>
+              </button>
             </div>
           )}
-          {/* Upload area (URL input simulated as upload) */}
-          <div className="flex-1">
-            <div className="border-2 border-dashed border-slate-200 rounded-lg p-4 text-center hover:border-admin-primary/50 transition-colors">
-              <span className="material-symbols-outlined text-3xl text-slate-300 mb-1 block">photo_camera</span>
-              <p className="text-xs text-slate-500 mb-2">输入图片 URL 添加照片</p>
-              <p className="text-[10px] text-slate-400">最多5张 (Max 5)</p>
+          {/* Upload area */}
+          <div className="flex-1 min-w-[300px] h-32 flex flex-col items-center justify-center cursor-pointer hover:bg-[#1978e5]/5 transition-all space-y-2 py-6 border-2 border-dashed border-[#1978e5] rounded-xl">
+            <span className="material-symbols-outlined text-[#1978e5] text-3xl">add_a_photo</span>
+            <div className="text-center">
+              <p className="text-sm font-bold text-[#1978e5]">点击或拖拽上传</p>
+              <p className="text-[10px] text-slate-400 mt-0.5">最多 5 张 (Max 5)</p>
             </div>
-            <input
-              value={room.image}
-              onChange={(e) => setRoom({ ...room, image: e.target.value })}
-              className={`${inputClass} mt-2`}
-              placeholder="https://example.com/room-photo.jpg"
-            />
           </div>
         </div>
+        {/* URL input fallback */}
+        <input
+          value={room.image}
+          onChange={(e) => setRoom({ ...room, image: e.target.value })}
+          className={inputClass}
+          placeholder="或输入图片 URL: https://example.com/room-photo.jpg"
+        />
       </div>
     </>
   );
