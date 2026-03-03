@@ -12,6 +12,7 @@ export interface UserRow {
   id: number;
   username: string;
   password: string;           // bcrypt 哈希后的密码
+  display_name: string | null;
   role: UserRole;
   created_at: Date;
   updated_at: Date;

@@ -66,6 +66,7 @@ export function listItemToManagedHotel(h: HotelListItem): ManagedHotel {
   return {
     id: String(h.id),
     ownerId: '',
+    ownerName: (h as any).ownerName ?? undefined,
     name: h.name,
     rating: 0,
     reviewCount: 0,

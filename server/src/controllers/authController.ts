@@ -113,7 +113,7 @@ export async function login(req: Request, res: Response) {
 
   success(res, {
     token,
-    user: { id: user.id, username: user.username, role: user.role },
+    user: { id: user.id, username: user.username, displayName: user.display_name, role: user.role },
   });
 }
 
@@ -133,6 +133,7 @@ export async function getMe(req: AuthRequest, res: Response) {
   success(res, {
     id: user.id,
     username: user.username,
+    displayName: user.display_name,
     role: user.role,
     createdAt: user.created_at,
   });

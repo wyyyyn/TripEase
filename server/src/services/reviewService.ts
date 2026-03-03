@@ -116,9 +116,10 @@ export async function getAllHotelsForAdmin(
 ): Promise<HotelListItem[]> {
   // 动态拼接 WHERE 条件
   let sql = `
-    SELECT h.*, COUNT(r.id) AS room_count
+    SELECT h.*, COUNT(r.id) AS room_count, u.display_name AS owner_name
     FROM hotels h
     LEFT JOIN rooms r ON r.hotel_id = h.id
+    LEFT JOIN users u ON h.owner_id = u.id
   `;
   const params: any[] = [];
 
@@ -140,6 +141,7 @@ export async function getAllHotelsForAdmin(
     status: h.status,
     rejectReason: h.reject_reason,
     roomCount: Number(h.room_count),
+    ownerName: h.owner_name || `商户${h.owner_id}`,
     createdAt: h.created_at.toISOString(),
     updatedAt: h.updated_at.toISOString(),
   }));
@@ -159,7 +161,7 @@ export async function getReviewLogs(
   hotelId: number,
 ): Promise<ReviewLogItem[]> {
   const [rows] = await pool.query<RowDataPacket[]>(
-    `SELECT rl.*, u.username AS operator_name
+    `SELECT rl.*, COALESCE(u.display_name, u.username) AS operator_name
      FROM review_logs rl
      JOIN users u ON rl.operator_id = u.id
      WHERE rl.hotel_id = ?

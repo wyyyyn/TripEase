@@ -6,6 +6,7 @@ import authRouter from './routes/auth.js';
 import hotelRouter from './routes/hotel.js';
 import reviewRouter from './routes/review.js';
 import publicRouter from './routes/public.js';
+import registerRequestRouter from './routes/registerRequest.js';
 
 const app = express();
 
@@ -47,5 +48,8 @@ app.use('/api/admin', reviewRouter);
 
 // 公开路由：/api/public/*（C 端用户，无需登录）
 app.use('/api/public', publicRouter);
+
+// 注册请求路由：/api/register-request（获取专属方案，无需登录）
+app.use('/api/register-request', registerRequestRouter);
 
 export default app;

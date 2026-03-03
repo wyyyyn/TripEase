@@ -6,6 +6,7 @@ export type UserRole = 'customer' | 'merchant' | 'admin';
 export interface AuthUser {
   id: number;       // 数据库自增 ID（后端返回 number）
   username: string;
+  displayName?: string;
   role: UserRole;
   createdAt: string;
 }
@@ -20,6 +21,7 @@ export type ReviewStatus =
 
 export interface ManagedHotel extends Hotel {
   ownerId: string; // Step 5 改造 hotelStore 时会统一改为 number
+  ownerName?: string;
   status: ReviewStatus;
   rejectReason?: string;
   createdAt: string;

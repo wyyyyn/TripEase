@@ -97,6 +97,7 @@ export async function login(
     const user: AuthUser = {
       id: data.user.id,
       username: data.user.username,
+      displayName: data.user.displayName,
       role: data.user.role,
       createdAt: '', // 登录时后端不返回 createdAt，后续 initAuth 会补全
     };
@@ -146,6 +147,7 @@ export async function initAuth(): Promise<void> {
     setUser({
       id: me.id,
       username: me.username,
+      displayName: me.displayName,
       role: me.role,
       createdAt: me.createdAt,
     });

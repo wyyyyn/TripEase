@@ -4,12 +4,13 @@
 
 -- 1. 用户表
 CREATE TABLE users (
-  id         BIGINT       PRIMARY KEY AUTO_INCREMENT,
-  username   VARCHAR(50)  NOT NULL UNIQUE,
-  password   VARCHAR(255) NOT NULL,
-  role       ENUM('customer', 'merchant', 'admin') NOT NULL DEFAULT 'customer',
-  created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  id           BIGINT       PRIMARY KEY AUTO_INCREMENT,
+  username     VARCHAR(50)  NOT NULL UNIQUE,
+  password     VARCHAR(255) NOT NULL,
+  display_name VARCHAR(100),
+  role         ENUM('customer', 'merchant', 'admin') NOT NULL DEFAULT 'customer',
+  created_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- 2. 酒店表
@@ -302,3 +303,18 @@ INSERT INTO city_landmarks (city_id, name, label, icon, sort_order) VALUES
   (7, '大雁塔',   '大雁塔附近',     'temple_buddhist', 2),
   (8, '解放碑',   '解放碑附近',     'location_city', 1),
   (8, '洪崖洞',   '洪崖洞附近',     'castle',        2);
+
+-- ============================================================
+-- 14. 注册请求表（获取专属方案）
+-- ============================================================
+
+CREATE TABLE registration_requests (
+  id               BIGINT       PRIMARY KEY AUTO_INCREMENT,
+  name             VARCHAR(100) NOT NULL,
+  phone            VARCHAR(20)  NOT NULL,
+  hotel_name       VARCHAR(200) NOT NULL,
+  province         VARCHAR(50)  NOT NULL,
+  room_count       INT,
+  management_needs TEXT,
+  created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
