@@ -47,12 +47,12 @@ export default function AdminLayout() {
     );
   }
 
-  // 验证完毕但没有用户 → 跳转管理员登录页
-  if (!user) return <Navigate to="/admin/login" replace />;
+  // 验证完毕但没有用户 → 跳转登录页
+  if (!user) return <Navigate to="/login" replace />;
 
   const handleLogout = () => {
     logout();
-    navigate('/admin/login');
+    navigate('/login');
   };
 
   const isMerchant = user.role === 'merchant';
@@ -243,7 +243,7 @@ export default function AdminLayout() {
                 <span className="material-symbols-outlined text-admin-primary text-lg">person</span>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-white truncate">{user.displayName || user.username}</p>
+                <p className="text-sm font-medium text-white truncate">{user.username}</p>
                 <p className="text-xs text-slate-500">
                   {isMerchant ? '商户' : '管理员'}
                 </p>
