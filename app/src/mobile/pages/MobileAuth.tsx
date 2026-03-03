@@ -42,11 +42,11 @@ export default function MobileAuth() {
     setError('');
 
     if (!username.trim() || !password) {
-      setError('Please fill in all fields');
+      setError('请填写所有字段');
       return;
     }
     if (tab === 'register' && password !== confirmPwd) {
-      setError('Passwords do not match');
+      setError('两次输入的密码不一致');
       return;
     }
 
@@ -94,7 +94,7 @@ export default function MobileAuth() {
           <span className="material-symbols-outlined text-dark text-3xl">travel_explore</span>
         </div>
         <h1 className="text-[28px] font-bold text-white tracking-wide">TripEase</h1>
-        <p className="text-white/60 text-sm mt-1">Your journey begins here</p>
+        <p className="text-white/60 text-sm mt-1">轻松开启你的旅程</p>
       </header>
 
       {/* ====== 白色卡片表单 ====== */}
@@ -116,7 +116,7 @@ export default function MobileAuth() {
                     : 'text-gray-400 hover:text-gray-600'
                 }`}
               >
-                {t === 'login' ? 'Log In' : 'Sign Up'}
+                {t === 'login' ? '登录' : '注册'}
               </button>
             ))}
           </div>
@@ -135,7 +135,7 @@ export default function MobileAuth() {
             </span>
             <input
               type="text"
-              placeholder="Username"
+              placeholder="用户名"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               autoComplete="username"
@@ -150,7 +150,7 @@ export default function MobileAuth() {
             </span>
             <input
               type={showPwd ? 'text' : 'password'}
-              placeholder="Password"
+              placeholder="密码"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
@@ -176,7 +176,7 @@ export default function MobileAuth() {
               </span>
               <input
                 type={showConfirmPwd ? 'text' : 'password'}
-                placeholder="Confirm Password"
+                placeholder="确认密码"
                 value={confirmPwd}
                 onChange={(e) => setConfirmPwd(e.target.value)}
                 autoComplete="new-password"
@@ -228,12 +228,12 @@ export default function MobileAuth() {
             {loading ? (
               <span className="inline-flex items-center gap-2">
                 <span className="w-4 h-4 border-2 border-dark/30 border-t-dark rounded-full animate-spin" />
-                {tab === 'login' ? 'Logging in…' : 'Creating account…'}
+                {tab === 'login' ? '登录中…' : '注册中…'}
               </span>
             ) : tab === 'login' ? (
-              'Log In'
+              '登录'
             ) : (
-              'Create Account'
+              '注册'
             )}
           </button>
         </form>
@@ -242,9 +242,9 @@ export default function MobileAuth() {
         <div className="flex flex-col items-center mt-6 gap-4">
           {/* Terms & Privacy */}
           <p className="text-white/35 text-[11px] text-center leading-relaxed">
-            By signing in, you agree to our{' '}
-            <span className="underline underline-offset-2">Terms</span> &{' '}
-            <span className="underline underline-offset-2">Privacy</span>
+            登录即表示你同意我们的{' '}
+            <span className="underline underline-offset-2">服务条款</span> 和{' '}
+            <span className="underline underline-offset-2">隐私政策</span>
           </p>
         </div>
       </main>
