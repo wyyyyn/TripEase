@@ -126,55 +126,65 @@ INSERT INTO rooms (hotel_id, name, price_per_night, original_price, bed_type, si
 -- ============================================================
 
 INSERT INTO hotel_images (hotel_id, url, sort_order) VALUES
-  (@hotel1, 'https://lh3.googleusercontent.com/aida-public/AB6AXuBfHiwKuewfpP4oSxGM7Bnwgls0DBTrl1YeJBe2-9ULXIYyynomTueQTa1tiQR6YALfhW3tsCQz460mf0rY00hnnx5Kz49_z1u-sLbktIKFN091JDwjKe6Sbn00O5ECmcWYXRxypmxor2wdz_SY1hbX-JDdo21rLpA9oG8NOn9Gzx888CF4AAmnMT45tHxuq8xhg8mUkbzcRal7QZwD3V7bhjIo-3BMxnyhgVnHkOASfq7P2PdjkuHXBi5wHk0e-Q_dTHj1rgJ92sU', 1),
-  (@hotel1, 'https://lh3.googleusercontent.com/aida-public/AB6AXuA42Q2S1VVS1RNXLIuGbM4JvExxCFpCANeodMhCVniPhHKaIOMXH83w-rJieJnaWCNb83ZKp5hBtGQ8MAClxiL80-I2--eU2Fm1gVQ8gzBfrXjnzqJVmrJMYZ_Cmu7w4yuotNUM2-zZYFnLIC6zmJFz5G1lPpSbwdCLrtnzm3DMuO_-Jx7aq5wQilAj4eq6lkKsN-bvOKfsykJ7gJ-7DiLbf3IHDJ4bMh0oTqnUe4WeweJbX-_HqxJ0Fdrr1-b7VM8rzNMduX5Ml0w', 2),
-  (@hotel1, 'https://lh3.googleusercontent.com/aida-public/AB6AXuCjAyw4ATjclJkKXWCpJlmdXG_Qh1ljS74RZisborYS5a6vsUXO82C6z1bOhwZEMARuSkPO_MopmErlR51C0ZHauihEM6IfXjNK74G8ZVVe5aZBd55iwHy7VCiI2rB_Md1paQsNojUTiNC_kNmDHxyW624YPboyDo6froG-deC9X30Qxb1yFMu0zw1PZKpHZUN09rgaZvczQVFfOFeSL79gfE1cFEQzKwFIgYPxHh0ZFbRoJ2EWKeofAwSumM-0I8rLK2IAOInViD0', 3),
-  (@hotel1, 'https://lh3.googleusercontent.com/aida-public/AB6AXuDXtX7ItAwvvgaaGHA1zMFUFnxjFKawnFok3vl2Vca0ht9P2NJIo2cS7AzCBIZc8LZTNcFoPAHRmVMi5tCQCIdV7yYXAIeLfjB9A6ym5ch78afgUtOkTMcESdlfvAhnIw1qhsteymYqYv5awCYMuQGNRjekXU1mwujg4BurcdoEFRI63IbqlBo0iyUvIeA3bPawDAPpsTrtXU4ibmHBSABjad702TbzuMdoOcMTFGynSkbENRuIsiic0uCMOfqAW_3oAa26L24N_g0', 4),
+  -- 云端国际大酒店（五星豪华）
+  (@hotel1, 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop', 1),
+  (@hotel1, 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&h=600&fit=crop', 2),
+  (@hotel1, 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&h=600&fit=crop', 3),
+  (@hotel1, 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800&h=600&fit=crop', 4),
 
-  (@hotel2, 'https://lh3.googleusercontent.com/aida-public/AB6AXuA42Q2S1VVS1RNXLIuGbM4JvExxCFpCANeodMhCVniPhHKaIOMXH83w-rJieJnaWCNb83ZKp5hBtGQ8MAClxiL80-I2--eU2Fm1gVQ8gzBfrXjnzqJVmrJMYZ_Cmu7w4yuotNUM2-zZYFnLIC6zmJFz5G1lPpSbwdCLrtnzm3DMuO_-Jx7aq5wQilAj4eq6lkKsN-bvOKfsykJ7gJ-7DiLbf3IHDJ4bMh0oTqnUe4WeweJbX-_HqxJ0Fdrr1-b7VM8rzNMduX5Ml0w', 1),
-  (@hotel2, 'https://lh3.googleusercontent.com/aida-public/AB6AXuBfHiwKuewfpP4oSxGM7Bnwgls0DBTrl1YeJBe2-9ULXIYyynomTueQTa1tiQR6YALfhW3tsCQz460mf0rY00hnnx5Kz49_z1u-sLbktIKFN091JDwjKe6Sbn00O5ECmcWYXRxypmxor2wdz_SY1hbX-JDdo21rLpA9oG8NOn9Gzx888CF4AAmnMT45tHxuq8xhg8mUkbzcRal7QZwD3V7bhjIo-3BMxnyhgVnHkOASfq7P2PdjkuHXBi5wHk0e-Q_dTHj1rgJ92sU', 2),
-  (@hotel2, 'https://lh3.googleusercontent.com/aida-public/AB6AXuCjAyw4ATjclJkKXWCpJlmdXG_Qh1ljS74RZisborYS5a6vsUXO82C6z1bOhwZEMARuSkPO_MopmErlR51C0ZHauihEM6IfXjNK74G8ZVVe5aZBd55iwHy7VCiI2rB_Md1paQsNojUTiNC_kNmDHxyW624YPboyDo6froG-deC9X30Qxb1yFMu0zw1PZKpHZUN09rgaZvczQVFfOFeSL79gfE1cFEQzKwFIgYPxHh0ZFbRoJ2EWKeofAwSumM-0I8rLK2IAOInViD0', 3),
-  (@hotel2, 'https://lh3.googleusercontent.com/aida-public/AB6AXuDghR_Jmtc6XGscMOE1AWd8oDJELpOrRO3BtJkbxSpnZ6eRC2KAogIgKMZqJhNjMMtK5p8Ybg4aKC1IiRjjM2pXkxZ37JJlx17-vGDV7Bqcwh164XdOifl7IbTTppecQftoQ-OpzbBV_By7NVciM-jOW43jhYToCI3XRPK_ZKlZToEEJFjmFFUx5prXacE3_qYypOmLsKiNMMC-1-j_z_8VZ8xb8FSqYWs3KmEKCxkJ0-MU63kvvxMFIvVE_a1t5MVPPJIZSAvedGY', 4),
+  -- 锦江之星商务楼（三星商务）
+  (@hotel2, 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&h=600&fit=crop', 1),
+  (@hotel2, 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&h=600&fit=crop', 2),
+  (@hotel2, 'https://images.unsplash.com/photo-1590490360182-c33d955735ed?w=800&h=600&fit=crop', 3),
+  (@hotel2, 'https://images.unsplash.com/photo-1444201983204-c43cbd584d93?w=800&h=600&fit=crop', 4),
 
-  (@hotel3, 'https://lh3.googleusercontent.com/aida-public/AB6AXuCJxbwOgBnL09jIcGJfhLKl0tU_IskBEAfceRyF5aXqtCpbOR6gMLQ5-tZjseVPjaS43JMNlLcd-EvnOJRGcDripBWuQ1K_X1dRwsFASj108uoBaIBITMAm4v1ViY4HYV3Cx0wZF8q_azK2j760NTrlKDLoFQUACqOg4rb0w94MOtjloNVb0tPvem06t3hQiFWtLHscBYD2hAl89tPrefcHctk1_CrLfwc0PdIim5OdoRE601nA3wzTy0hH3g6GWRTrg4ORdr8PkRQ', 1),
-  (@hotel3, 'https://lh3.googleusercontent.com/aida-public/AB6AXuBfHiwKuewfpP4oSxGM7Bnwgls0DBTrl1YeJBe2-9ULXIYyynomTueQTa1tiQR6YALfhW3tsCQz460mf0rY00hnnx5Kz49_z1u-sLbktIKFN091JDwjKe6Sbn00O5ECmcWYXRxypmxor2wdz_SY1hbX-JDdo21rLpA9oG8NOn9Gzx888CF4AAmnMT45tHxuq8xhg8mUkbzcRal7QZwD3V7bhjIo-3BMxnyhgVnHkOASfq7P2PdjkuHXBi5wHk0e-Q_dTHj1rgJ92sU', 2),
-  (@hotel3, 'https://lh3.googleusercontent.com/aida-public/AB6AXuA42Q2S1VVS1RNXLIuGbM4JvExxCFpCANeodMhCVniPhHKaIOMXH83w-rJieJnaWCNb83ZKp5hBtGQ8MAClxiL80-I2--eU2Fm1gVQ8gzBfrXjnzqJVmrJMYZ_Cmu7w4yuotNUM2-zZYFnLIC6zmJFz5G1lPpSbwdCLrtnzm3DMuO_-Jx7aq5wQilAj4eq6lkKsN-bvOKfsykJ7gJ-7DiLbf3IHDJ4bMh0oTqnUe4WeweJbX-_HqxJ0Fdrr1-b7VM8rzNMduX5Ml0w', 3),
-  (@hotel3, 'https://lh3.googleusercontent.com/aida-public/AB6AXuCjAyw4ATjclJkKXWCpJlmdXG_Qh1ljS74RZisborYS5a6vsUXO82C6z1bOhwZEMARuSkPO_MopmErlR51C0ZHauihEM6IfXjNK74G8ZVVe5aZBd55iwHy7VCiI2rB_Md1paQsNojUTiNC_kNmDHxyW624YPboyDo6froG-deC9X30Qxb1yFMu0zw1PZKpHZUN09rgaZvczQVFfOFeSL79gfE1cFEQzKwFIgYPxHh0ZFbRoJ2EWKeofAwSumM-0I8rLK2IAOInViD0', 4),
+  -- 悦来客栈（二星客栈）
+  (@hotel3, 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&h=600&fit=crop', 1),
+  (@hotel3, 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop', 2),
+  (@hotel3, 'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800&h=600&fit=crop', 3),
+  (@hotel3, 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&h=600&fit=crop', 4),
 
-  (@hotel4, 'https://lh3.googleusercontent.com/aida-public/AB6AXuCjAyw4ATjclJkKXWCpJlmdXG_Qh1ljS74RZisborYS5a6vsUXO82C6z1bOhwZEMARuSkPO_MopmErlR51C0ZHauihEM6IfXjNK74G8ZVVe5aZBd55iwHy7VCiI2rB_Md1paQsNojUTiNC_kNmDHxyW624YPboyDo6froG-deC9X30Qxb1yFMu0zw1PZKpHZUN09rgaZvczQVFfOFeSL79gfE1cFEQzKwFIgYPxHh0ZFbRoJ2EWKeofAwSumM-0I8rLK2IAOInViD0', 1),
-  (@hotel4, 'https://lh3.googleusercontent.com/aida-public/AB6AXuDXtX7ItAwvvgaaGHA1zMFUFnxjFKawnFok3vl2Vca0ht9P2NJIo2cS7AzCBIZc8LZTNcFoPAHRmVMi5tCQCIdV7yYXAIeLfjB9A6ym5ch78afgUtOkTMcESdlfvAhnIw1qhsteymYqYv5awCYMuQGNRjekXU1mwujg4BurcdoEFRI63IbqlBo0iyUvIeA3bPawDAPpsTrtXU4ibmHBSABjad702TbzuMdoOcMTFGynSkbENRuIsiic0uCMOfqAW_3oAa26L24N_g0', 2),
-  (@hotel4, 'https://lh3.googleusercontent.com/aida-public/AB6AXuBfHiwKuewfpP4oSxGM7Bnwgls0DBTrl1YeJBe2-9ULXIYyynomTueQTa1tiQR6YALfhW3tsCQz460mf0rY00hnnx5Kz49_z1u-sLbktIKFN091JDwjKe6Sbn00O5ECmcWYXRxypmxor2wdz_SY1hbX-JDdo21rLpA9oG8NOn9Gzx888CF4AAmnMT45tHxuq8xhg8mUkbzcRal7QZwD3V7bhjIo-3BMxnyhgVnHkOASfq7P2PdjkuHXBi5wHk0e-Q_dTHj1rgJ92sU', 3),
-  (@hotel4, 'https://lh3.googleusercontent.com/aida-public/AB6AXuA42Q2S1VVS1RNXLIuGbM4JvExxCFpCANeodMhCVniPhHKaIOMXH83w-rJieJnaWCNb83ZKp5hBtGQ8MAClxiL80-I2--eU2Fm1gVQ8gzBfrXjnzqJVmrJMYZ_Cmu7w4yuotNUM2-zZYFnLIC6zmJFz5G1lPpSbwdCLrtnzm3DMuO_-Jx7aq5wQilAj4eq6lkKsN-bvOKfsykJ7gJ-7DiLbf3IHDJ4bMh0oTqnUe4WeweJbX-_HqxJ0Fdrr1-b7VM8rzNMduX5Ml0w', 4),
+  -- 蓝湾海景度假村（四星海景）
+  (@hotel4, 'https://images.unsplash.com/photo-1573052905904-34ad8c27f0cc?w=800&h=600&fit=crop', 1),
+  (@hotel4, 'https://images.unsplash.com/photo-1540541338287-41700207dee6?w=800&h=600&fit=crop', 2),
+  (@hotel4, 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop', 3),
+  (@hotel4, 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=600&fit=crop', 4),
 
-  (@hotel5, 'https://lh3.googleusercontent.com/aida-public/AB6AXuDXtX7ItAwvvgaaGHA1zMFUFnxjFKawnFok3vl2Vca0ht9P2NJIo2cS7AzCBIZc8LZTNcFoPAHRmVMi5tCQCIdV7yYXAIeLfjB9A6ym5ch78afgUtOkTMcESdlfvAhnIw1qhsteymYqYv5awCYMuQGNRjekXU1mwujg4BurcdoEFRI63IbqlBo0iyUvIeA3bPawDAPpsTrtXU4ibmHBSABjad702TbzuMdoOcMTFGynSkbENRuIsiic0uCMOfqAW_3oAa26L24N_g0', 1),
-  (@hotel5, 'https://lh3.googleusercontent.com/aida-public/AB6AXuCJxbwOgBnL09jIcGJfhLKl0tU_IskBEAfceRyF5aXqtCpbOR6gMLQ5-tZjseVPjaS43JMNlLcd-EvnOJRGcDripBWuQ1K_X1dRwsFASj108uoBaIBITMAm4v1ViY4HYV3Cx0wZF8q_azK2j760NTrlKDLoFQUACqOg4rb0w94MOtjloNVb0tPvem06t3hQiFWtLHscBYD2hAl89tPrefcHctk1_CrLfwc0PdIim5OdoRE601nA3wzTy0hH3g6GWRTrg4ORdr8PkRQ', 2),
-  (@hotel5, 'https://lh3.googleusercontent.com/aida-public/AB6AXuBfHiwKuewfpP4oSxGM7Bnwgls0DBTrl1YeJBe2-9ULXIYyynomTueQTa1tiQR6YALfhW3tsCQz460mf0rY00hnnx5Kz49_z1u-sLbktIKFN091JDwjKe6Sbn00O5ECmcWYXRxypmxor2wdz_SY1hbX-JDdo21rLpA9oG8NOn9Gzx888CF4AAmnMT45tHxuq8xhg8mUkbzcRal7QZwD3V7bhjIo-3BMxnyhgVnHkOASfq7P2PdjkuHXBi5wHk0e-Q_dTHj1rgJ92sU', 3),
-  (@hotel5, 'https://lh3.googleusercontent.com/aida-public/AB6AXuA42Q2S1VVS1RNXLIuGbM4JvExxCFpCANeodMhCVniPhHKaIOMXH83w-rJieJnaWCNb83ZKp5hBtGQ8MAClxiL80-I2--eU2Fm1gVQ8gzBfrXjnzqJVmrJMYZ_Cmu7w4yuotNUM2-zZYFnLIC6zmJFz5G1lPpSbwdCLrtnzm3DMuO_-Jx7aq5wQilAj4eq6lkKsN-bvOKfsykJ7gJ-7DiLbf3IHDJ4bMh0oTqnUe4WeweJbX-_HqxJ0Fdrr1-b7VM8rzNMduX5Ml0w', 4),
+  -- 格林花园公寓酒店（四星花园）
+  (@hotel5, 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800&h=600&fit=crop', 1),
+  (@hotel5, 'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=800&h=600&fit=crop', 2),
+  (@hotel5, 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop', 3),
+  (@hotel5, 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop', 4),
 
-  (@hotel6, 'https://lh3.googleusercontent.com/aida-public/AB6AXuDghR_Jmtc6XGscMOE1AWd8oDJELpOrRO3BtJkbxSpnZ6eRC2KAogIgKMZqJhNjMMtK5p8Ybg4aKC1IiRjjM2pXkxZ37JJlx17-vGDV7Bqcwh164XdOifl7IbTTppecQftoQ-OpzbBV_By7NVciM-jOW43jhYToCI3XRPK_ZKlZToEEJFjmFFUx5prXacE3_qYypOmLsKiNMMC-1-j_z_8VZ8xb8FSqYWs3KmEKCxkJ0-MU63kvvxMFIvVE_a1t5MVPPJIZSAvedGY', 1),
-  (@hotel6, 'https://lh3.googleusercontent.com/aida-public/AB6AXuBfHiwKuewfpP4oSxGM7Bnwgls0DBTrl1YeJBe2-9ULXIYyynomTueQTa1tiQR6YALfhW3tsCQz460mf0rY00hnnx5Kz49_z1u-sLbktIKFN091JDwjKe6Sbn00O5ECmcWYXRxypmxor2wdz_SY1hbX-JDdo21rLpA9oG8NOn9Gzx888CF4AAmnMT45tHxuq8xhg8mUkbzcRal7QZwD3V7bhjIo-3BMxnyhgVnHkOASfq7P2PdjkuHXBi5wHk0e-Q_dTHj1rgJ92sU', 2),
-  (@hotel6, 'https://lh3.googleusercontent.com/aida-public/AB6AXuCjAyw4ATjclJkKXWCpJlmdXG_Qh1ljS74RZisborYS5a6vsUXO82C6z1bOhwZEMARuSkPO_MopmErlR51C0ZHauihEM6IfXjNK74G8ZVVe5aZBd55iwHy7VCiI2rB_Md1paQsNojUTiNC_kNmDHxyW624YPboyDo6froG-deC9X30Qxb1yFMu0zw1PZKpHZUN09rgaZvczQVFfOFeSL79gfE1cFEQzKwFIgYPxHh0ZFbRoJ2EWKeofAwSumM-0I8rLK2IAOInViD0', 3),
-  (@hotel6, 'https://lh3.googleusercontent.com/aida-public/AB6AXuDXtX7ItAwvvgaaGHA1zMFUFnxjFKawnFok3vl2Vca0ht9P2NJIo2cS7AzCBIZc8LZTNcFoPAHRmVMi5tCQCIdV7yYXAIeLfjB9A6ym5ch78afgUtOkTMcESdlfvAhnIw1qhsteymYqYv5awCYMuQGNRjekXU1mwujg4BurcdoEFRI63IbqlBo0iyUvIeA3bPawDAPpsTrtXU4ibmHBSABjad702TbzuMdoOcMTFGynSkbENRuIsiic0uCMOfqAW_3oAa26L24N_g0', 4),
+  -- 帝豪皇家大酒店（五星皇家）
+  (@hotel6, 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&h=600&fit=crop', 1),
+  (@hotel6, 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop', 2),
+  (@hotel6, 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop', 3),
+  (@hotel6, 'https://images.unsplash.com/photo-1615460549969-36fa19521a4f?w=800&h=600&fit=crop', 4),
 
-  (@hotel7, 'https://lh3.googleusercontent.com/aida-public/AB6AXuAIpCwrr5TIZKDkOp82eVOVbqpaoyiC84Z1hgStIvGhUBSULzQrhFh1W_dQyfGbeP-AnU1qTLQ2rKZ5VQZnCx_GT6aTw3K1MOusHg0kElCotbIsS04GdKhLJqnpVFEW1vWdUAdeA3rYhV2B9BA5dCV4397h0uenoh7poI3HxuUkMUvrg2SGDzNypG-aiz9yqYVAZPL1wLQ11wrXymY1S8YNUP0PtglEGSVle8uQJTdceVE28PaukEJBp9hOM9eaiaXderY9RZsFPIQ', 1),
-  (@hotel7, 'https://lh3.googleusercontent.com/aida-public/AB6AXuBfHiwKuewfpP4oSxGM7Bnwgls0DBTrl1YeJBe2-9ULXIYyynomTueQTa1tiQR6YALfhW3tsCQz460mf0rY00hnnx5Kz49_z1u-sLbktIKFN091JDwjKe6Sbn00O5ECmcWYXRxypmxor2wdz_SY1hbX-JDdo21rLpA9oG8NOn9Gzx888CF4AAmnMT45tHxuq8xhg8mUkbzcRal7QZwD3V7bhjIo-3BMxnyhgVnHkOASfq7P2PdjkuHXBi5wHk0e-Q_dTHj1rgJ92sU', 2),
-  (@hotel7, 'https://lh3.googleusercontent.com/aida-public/AB6AXuA42Q2S1VVS1RNXLIuGbM4JvExxCFpCANeodMhCVniPhHKaIOMXH83w-rJieJnaWCNb83ZKp5hBtGQ8MAClxiL80-I2--eU2Fm1gVQ8gzBfrXjnzqJVmrJMYZ_Cmu7w4yuotNUM2-zZYFnLIC6zmJFz5G1lPpSbwdCLrtnzm3DMuO_-Jx7aq5wQilAj4eq6lkKsN-bvOKfsykJ7gJ-7DiLbf3IHDJ4bMh0oTqnUe4WeweJbX-_HqxJ0Fdrr1-b7VM8rzNMduX5Ml0w', 3),
-  (@hotel7, 'https://lh3.googleusercontent.com/aida-public/AB6AXuCjAyw4ATjclJkKXWCpJlmdXG_Qh1ljS74RZisborYS5a6vsUXO82C6z1bOhwZEMARuSkPO_MopmErlR51C0ZHauihEM6IfXjNK74G8ZVVe5aZBd55iwHy7VCiI2rB_Md1paQsNojUTiNC_kNmDHxyW624YPboyDo6froG-deC9X30Qxb1yFMu0zw1PZKpHZUN09rgaZvczQVFfOFeSL79gfE1cFEQzKwFIgYPxHh0ZFbRoJ2EWKeofAwSumM-0I8rLK2IAOInViD0', 4),
+  -- 快捷连锁旅店（二星经济）
+  (@hotel7, 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&h=600&fit=crop', 1),
+  (@hotel7, 'https://images.unsplash.com/photo-1590490360182-c33d955735ed?w=800&h=600&fit=crop', 2),
+  (@hotel7, 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&h=600&fit=crop', 3),
+  (@hotel7, 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop', 4),
 
-  (@hotel8, 'https://lh3.googleusercontent.com/aida-public/AB6AXuBxyzX6NPvjUruPSFi5lXWXtdXAvY-7gE9uxOhOjy51rqkQrtqHf4SQ_73bkYw3skt6767Z1Q1iCTmJcK3UL5tw-33JwM7QXlyzO8z-zFCDo_6-b5lMy9k_jc49ZlqDgJvSV037zcJS9G7fq7zSO2LAECzQTDtpOY1-Dsg_3h4_q80KTBHJ9pQSOSwS_mealGc-k65mbvCb1lxsuNwgknpA24VrFqBxrSkfhXD88sood5_xnJluxmLcelr0jLw6ksgRBFzeD6FHsr0', 1),
-  (@hotel8, 'https://lh3.googleusercontent.com/aida-public/AB6AXuBfHiwKuewfpP4oSxGM7Bnwgls0DBTrl1YeJBe2-9ULXIYyynomTueQTa1tiQR6YALfhW3tsCQz460mf0rY00hnnx5Kz49_z1u-sLbktIKFN091JDwjKe6Sbn00O5ECmcWYXRxypmxor2wdz_SY1hbX-JDdo21rLpA9oG8NOn9Gzx888CF4AAmnMT45tHxuq8xhg8mUkbzcRal7QZwD3V7bhjIo-3BMxnyhgVnHkOASfq7P2PdjkuHXBi5wHk0e-Q_dTHj1rgJ92sU', 2),
-  (@hotel8, 'https://lh3.googleusercontent.com/aida-public/AB6AXuA42Q2S1VVS1RNXLIuGbM4JvExxCFpCANeodMhCVniPhHKaIOMXH83w-rJieJnaWCNb83ZKp5hBtGQ8MAClxiL80-I2--eU2Fm1gVQ8gzBfrXjnzqJVmrJMYZ_Cmu7w4yuotNUM2-zZYFnLIC6zmJFz5G1lPpSbwdCLrtnzm3DMuO_-Jx7aq5wQilAj4eq6lkKsN-bvOKfsykJ7gJ-7DiLbf3IHDJ4bMh0oTqnUe4WeweJbX-_HqxJ0Fdrr1-b7VM8rzNMduX5Ml0w', 3),
-  (@hotel8, 'https://lh3.googleusercontent.com/aida-public/AB6AXuCjAyw4ATjclJkKXWCpJlmdXG_Qh1ljS74RZisborYS5a6vsUXO82C6z1bOhwZEMARuSkPO_MopmErlR51C0ZHauihEM6IfXjNK74G8ZVVe5aZBd55iwHy7VCiI2rB_Md1paQsNojUTiNC_kNmDHxyW624YPboyDo6froG-deC9X30Qxb1yFMu0zw1PZKpHZUN09rgaZvczQVFfOFeSL79gfE1cFEQzKwFIgYPxHh0ZFbRoJ2EWKeofAwSumM-0I8rLK2IAOInViD0', 4),
+  -- 如家风格宾馆（二星舒适）
+  (@hotel8, 'https://images.unsplash.com/photo-1590490360182-c33d955735ed?w=800&h=600&fit=crop', 1),
+  (@hotel8, 'https://images.unsplash.com/photo-1444201983204-c43cbd584d93?w=800&h=600&fit=crop', 2),
+  (@hotel8, 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&h=600&fit=crop', 3),
+  (@hotel8, 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop', 4),
 
-  (@hotel9, 'https://lh3.googleusercontent.com/aida-public/AB6AXuD_CRUr4_7sI2NMWwpRtF9fMXbSw5qaqfUEd0sbEwtYus9nUSTAR3VZR6FgL8NacRihJ5qQDQ4ILbmWYSMGQFjiVrfpLq5b6oAELl30D7C8duU9WpG-YebTyiuAED8nmkBVlbhVMyBH70ab5Vht-PkSGFdFLvT5_2zMjAVomOW0CP85uIHvKYd9vkxzsU0HxG0SIJMA3_HQdFeo7Ky0UCAuETy7I_q-Qp03UXuLk6A9ZMGA_rp8R687vPyS3ij81Dd0BTsFBA2rzr4', 1),
-  (@hotel9, 'https://lh3.googleusercontent.com/aida-public/AB6AXuBfHiwKuewfpP4oSxGM7Bnwgls0DBTrl1YeJBe2-9ULXIYyynomTueQTa1tiQR6YALfhW3tsCQz460mf0rY00hnnx5Kz49_z1u-sLbktIKFN091JDwjKe6Sbn00O5ECmcWYXRxypmxor2wdz_SY1hbX-JDdo21rLpA9oG8NOn9Gzx888CF4AAmnMT45tHxuq8xhg8mUkbzcRal7QZwD3V7bhjIo-3BMxnyhgVnHkOASfq7P2PdjkuHXBi5wHk0e-Q_dTHj1rgJ92sU', 2),
-  (@hotel9, 'https://lh3.googleusercontent.com/aida-public/AB6AXuA42Q2S1VVS1RNXLIuGbM4JvExxCFpCANeodMhCVniPhHKaIOMXH83w-rJieJnaWCNb83ZKp5hBtGQ8MAClxiL80-I2--eU2Fm1gVQ8gzBfrXjnzqJVmrJMYZ_Cmu7w4yuotNUM2-zZYFnLIC6zmJFz5G1lPpSbwdCLrtnzm3DMuO_-Jx7aq5wQilAj4eq6lkKsN-bvOKfsykJ7gJ-7DiLbf3IHDJ4bMh0oTqnUe4WeweJbX-_HqxJ0Fdrr1-b7VM8rzNMduX5Ml0w', 3),
-  (@hotel9, 'https://lh3.googleusercontent.com/aida-public/AB6AXuCjAyw4ATjclJkKXWCpJlmdXG_Qh1ljS74RZisborYS5a6vsUXO82C6z1bOhwZEMARuSkPO_MopmErlR51C0ZHauihEM6IfXjNK74G8ZVVe5aZBd55iwHy7VCiI2rB_Md1paQsNojUTiNC_kNmDHxyW624YPboyDo6froG-deC9X30Qxb1yFMu0zw1PZKpHZUN09rgaZvczQVFfOFeSL79gfE1cFEQzKwFIgYPxHh0ZFbRoJ2EWKeofAwSumM-0I8rLK2IAOInViD0', 4),
+  -- 希尔顿欢朋酒店（四星商务）
+  (@hotel9, 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop', 1),
+  (@hotel9, 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800&h=600&fit=crop', 2),
+  (@hotel9, 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800&h=600&fit=crop', 3),
+  (@hotel9, 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&h=600&fit=crop', 4),
 
-  (@hotel10, 'https://lh3.googleusercontent.com/aida-public/AB6AXuAtn7tUjYGEKXm8BAb1lYn7TajeuTwet_YMgTTYLT3rGQhKzALe6OYYwhenK5drPF--gKL4D-HPcJGOFQC4RudbDNeH87V4_FxuFeYWLYBdG2mGbQEXSWod8hcq3MZ-GrjGddqHdjZWWGZtHs5saOdngSV9fsceMhHV0-b3Q9ISO5o6MGnvuo0zQzJXSINKnoAEl3P_dnV8Q7AFo5iaYcuOvNaW9qusMpY0253XAdUWxdCYcP1LEVSYkya5jxPY-tiT724Ds2muHbQ', 1),
-  (@hotel10, 'https://lh3.googleusercontent.com/aida-public/AB6AXuBfHiwKuewfpP4oSxGM7Bnwgls0DBTrl1YeJBe2-9ULXIYyynomTueQTa1tiQR6YALfhW3tsCQz460mf0rY00hnnx5Kz49_z1u-sLbktIKFN091JDwjKe6Sbn00O5ECmcWYXRxypmxor2wdz_SY1hbX-JDdo21rLpA9oG8NOn9Gzx888CF4AAmnMT45tHxuq8xhg8mUkbzcRal7QZwD3V7bhjIo-3BMxnyhgVnHkOASfq7P2PdjkuHXBi5wHk0e-Q_dTHj1rgJ92sU', 2),
-  (@hotel10, 'https://lh3.googleusercontent.com/aida-public/AB6AXuA42Q2S1VVS1RNXLIuGbM4JvExxCFpCANeodMhCVniPhHKaIOMXH83w-rJieJnaWCNb83ZKp5hBtGQ8MAClxiL80-I2--eU2Fm1gVQ8gzBfrXjnzqJVmrJMYZ_Cmu7w4yuotNUM2-zZYFnLIC6zmJFz5G1lPpSbwdCLrtnzm3DMuO_-Jx7aq5wQilAj4eq6lkKsN-bvOKfsykJ7gJ-7DiLbf3IHDJ4bMh0oTqnUe4WeweJbX-_HqxJ0Fdrr1-b7VM8rzNMduX5Ml0w', 3),
-  (@hotel10, 'https://lh3.googleusercontent.com/aida-public/AB6AXuCjAyw4ATjclJkKXWCpJlmdXG_Qh1ljS74RZisborYS5a6vsUXO82C6z1bOhwZEMARuSkPO_MopmErlR51C0ZHauihEM6IfXjNK74G8ZVVe5aZBd55iwHy7VCiI2rB_Md1paQsNojUTiNC_kNmDHxyW624YPboyDo6froG-deC9X30Qxb1yFMu0zw1PZKpHZUN09rgaZvczQVFfOFeSL79gfE1cFEQzKwFIgYPxHh0ZFbRoJ2EWKeofAwSumM-0I8rLK2IAOInViD0', 4);
+  -- 山居岁月民宿（三星民宿）
+  (@hotel10, 'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800&h=600&fit=crop', 1),
+  (@hotel10, 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop', 2),
+  (@hotel10, 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop', 3),
+  (@hotel10, 'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=800&h=600&fit=crop', 4);
 
 -- ============================================================
 -- 5. 酒店标签关联
