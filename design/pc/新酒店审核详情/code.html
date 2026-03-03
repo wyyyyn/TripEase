@@ -129,19 +129,19 @@
 <div class="px-8 py-5 border-b border-gray-50 flex items-center justify-between shrink-0">
 <div class="flex items-center gap-3">
 <h3 class="text-lg font-semibold text-slate-800 tracking-tight">酒店信息审核详情</h3>
-<span class="px-2 py-0.5 bg-gray-100 text-gray-500 text-[10px] font-bold rounded uppercase tracking-wider">V1 REJECTED</span>
+<span class="inline-flex items-center px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[11px] font-bold">
+<span class="material-symbols-outlined text-[12px] mr-1">hourglass_empty</span>待商户修改
+</span>
 </div>
 <button class="text-slate-400 hover:text-slate-600 transition-colors" onclick="navigate('../新酒店审核列表/code.html')">
 <span class="material-symbols-outlined">close</span>
 </button>
 </div>
-<div class="flex-1 flex overflow-hidden min-h-0">
-<div class="w-[38%] h-full overflow-y-auto custom-scrollbar p-8">
+<div class="flex-1 flex flex-col overflow-hidden min-h-0">
+<div class="flex-1 flex flex-row min-h-0 overflow-hidden">
+<div class="w-[38%] shrink-0 h-full overflow-y-auto custom-scrollbar p-8 border-r border-gray-100">
 <div class="flex items-center gap-2 mb-8">
 <h4 class="font-semibold text-slate-800 text-sm">酒店信息预览</h4>
-<span class="flex items-center gap-1 px-1.5 py-0.5 text-rose-500 text-[11px] font-medium">
-<span class="material-symbols-outlined text-[14px]">report</span>⚠️ 需修改
-                            </span>
 </div>
 <div class="space-y-10">
 <div class="space-y-4">
@@ -149,15 +149,20 @@
 <div class="grid grid-cols-2 gap-y-6 gap-x-4">
 <div class="col-span-2">
 <label class="text-[12px] text-slate-400 block mb-1">酒店名称</label>
-<div class="text-[14px] text-slate-800">悦来客栈 (Yuelai Inn)</div>
+<div class="text-[14px] font-medium text-slate-800">悦来客栈 (Yuelai Inn)</div>
 </div>
-<div>
+<div class="col-span-2 border-l-4 border-amber-400 bg-amber-50/30 pl-3 py-1 -ml-3 rounded-r relative pr-16">
+<div class="absolute top-2 right-2 bg-amber-500 text-white text-[10px] px-1.5 py-0.5 rounded font-bold shadow-sm z-10">与实际设施不符</div>
 <label class="text-[12px] text-slate-400 block mb-1">酒店星级</label>
-<div class="text-[13px] text-slate-800">2 Stars</div>
+<div class="text-[14px] font-medium text-slate-800">2 Stars</div>
+<div class="mt-1 text-[10px] text-primary cursor-pointer hover:underline flex items-center gap-0.5">
+<span>查看驳回详情</span>
+<span class="material-symbols-outlined text-[10px]">arrow_forward</span>
+</div>
 </div>
 <div>
 <label class="text-[12px] text-slate-400 block mb-1">开业日期</label>
-<div class="text-[13px] text-slate-800">2018 年 6 月</div>
+<div class="text-[14px] font-medium text-slate-800">2018 年 6 月</div>
 </div>
 <div class="col-span-2">
 <label class="text-[12px] text-slate-400 block mb-1">详细地址</label>
@@ -181,13 +186,15 @@
 <div class="space-y-4">
 <h5 class="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em]">图片预览</h5>
 <div class="grid grid-cols-2 gap-2">
-<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50 shrink-0">
+<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50 shrink-0 relative ring-2 ring-red-400 ring-offset-2" title="点击查看大图及审核历史">
+<div class="absolute top-2 right-2 bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded font-bold shadow-sm z-10">模糊</div>
 <img alt="Hotel 1" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJxbwOgBnL09jIcGJfhLKl0tU_IskBEAfceRyF5aXqtCpbOR6gMLQ5-tZjseVPjaS43JMNlLcd-EvnOJRGcDripBWuQ1K_X1dRwsFASj108uoBaIBITMAm4v1ViY4HYV3Cx0wZF8q_azK2j760NTrlKDLoFQUACqOg4rb0w94MOtjloNVb0tPvem06t3hQiFWtLHscBYD2hAl89tPrefcHctk1_CrLfwc0PdIim5OdoRE601nA3wzTy0hH3g6GWRTrg4ORdr8PkRQ"/>
 </div>
 <div class="aspect-[4/3] rounded overflow-hidden bg-gray-50 shrink-0">
 <img alt="Hotel 2" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfHiwKuewfpP4oSxGM7Bnwgls0DBTrl1YeJBe2-9ULXIYyynomTueQTa1tiQR6YALfhW3tsCQz460mf0rY00hnnx5Kz49_z1u-sLbktIKFN091JDwjKe6Sbn00O5ECmcWYXRxypmxor2wdz_SY1hbX-JDdo21rLpA9oG8NOn9Gzx888CF4AAmnMT45tHxuq8xhg8mUkbzcRal7QZwD3V7bhjIo-3BMxnyhgVnHkOASfq7P2PdjkuHXBi5wHk0e-Q_dTHj1rgJ92sU"/>
 </div>
-<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50 shrink-0">
+<div class="aspect-[4/3] rounded overflow-hidden bg-gray-50 shrink-0 relative ring-2 ring-red-400 ring-offset-2" title="点击查看大图及审核历史">
+<div class="absolute top-2 right-2 bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded font-bold shadow-sm z-10">角度不佳</div>
 <img alt="Hotel 3" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA42Q2S1VVS1RNXLIuGbM4JvExxCFpCANeodMhCVniPhHKaIOMXH83w-rJieJnaWCNb83ZKp5hBtGQ8MAClxiL80-I2--eU2Fm1gVQ8gzBfrXjnzqJVmrJMYZ_Cmu7w4yuotNUM2-zZYFnLIC6zmJFz5G1lPpSbwdCLrtnzm3DMuO_-Jx7aq5wQilAj4eq6lkKsN-bvOKfsykJ7gJ-7DiLbf3IHDJ4bMh0oTqnUe4WeweJbX-_HqxJ0Fdrr1-b7VM8rzNMduX5Ml0w"/>
 </div>
 <div class="aspect-[4/3] rounded overflow-hidden bg-gray-50 shrink-0">
@@ -197,78 +204,134 @@
 </div>
 </div>
 </div>
-<div class="w-[62%] h-full overflow-y-auto custom-scrollbar p-8 bg-white flex flex-col gap-8">
-<div class="flex flex-col gap-6">
-<div class="flex flex-col gap-1">
-<h4 class="text-xl font-bold text-slate-800">🔴 初审驳回 (First Round Rejected)</h4>
-<p class="text-sm text-slate-400">等待商户修改 (Waiting for Merchant Revision)</p>
+<div class="flex-1 min-w-0 h-full overflow-y-auto custom-scrollbar p-8 bg-white flex flex-col gap-8">
+<!-- 步骤条 Stepper -->
+<div class="mb-8">
+<div class="flex items-start w-full">
+<div class="flex flex-col items-center flex-1 relative">
+<div class="w-8 h-8 shrink-0 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-sm font-bold border-2 border-green-200">✓</div>
+<span class="text-[11px] mt-1.5 text-green-600 font-medium">提交申请</span>
+<span class="text-[10px] text-slate-400">02-24 10:15</span>
+<div class="absolute top-4 left-[60%] w-[80%] h-[2px] bg-slate-200"></div>
 </div>
+<div class="flex flex-col items-center flex-1 relative">
+<div class="w-8 h-8 shrink-0 rounded-full bg-amber-500 text-white flex items-center justify-center text-sm font-bold ring-4 ring-amber-100 z-10">2</div>
+<span class="text-[11px] mt-1.5 text-amber-600 font-bold">初审驳回</span>
+<span class="text-[10px] text-slate-500">由我 · 02-24 16:45</span>
+<div class="absolute top-4 left-[60%] w-[80%] h-[2px] border-t-2 border-dashed border-slate-300"></div>
+</div>
+<div class="flex flex-col items-center flex-1 opacity-60">
+<div class="w-8 h-8 shrink-0 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-sm border-2 border-slate-200">
+<span class="material-symbols-outlined text-[14px]">hourglass_empty</span>
+</div>
+<span class="text-[11px] mt-1.5 text-slate-500 font-medium">商户修改</span>
+<span class="text-[10px] text-amber-600">截止 03-03</span>
+</div>
+<div class="flex flex-col items-center flex-1 opacity-40">
+<div class="w-8 h-8 shrink-0 rounded-full bg-slate-100 text-slate-300 flex items-center justify-center text-sm border-2 border-slate-200">4</div>
+<span class="text-[11px] mt-1.5 text-slate-400">平台复核</span>
+</div>
+</div>
+</div>
+<!-- 状态说明卡片 -->
+<div class="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-6">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-slate-500 text-xl mt-0.5">info</span>
+<div class="flex-1">
+<h4 class="font-bold text-slate-800 text-sm mb-1">当前状态：等待商户修改</h4>
+<p class="text-[13px] text-slate-600 leading-relaxed">
+该申请已于 <span class="font-medium text-slate-800">2月24日</span> 被驳回，系统已自动发送修改通知至商户联系人手机与邮箱。
+</p>
+<div class="mt-3 flex items-center gap-3 text-[11px]">
+<span class="flex items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+商户需在 <span class="font-bold text-amber-600">3月3日</span> 前完成修改
+</span>
+<span class="text-slate-300">|</span>
+<button class="text-primary hover:underline font-medium flex items-center gap-0.5">查看通知记录</button>
+</div>
+</div>
+</div>
+</div>
+<!-- 驳回记录（字段级） -->
+<div class="space-y-4 mb-8">
+<h5 class="text-[10px] text-slate-400 uppercase font-bold tracking-[0.1em] mb-3">上次审核意见（2026-02-24）</h5>
+<div class="border border-red-100 bg-red-50/20 rounded-lg p-4 relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-red-400"></div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-red-500 text-xl">image_not_supported</span>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<h6 class="font-bold text-slate-800 text-sm">酒店外观照质量不符</h6>
+<span class="px-1.5 py-0.5 bg-red-100 text-red-600 text-[10px] font-bold rounded">必填项</span>
+</div>
+<p class="text-[13px] text-slate-600 leading-relaxed mb-2">
+主图模糊，无法辨识酒店招牌文字。请重新拍摄清晰照片，确保光线充足、无抖动。
+</p>
+<div class="text-[11px] text-slate-500 bg-white/60 p-2 rounded border border-red-100/50 mb-2">
+<span class="font-semibold text-slate-700">参考标准：</span>图片分辨率不低于1200×800，文字清晰可见，无水印
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-red-100/50">
+<span class="text-[11px] text-slate-400">涉及字段：酒店外观照（第1张）</span>
+<button class="text-[11px] text-primary hover:underline flex items-center gap-0.5">
+定位到左侧图片 <span class="material-symbols-outlined text-[12px]">arrow_outward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="border border-amber-100 bg-amber-50/20 rounded-lg p-4 relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-400"></div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-amber-500 text-xl">hotel_class</span>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<h6 class="font-bold text-slate-800 text-sm">星级描述与实际设施不符</h6>
+<span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-bold rounded">需核实</span>
+</div>
+<p class="text-[13px] text-slate-600 leading-relaxed">
+您填写的"2 Stars"星级描述与实际上传的设施照片不符。当前设施无法满足所填写的星级标准（缺少大堂、餐厅等公共区域照片）。
+</p>
+<div class="flex items-center justify-between pt-2 border-t border-amber-100/50 mt-2">
+<span class="text-[11px] text-slate-400">涉及字段：酒店星级</span>
+<button class="text-[11px] text-primary hover:underline flex items-center gap-0.5">
+定位到左侧字段 <span class="material-symbols-outlined text-[12px]">arrow_outward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="text-right text-[11px] text-slate-400 pt-2">审核员：Julian Ross · 2026-02-24 16:45</div>
+</div>
+<!-- 审核记录时间线 -->
 <div class="space-y-4">
-<div class="relative flex items-center justify-between w-full max-w-sm">
-<div class="absolute top-1/2 left-0 w-full h-[1px] bg-gray-100 -translate-y-1/2 z-0"></div>
-<div class="relative z-10 flex items-center bg-white pr-3">
-<div class="size-2 rounded-full bg-soft-green"></div>
+<div class="flex items-center gap-1.5 group cursor-pointer hover:opacity-80 transition-opacity">
+<h5 class="text-[10px] text-slate-400 uppercase font-bold tracking-[0.1em]">审核记录</h5>
+<span class="material-symbols-outlined text-[14px] text-slate-400 group-hover:rotate-180 transition-transform">expand_more</span>
 </div>
-<div class="relative z-10 flex items-center bg-white px-3">
-<div class="size-2 rounded-full bg-soft-red"></div>
+<div class="relative pl-4 border-l-2 border-slate-100 space-y-6">
+<div class="relative">
+<div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-red-500 border-2 border-white shadow-sm"></div>
+<div class="flex justify-between items-start">
+<div>
+<div class="text-[13px] font-bold text-slate-800">审核驳回</div>
+<div class="text-[12px] text-slate-500 mt-0.5">初审未通过，已通知商户修改</div>
 </div>
-<div class="relative z-10 flex items-center bg-white pl-3">
-<div class="size-2 rounded-full bg-gray-200"></div>
-</div>
-</div>
-</div>
-<div class="bg-gray-light/50 rounded-lg px-4 py-3 flex items-center justify-between">
-<span class="text-[12px] font-medium text-slate-500 uppercase tracking-wider">Next Action:</span>
-<div class="flex items-center gap-2 bg-gray-light px-3 py-1.5 rounded text-slate-600 text-xs font-semibold select-none cursor-default border border-gray-200">
-<span class="material-symbols-outlined text-sm">hourglass_empty</span>
-                                    ⏳ 等待商户修改中 (Waiting for Revision)
-                                </div>
+<span class="text-[11px] text-slate-400 monospaced-date">02-24 16:45</span>
 </div>
 </div>
-<div class="space-y-4">
-<h5 class="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em]">驳回原因 Rejection Reasons</h5>
-<div class="space-y-4">
-<ul class="space-y-1.5 ml-1">
-<li class="text-[13px] text-soft-red">• 图片质量不清晰/数量不足</li>
-<li class="text-[13px] text-soft-red">• 描述存在夸大或虚假信息</li>
-</ul>
-<div class="p-5 bg-[#F9FAFB] rounded-lg">
-<p class="text-[13px] leading-relaxed text-slate-600">主图模糊，请重新拍摄清晰照片；酒店星级描述与实际设施不符，请核实并修改。当前设施无法满足所填写的星级标准。</p>
-<p class="text-[11px] text-slate-400 mt-4 pt-4 border-t border-gray-100/50">提交人：王建国 · 2026-02-24 10:15</p>
+<div class="relative opacity-60">
+<div class="absolute -left-[21px] top-1.5 w-2 h-2 rounded-full bg-slate-300"></div>
+<div class="flex justify-between items-baseline">
+<span class="text-[13px] text-slate-600">分配给审核员</span>
+<span class="text-[11px] text-slate-400 monospaced-date">02-24 14:30</span>
 </div>
 </div>
-</div>
-<div class="space-y-4">
-<div class="flex items-center gap-1.5 group cursor-pointer">
-<h5 class="text-[10px] text-gray-400 uppercase font-bold tracking-[0.1em]">审核记录 Audit History</h5>
-<span class="material-symbols-outlined text-[14px] text-gray-300">expand_more</span>
-</div>
-<div class="space-y-4">
-<div class="flex items-start gap-4">
-<div class="mt-0.5 flex items-center justify-center w-5">
-<span class="material-symbols-outlined text-soft-red text-[16px]">flag</span>
-</div>
-<div class="flex-1 flex justify-between items-baseline">
-<span class="text-[12px] font-bold text-slate-800">审核驳回 (Rejected by Admin A)</span>
-<span class="text-[11px] text-slate-400 monospaced-date">16:45</span>
-</div>
-</div>
-<div class="flex items-start gap-4">
-<div class="mt-1.5 w-5 flex justify-center">
-<div class="size-1 rounded-full bg-gray-300"></div>
-</div>
-<div class="flex-1 flex justify-between items-baseline">
-<span class="text-[12px] text-slate-400">分配给审核员</span>
-<span class="text-[11px] text-slate-400 monospaced-date">14:30</span>
-</div>
-</div>
-<div class="flex items-start gap-4">
-<div class="mt-1.5 w-5 flex justify-center">
-<div class="size-1 rounded-full bg-gray-300"></div>
-</div>
-<div class="flex-1 flex justify-between items-baseline">
-<span class="text-[12px] text-slate-400">提交申请</span>
-<span class="text-[11px] text-slate-400 monospaced-date">10:15</span>
+<div class="relative opacity-60">
+<div class="absolute -left-[21px] top-1.5 w-2 h-2 rounded-full bg-slate-300"></div>
+<div class="flex justify-between items-baseline">
+<span class="text-[13px] text-slate-600">商户提交申请</span>
+<span class="text-[11px] text-slate-400 monospaced-date">02-24 10:15</span>
 </div>
 </div>
 </div>
@@ -280,12 +343,14 @@
 <span class="material-symbols-outlined text-sm">verified_user</span>
 <span class="text-[10px] font-medium uppercase tracking-[0.1em]">TripEase Audit System v4.2</span>
 </div>
-<div class="flex items-center gap-6">
-<button class="text-[13px] font-medium text-slate-400 hover:text-slate-600 transition-colors">关闭 Close</button>
-<div class="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-lg text-slate-500 text-[13px] font-semibold select-none cursor-default">
-<span class="material-symbols-outlined text-sm">hourglass_empty</span>
-                            等待商户修改中 (Waiting for Revision)
-                        </div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 text-[13px] font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-lg transition-colors">关闭</button>
+<button class="px-4 py-2 text-[13px] font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg border border-red-200 transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">block</span>关闭申请
+</button>
+<button class="px-4 py-2 text-[13px] font-bold text-white bg-primary hover:brightness-105 rounded-lg shadow-sm transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">send</span>发送催办提醒
+</button>
 </div>
 </div>
 </div>

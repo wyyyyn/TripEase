@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { NavLink, Outlet, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { logout, initAuth } from '../../shared/store/authStore';
 import { useAuth } from '../../shared/store/useStore';
@@ -260,9 +260,17 @@ export default function AdminLayout() {
         </div>
       </aside>
 
-      {/* Content */}
+      {/* Content：仅右侧用 Suspense 包住，子路由懒加载时只在这一块显示 loading，左侧栏不闪动 */}
       <main className="flex-1 overflow-auto bg-admin-bg">
-        <Outlet />
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center min-h-[40vh] text-gray-500">
+              <span className="material-symbols-outlined text-admin-primary text-3xl animate-spin">progress_activity</span>
+            </div>
+          }
+        >
+          <Outlet />
+        </Suspense>
       </main>
     </div>
   );
